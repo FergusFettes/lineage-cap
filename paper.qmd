@@ -1,0 +1,116 @@
+---
+title: "The lineage cap: if complexity is a process, the empty sky dates our lineage"
+author: "Fergus Fettes"
+date: 2026-10-08
+format:
+  pdf:
+    documentclass: article
+    papersize: a4
+    geometry: margin=2.5cm
+    fontsize: 11pt
+    number-sections: false
+    colorlinks: true
+  html:
+    toc: false
+    html-math-method: katex
+---
+
+## Abstract
+
+If complexification is a process rather than a lottery, the empty sky implies that building observers like us takes at least ~11 billion years, from a lineage clock that started almost simultaneously across the universe.
+
+Hanson et al. explain our earliness with a lottery (life needs several hard steps) and a deadline (expanding "grabby" civilisations fill the universe soon). Here we drop the lottery. Suppose that in suitable conditions complexity accumulates at a rate bounded by physics, so the minimum time to reach our level, $T_{\min}$, is a property of the universe, not of luck. Lineweaver estimates that Earth-like planets are typically ~2 Gyr older than Earth. If each lineage started when its planet formed, most would be ~2 Gyr ahead of us and visibly expanding, and an empty sky rules that out unless almost every suitable planet fails, which brings the lottery back. The picture that survives has a lineage clock starting near-simultaneously, with the universe's first carbon chemistry, and running for most of cosmic history. Earliness then needs neither a lottery nor a deadline: everyone who can be here is roughly here now.
+
+## 1. Earliness, two ways
+
+The two explanations differ in what our arrival date measures: a deadline, or a physical minimum time.
+
+**The lottery.** Hanson, Martin, McCarter and Paulson (2021) model advanced life as $n$ hard steps, so the chance of finishing by time $t$ grows as $t^n$, with $n$ around 6. Without a deadline, most civilisations would arise trillions of years from now around red dwarfs, and 13.8 Gyr would be absurdly early. The deadline is grabby civilisations, expanding at a good fraction of $c$, which fill the universe within a few Gyr. Anyone who exists must therefore be early. We are a typical draw among origins that beat the deadline, and our date measures the deadline.
+
+**The process.** Complexity accumulates along suitable trajectories at a rate limited by physics: energy flux, chemistry, the time to copy and select. The growth compounds, like the log-linear rise in genome complexity that Sharov and Gordon (2013) fit. There is then a cap, $T_{\min}$, the shortest time in which any lineage can reach our level. Given suitable conditions and time $T_{\min}$, success is close to certain; differences between sites come from environment, not luck. Our date then measures $T_{\min}$.
+
+This note asks what the empty sky says about $T_{\min}$ under the process view.
+
+## 2. Setup
+
+The empty sky caps how many lineages can have reached our level more than $\Delta$ before us, and under the process view that cap translates directly into a bound on $T_{\min}$.
+
+Each site $i$ (a planet, or more generally a suitable trajectory of matter) has a lineage clock that starts at time $s_i$. Under the process view it reaches our level at
+
+$$
+a_i = s_i + T_{\min} + \epsilon_i, \qquad \epsilon_i \ge 0
+$$
+
+where $\epsilon_i$ is an environmental delay with typical spread $\sigma$. We arrived at $t_0 = 13.8$ Gyr. A lineage that arrives $\Delta = t_0 - a_i$ before us, and then expands at speed $v$, has had time to reach every galaxy within roughly $v\Delta$. Call the number of galaxies in that sphere $G(\Delta)$. At $v \approx 0.5c$, $G$ is about $10^5$ to $10^6$ for $\Delta = 1$ Gyr and about $10^7$ to $10^8$ for $\Delta = 5$ Gyr.
+
+We exist and see no expansion, so no such lineage is within reach:
+
+$$
+p(\Delta)\, G(\Delta) \lesssim 1
+$$
+
+where $p(\Delta)$ is the chance that a given galaxy hosts a lineage arriving at least $\Delta$ before us. Under a lottery, $p$ can be tiny and nothing follows. Under a process, $p$ is set by how many sites started early, and the inequality becomes a statement about when lineage clocks start and how long they run.
+
+## 3. Case A: the clock starts when the planet forms
+
+If lineages start with their planets, a process plus an empty sky is impossible unless suitable sites are about one in $10^{14}$, which is a lottery under another name.
+
+Take $s_i$ to be planet formation. Earth's lineage then took about 4.6 Gyr, and under the process view $T_{\min}$ is about that, since nothing says we were slow. Lineweaver (2001) estimates that Earth-like planets in the universe are on average about $1.8 \pm 0.9$ Gyr older than Earth. Three quarters of them are older than Earth, so a large share, conservatively half, started at least 1 Gyr before us and would have arrived at least 1 Gyr earlier.
+
+A galaxy like ours holds roughly $10^8$ to $10^9$ Earth-sized planets in the habitable zones of Sun-like stars. If a fraction $f$ of them are suitable for the process, then
+
+$$
+p(1\,\mathrm{Gyr}) \approx \tfrac{1}{2}\, f\, N_{\mathrm{sites}} \approx \tfrac{1}{2}\, f \times 10^{8\text{--}9}
+$$
+
+and the empty sky, with $G(1\,\mathrm{Gyr}) \approx 10^5$ to $10^6$, requires $f \lesssim 10^{-15}$ to $10^{-13}$. Essentially no planet in any galaxy is suitable. That is not a process. It is the hard-steps lottery, or a rare-Earth assumption, reintroduced through $f$.
+
+So planetary start, process and loud expansion cannot all hold.
+
+## 4. Case B: the clock starts with the universe's chemistry
+
+If lineage clocks start together, the empty sky is expected, and it bounds the cap at $T_{\min} \gtrsim 11$ Gyr: our lineage is within a Gyr or two of the fastest possible.
+
+Suppose the lineage's information begins with the first carbon chemistry after the first supernovae, around $t_{\mathrm{start}} \approx 0.2$ to $0.5$ Gyr, and is carried between sites: grains, planetesimals, comets, young planets. A planet that forms at time $t_p$ then inherits a lineage that is already $t_p - t_{\mathrm{start}}$ old. A planet's age gives no head start, because the clock was running before the planet existed. Every branch shares nearly the same start, and arrivals cluster at $t_{\mathrm{start}} + T_{\min}$, spread by $\sigma$.
+
+Under the process view, the fast tail of that spread is well populated, so the leaders arrive near $t_{\mathrm{start}} + T_{\min}$. The empty sky allows them at most $\Delta_{\max} \approx 1$ to $2$ Gyr ahead of us, where $p(\Delta)\,G(\Delta)$ reaches 1 for a non-negligible $p$:
+
+$$
+T_{\min} \;\ge\; t_0 - t_{\mathrm{start}} - \Delta_{\max} \;\approx\; 13.8 - 0.3 - (1\text{ to }2) \;\approx\; 10.5\text{ to }12.5\ \mathrm{Gyr}
+$$
+
+Two readings of the same inequality:
+
+- **The cap is long.** Building observers takes most of cosmic history. That is why nobody is much earlier than us, with no lottery and no deadline needed.
+- **We are near-optimal.** Our own lineage took $t_0 - t_{\mathrm{start}} \approx 13.5$ Gyr, so it ran within $\Delta_{\max}$, roughly 10 to 15%, of the fastest possible.
+
+This fits Sharov and Gordon's extrapolation of genome complexity to an origin about $9.7 \pm 2.5$ Gyr ago. On this reading, their date marks the start of genetic information, preceded by about 4 Gyr of pre-genetic chemistry since $t_{\mathrm{start}}$.
+
+## 5. Predictions that separate the pictures
+
+The sharpest test is whether life found elsewhere in the solar system turns out to be related to ours.
+
+| Observable | Lottery (hard steps) | Process, cosmic start |
+|---|---|---|
+| Life elsewhere in the solar system | absent, or an independent origin | present and related: shared deep ancestry |
+| Timing of Earth's major transitions | evenly spaced, last one near the end of the habitable window | accelerating: each stage shorter, a log-linear complexity clock |
+| Organics in comets and interstellar objects | abiotic, low assembly index | some material above the abiotic assembly ceiling |
+| Minimum assembly time from lab and simulation calibration | unconstrained | about 10 Gyr or more to reach observed biological assembly |
+| Other civilisations | rare; any grabby ones arrived at random times | many near-contemporaries, none more than 1 to 2 Gyr older |
+
+## 6. Assumptions
+
+The conclusion rests on four assumptions; the first two are the ones a critic should attack.
+
+1. **Civilisations are loud.** A civilisation at our level expands within centuries, and its expansion is visible or reaches us. Staying quiet requires every civilisation, every faction within it and every replicator it releases to stay thermodynamically small forever: a universal singleton with satiable values. Under selection one expander is enough. Mass can be hidden, entropy production cannot, and if complexity tracks dissipation, a quiet civilisation is a simple one.
+2. **Complexification is a process.** The fast tail of arrival times is well populated, so $f$ is not astronomically small. This is the substantive bet. If it fails, both cases reduce to the lottery, and the predictions in section 5 are how to tell.
+3. **Lineage information travels between sites.** The clock can start before a planet forms only if information, not individual molecules, survives transport through grains, planetesimals and comets over Gyr. The accumulated assembly must also survive arrival on a new planet rather than restart there. Without both, older planets regain a head start and case B collapses into case A.
+4. **The numbers are order-of-magnitude.** Lineweaver's ages, the galaxy counts $G(\Delta)$ and $t_{\mathrm{start}}$ are rough. Case A fails by many orders of magnitude, so it is robust to them; the 11 Gyr figure in case B moves by about a Gyr with $\Delta_{\max}$.
+
+"Our level" means able to expand, which on present trends is within centuries of now, so our arrival time is $t_0$ to within a rounding error.
+
+## References
+
+- Hanson, R., Martin, D., McCarter, C. and Paulson, J. (2021). [If loud aliens explain human earliness, quiet aliens are also rare](https://arxiv.org/abs/2102.01522). *Astrophysical Journal* 922, 182.
+- Lineweaver, C. H. (2001). [An estimate of the age distribution of terrestrial planets in the universe: quantifying metallicity as a selection effect](https://arxiv.org/abs/astro-ph/0012399). *Icarus* 151, 307.
+- Sharov, A. A. and Gordon, R. (2013). [Life before Earth](https://arxiv.org/abs/1304.3381). arXiv:1304.3381.
