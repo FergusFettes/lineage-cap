@@ -18,6 +18,7 @@ retained as history, with its superseded framing marked.
 ```bash
 make baseline  # configure environment, calculate histories, export CSV and PNG/SVG
 make inference # infer permitted head starts; sweep expansion probability and speed
+make start-spread # inherited start windows, leading ranks and ancestry correlation
 make check     # budget quadrature and cohort-conservation checks
 ```
 
@@ -36,3 +37,9 @@ clocks, and varies abundance, expansion probability and speed. Remote visibility
 and physical arrival have distinct kernels and are not combined as independent
 evidence. The first implementation is a flat-space, ideal-loud scenario; it is
 not calibrated to a particular survey.
+
+The [start-spread results](results/start_spread/README.md) vary shared inherited
+starts across galaxies and progenitor groups. They report conditional leading
+percentiles, distinguish full window spans from standard deviations, and check
+local synchronizers and dependence on the seed epoch. Edit
+[configs/start_spread.json](configs/start_spread.json) for these scenarios.
