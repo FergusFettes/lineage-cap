@@ -1,0 +1,200 @@
+{
+  "status": "distributed inherited elapsed starts; uniform bounded window",
+  "time": {
+    "now_gyr": 13.8,
+    "earth_age_gyr": 4.6,
+    "ramp_start_gyr": 0.2,
+    "ramp_start_note": "provisional: 200 million years, awaiting clarification of 200ky"
+  },
+  "abundance": {
+    "stars_now": 100000000000,
+    "appropriate_fraction": 0.1,
+    "appropriate_fraction_status": "Fermi benchmark, not measured",
+    "trajectories_per_appropriate_zone": 1,
+    "per_zone_capacity_now": 1.0,
+    "capacity_unit": "Earth-equivalent productive capacity",
+    "galaxy_density_mpc3": 0.01,
+    "galaxy_density_status": "illustrative; population calibration pending"
+  },
+  "history": {
+    "count_exponent": 1,
+    "capacity_exponent": 1,
+    "zone_destruction": false,
+    "environmental_delay_gyr": 0.0,
+    "comparison_exponents": [
+      [
+        1,
+        0
+      ],
+      [
+        0,
+        1
+      ]
+    ]
+  },
+  "clocks": {
+    "modes": [
+      "planet_linked",
+      "inherited"
+    ],
+    "primary_clock": "elapsed_time",
+    "secondary_clock": "integrated_capacity",
+    "earth_completion_gyr": 13.8,
+    "earth_completion_is_fitted_frontier": false
+  },
+  "expansion": {
+    "launch_delay_gyr": 0.0,
+    "loud_after_galaxy_crossing": true,
+    "host_galaxy_diameter_kpc": 30.0,
+    "diameter_status": "rounded geometry benchmark",
+    "kernels": [
+      "remote_visibility",
+      "physical_arrival_diagnostic"
+    ]
+  },
+  "sweep": {
+    "zones_now": [
+      100000000,
+      1000000000,
+      10000000000,
+      100000000000
+    ],
+    "expansion_probability": {
+      "min": 1e-24,
+      "max": 1.0,
+      "points": 97,
+      "spacing": "log"
+    },
+    "speed_c": [
+      0.001,
+      0.01,
+      0.1,
+      0.5,
+      0.9
+    ],
+    "candidate_duration_gyr": {
+      "min": 0.0,
+      "max": 13.6,
+      "search": "adaptive, resolving the empty-sky boundary"
+    },
+    "candidate_exposure": {
+      "min": 0.0,
+      "max": "integral of per-zone capacity from ramp start to today"
+    },
+    "special_limits": [
+      "q=0",
+      "v=0 for physical arrival",
+      "q=1"
+    ]
+  },
+  "inference": {
+    "model": "independent-galaxy Poisson benchmark",
+    "geometry": "flat_space",
+    "visibility": "ideal persistent loudness after host-galaxy crossing",
+    "survey_completeness": "ideal detection; not calibrated to a specific survey",
+    "quadrature_order": 96,
+    "reference": {
+      "speed_c": 0.5,
+      "mu_threshold": 2.995732273553991,
+      "q_values": [
+        1.0,
+        1e-06,
+        1e-10,
+        1e-12
+      ]
+    },
+    "mu_contours": [
+      1.0,
+      2.995732273553991
+    ],
+    "infer": [
+      "earliest_completion",
+      "permitted_head_start",
+      "duration",
+      "earth_frontier_gap"
+    ]
+  },
+  "sources": {
+    "star_count": "https://www.esa.int/Science_Exploration/Space_Science/Gaia/Guide_to_our_galaxy",
+    "planet_demographics_for_refinement": "https://arxiv.org/abs/2010.14812",
+    "formation_history_for_refinement": "https://arxiv.org/abs/astro-ph/0012399",
+    "first_stars_review": "https://arxiv.org/abs/1305.5178",
+    "later_pop_iii_halo_example": "https://arxiv.org/abs/1307.1798",
+    "cosmological_parameters": "https://arxiv.org/abs/1807.06209",
+    "sagittarius_bursts": "https://www.nature.com/articles/s41550-020-1097-0"
+  },
+  "start_spread": {
+    "distribution": "uniform",
+    "span_definition": "full earliest-to-latest start span W; standard deviation sigma=W/sqrt(12)",
+    "spans_gyr": [
+      0,
+      0.01,
+      0.03,
+      0.1,
+      0.2,
+      0.5,
+      1,
+      2,
+      5
+    ],
+    "standard_deviation_reference_gyr": [
+      0,
+      0.01,
+      0.03,
+      0.1,
+      0.2,
+      0.5
+    ],
+    "earliest_start_reference_gyr": 0.2,
+    "clock": "elapsed_time; one common duration T; starts S=earliest+U with U uniform(0,W)",
+    "observation": "our lineage completes today; its start offset is the earliest completion lead",
+    "primary_groups_per_galaxy": 1,
+    "correlation_groups": [
+      100,
+      10000,
+      "per_zone"
+    ],
+    "correlation_q_values": [
+      1,
+      1e-06,
+      1e-10,
+      1e-12
+    ],
+    "scope_note": "group starts independent between galaxies and between equal-sized ancestry groups; no asserted measured halo count",
+    "demography_note": "zone formation ramp held fixed; changing process seed epoch does not reset zone formation",
+    "q_note": "q remains a decision per completed suitable zone, not per start group",
+    "local_sync_spans_gyr": [
+      1,
+      2,
+      5
+    ],
+    "local_sync_percentiles": [
+      0.01,
+      0.1,
+      0.5,
+      0.9,
+      1
+    ],
+    "epoch_checks_gyr": [
+      0.2,
+      4.1,
+      8.1
+    ],
+    "epoch_check_spans_gyr": [
+      0,
+      0.2
+    ],
+    "interpretation": "percentile ceilings under a chosen mu threshold, not posterior ranks; W=0 supplies no rank information",
+    "cosmology_source_check": {
+      "h0_km_s_mpc": 67.4,
+      "omega_m": 0.315,
+      "omega_r": 9.2e-05,
+      "redshifts": [
+        30,
+        20,
+        15
+      ],
+      "note": "flat matter+radiation+Lambda age only; visibility geometry remains flat-space"
+    }
+  }
+}

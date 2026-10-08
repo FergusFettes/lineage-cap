@@ -170,3 +170,43 @@ saved numerical grids. The implementation uses package modules (`sweep.py`,
 
 These inform abundance/history. Expansion probability, speed, capacity units
 and the linear histories are explicit benchmark choices, not observations.
+
+## Distributed inherited starts (8 October, requested via Claude mail)
+
+Add a start-time spread to the inherited **elapsed** clock, retaining a common
+duration T and the same opportunity history. Use a uniform start window
+`S = s_first + U`, `U ~ Uniform(0,W)`. W is the full span; its standard deviation
+is `sigma_s = W/sqrt(12)`. This bounded distribution has a defined earliest
+start and never puts starts before the big bang. It is a sensitivity benchmark,
+not a fitted distribution of first-carbon dates.
+
+Our completion at `t_now` means `T = t_now - S_ours`. Thus our offset from the
+earliest start, `delta = S_ours - s_first`, is also the earliest completion lead.
+At an eligible completion deadline t, the completed fraction of start groups is
+`F = clip((t - t_now + delta)/W, 0, 1)`. Infer delta from the empty sky; for
+`W>0`, report the permitted start percentile `min(delta_max/W,1)` and its
+reciprocal, "first 1 in K". If `delta_max>=W`, all start percentiles are allowed.
+At `W=0`, retain the original lead bound but leave start percentiles undefined:
+simultaneous starts contain no ranking information.
+
+Starts shared within a galaxy must be marginalized **before** saturating the
+galaxy event probability. One shared start gives `p_gal = F*[1-(1-q)^N(t)]`.
+For H equal-sized independent ancestry groups, use
+`p_gal = 1 - {1 - F*[1-(1-q)^(N(t)/H)]}^H`.
+The independent-per-zone limit is `1-(1-q*F)^N(t)`. H is a sensitivity parameter,
+not an inferred progenitor count. q remains per eligible zone in every mode.
+
+Use the previous two observation kernels, galaxy density, abundance and speed
+sweeps, with mu=1 and mu=-log(.05). Include 1–5 Gyr windows and q ceilings at
+specified start percentiles to test local synchronizers. Do not infer a q
+ceiling for a whole cohort from the old per-zone q column without conversion.
+
+For fixed N(t), completion-date bounds are exactly independent of the seed
+epoch; duration bounds require the new epoch to be subtracted. Moving the zone
+formation ramp as well changes N(t), and the finite history limit must still
+be respected. Save a separate epoch check rather than assert blanket invariance.
+
+Implementation: `lineage_cap/start_spread.py`; numerical runner and plotting
+modules produce `results/start_spread` with `make start-spread`. This extension
+does not yet assign a capacity-weighted completion clock to dispersed starts;
+that requires specifying how capacity histories shift with the seed.
