@@ -1,0 +1,15 @@
+{
+  "figures": [
+    "08_start_percentile",
+    "09_abundance_expansion",
+    "10_ancestry_correlation",
+    "11_local_sync_ceiling"
+  ],
+  "formats": [
+    "png",
+    "svg"
+  ],
+  "pngs_visually_inspected": true,
+  "checks": "axes, legends, titles, captions and curve labels readable; no clipping or overlap",
+  "tests_passed": 44
+}

@@ -1,0 +1,9 @@
+{
+  "method": "forward boundary check at doubled radial quadrature order",
+  "seed": 20261008,
+  "boundaries_sampled": 600,
+  "q_ceilings_sampled": 60,
+  "quadrature_order": 192,
+  "max_relative_error": 1.0991587318098794e-07,
+  "tolerance": 1e-05
+}
