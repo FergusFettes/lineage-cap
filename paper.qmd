@@ -18,11 +18,11 @@ format:
 
 ## Abstract
 
-Why are we so early? The standard answer treats the origin of observers as a lottery: a number of improbable "hard steps", whose count and difficulty are tuned until the model fits. We replace the lottery with a simpler assumption. Every suitable place runs the same complexification process, and the only free quantities are how many such places exist and how many of the lineages they produce expand where we could see them. Using a numerical model of zone abundance, process clocks and expansion, we find the following. If each lineage's clock starts when its planet forms, as an Earth origin of life requires, the empty sky demands that fewer than about one galaxy in fifty million ever produce an expanding civilisation. The lottery returns under another name. If instead lineages share a start, the empty sky allows the first lineages to have reached our level at most about 14 Myr before us. That figure barely moves across ten orders of magnitude of abundance and expansion probability. So the shortest possible lineage is at least 13.59 Gyr, within 0.1% of our own. Finally, only a universal event can synchronise lineages across the galaxies an expanding civilisation could reach in that time. The only sharp universal event early enough is the first carbon chemistry, about 0.2 Gyr after the Big Bang. Common life, an empty sky and no lottery together point to a lineage as old as the chemistry that made it possible.
+Why are we so early? The standard answer treats the origin of observers as a lottery: a number of improbable "hard steps", whose count and difficulty are tuned until the model fits. We replace the lottery with a simpler assumption. Every suitable place runs the same complexification process, and the only free quantities are how many such places exist and how many of the lineages they produce expand where we could see them. Using a numerical model of zone abundance, process clocks and expansion, we find the following. If each lineage's clock starts when its planet forms, as an Earth origin of life requires, the empty sky demands that fewer than about one galaxy in fifty million ever produce an expanding civilisation. The lottery returns under another name. If instead lineages share a start, the empty sky allows the first lineages to have reached our level at most about 14 Myr before us. That figure barely moves across ten orders of magnitude of abundance and expansion probability. Only a universal event can synchronise lineages across the galaxies an expanding civilisation could reach in that time, and the only sharp universal event early enough is the first carbon chemistry, about 0.2 Gyr after the Big Bang. Measured from that start, the shortest possible lineage is at least 13.59 Gyr, within 0.1% of our own. Common life, an empty sky and no lottery together point to a lineage as old as the chemistry that made it possible.
 
 ## 1. Two ways to be early
 
-Humanity appeared 13.8 Gyr after the Big Bang. Stars will keep forming habitable planets for trillions of years, so most observers ought to appear much later than us. Any account of life in the universe has to explain why we are this early. There are two kinds of explanation, and they differ in what our arrival date is taken to measure.
+Humanity appeared 13.8 Gyr after the Big Bang. That sounds like a long time, and it is usually treated as one: the universe has had ample time to produce life, so the question is only how often it does. On the timescale of habitability it is short. Stars will keep forming for hundreds of billions of years, and the red dwarfs among them shine for trillions. If observers arise wherever conditions allow, nearly all of them should appear far later than us. Our date is an observation, and few accounts of life in the universe treat it as one. Those that do give two kinds of explanation, and they differ in what our arrival date is taken to measure.
 
 **The lottery.** The hard-steps model (Carter 1983; Watson 2008) treats the emergence of observers as a sequence of $n$ improbable steps, each expected to take longer than a planet's habitable window. Conditioned on success, the chance of finishing by time $t$ grows as $t^n$. Hanson, Martin, McCarter and Paulson (2021) combine this with a deadline: "grabby" civilisations expand, fill the universe within a few Gyr, and prevent later origins inside their volumes. Anyone who exists at all must therefore be early.
 
@@ -39,29 +39,29 @@ We use a deliberately simple scenario model, computed numerically.
     - *planet-linked*: the clock starts when the zone forms, so older zones finish first;
     - *shared*: all lineages share a start and later zones inherit the accumulated state, so zone age gives no head start.
 - **Expansion.** A lineage that reaches our level expands with probability $q$ at speed $v$; our baseline is $v = 0.5c$. A galaxy with $m$ such lineages hosts at least one expander with probability $1-(1-q)^m$.
-- **The empty sky.** Galaxies sit at $0.01\ \mathrm{Mpc^{-3}}$ in flat space. Summing over our past light cone gives $\mu$, the expected number of expanded volumes we would see now. We take $P(\text{empty}) = e^{-\mu}$ and report the boundary where an empty sky has probability 5%.
+- **The empty sky.** Galaxies sit at $0.01\ \mathrm{Mpc^{-3}}$ in flat space. Summing over our past light cone gives $\mu$, the expected number of expanded volumes we would see now. Expanded volumes appear independently, so the chance of seeing none is $P(\text{empty}) = e^{-\mu}$. We reject a scenario when an empty sky would have less than a 5% chance ($\mu > 3$). A looser test asks only that we expect less than one visible volume ($\mu < 1$); even then the sky is empty only 37% of the time. We quote the 5% boundary unless stated.
 
-Two kernels are computed: remote visibility, where we would see their expanded volume, and physical arrival, where their front would have reached us. We quote visibility unless stated. The model is conditional: no cosmological expansion, no spread in pace between lineages, ideal visibility. The numbers come from the lineage-cap calculation (commits 8594c5d and ab6a52c); sampled boundaries pass a doubled-resolution integration check, with worst relative error about $10^{-7}$.
+Two kernels are computed: remote visibility, where we would see their expanded volume, and physical arrival, where their front would have reached us. We quote visibility unless stated. The model is conditional: no cosmological expansion, no spread in pace between lineages, ideal visibility. Appendix A describes the computation.
+
+One combination recurs. Every bound below depends on $q$ and $N$ only through their product $qN$: the number of expanding civilisations a galaxy would produce if every zone completed. The figures are plotted against it.
 
 ## 3. If life began on Earth
 
-Suppose each zone's clock starts at its birth, and the process takes as long as it took on Earth, 4.6 Gyr. The oldest zones, born at 0.2 Gyr, then completed at a cosmic age of 4.8 Gyr: 9 Gyr before us. Any of those 9 Gyr of completions that went loud would be in our sky.
+Suppose each zone's clock starts when its planet forms, and the process takes as long as it took on Earth, 4.6 Gyr. Earth is a late planet. Lineweaver (2001) estimates that three quarters of Earth-like planets are older than Earth, by 1.8 ± 0.9 Gyr on average; our steady zone history gives two thirds, older by 2.2 Gyr. Most lineages would then have reached our level billions of years before us, and any of them that went loud would be in our sky.
 
-The empty sky therefore caps expansion. With $10^{10}$ zones per galaxy, at most $q \approx 2 \times 10^{-18}$ of completed lineages may expand. The arrival kernel gives $2 \times 10^{-17}$, and a capacity-weighted clock gives the same order. The ceiling scales inversely with abundance, so the real constraint is on $qN$. Each galaxy may produce an expanding civilisation with probability no more than about $2 \times 10^{-8}$ over its history: fewer than one galaxy in fifty million.
+The empty sky therefore caps expansion. With $10^{10}$ zones per galaxy, at most $q \approx 2 \times 10^{-18}$ of completed lineages may expand. The arrival kernel gives $2 \times 10^{-17}$, and a capacity-weighted clock gives the same order. The ceiling scales inversely with abundance, so the real constraint is on $qN$: each galaxy may produce an expanding civilisation with probability no more than about $2 \times 10^{-8}$ over its history. That is fewer than one galaxy in fifty million.
 
-Planetary starts, common suitable zones and an empty sky are therefore incompatible unless almost every lineage dies, stays home or hides. That is a great filter, and it does the same work as the hard-steps lottery: a probability chosen to fit, with no independent support. Figure 1 shows the conflict directly. With a planetary start, the sky's lower bound on the process duration exceeds Earth's 4.6 Gyr for every $q$ above about $10^{-18}$.
+Planetary starts, common suitable zones and an empty sky are therefore incompatible unless almost every lineage dies, stays home or hides. That is a great filter, and it does the same work as the hard-steps lottery: a probability chosen to fit, with no independent support. Figure 1 shows the conflict directly. With a planetary start, the empty sky sets a minimum on how long the process takes, and that minimum exceeds Earth's 4.6 Gyr once a galaxy produces more than a few $\times 10^{-8}$ expanding civilisations.
 
-![Minimum process duration permitted by an empty sky, against the expansion probability $q$, for $10^{10}$ zones per galaxy at 0.5c (P(empty) = 5%). The orange line is Earth's 4.6 Gyr: with a planetary start, every bound above it contradicts Earth's history. Left: elapsed-time clock. Right: capacity-weighted clock.](results/inference/06_clock_bounds.png){width=100%}
+![Planet-linked clocks. The shortest process duration compatible with an empty sky (P(empty) ≥ 5%), against the number of expanding civilisations per galaxy, $qN$, at 0.5c. The dashed line is Earth's 4.6 Gyr. An Earth origin is possible only where the curve lies below it, which requires $qN \lesssim 3 \times 10^{-8}$ (grid resolution; the exact boundary is $2 \times 10^{-8}$).](figures/fig1_earth_origin.png){width=80%}
 
 ## 4. If lineages share a start
 
 Now let all lineages share a start. A zone's age then gives no head start: zones forming late inherit a lineage whose clock is already running. Completions begin together at a frontier date and then follow the growing number of zones. Our completion is a data point, and the question becomes how far ahead of us the frontier can be.
 
-The answer is short. At $q = 1$, the frontier can be at most **13.7 Myr** ahead of us (27 Myr for physical arrival; 9.6 Myr if the empty sky only needs a 37% probability). It stays the same all the way down to $q = 10^{-6}$. It reaches 16 Myr at $q = 10^{-10}$, and only 63 Myr at $q = 10^{-12}$. The bound is set by geometry, not by abundance. Once every nearby galaxy would host an expander, adding more lineages changes nothing. What matters is how far an expanding volume, or its light, travels during the head start. At 0.5c, 14 Myr is a few megaparsecs: roughly the distance to Andromeda.
+The answer is short. The frontier can be at most **13.7 Myr** ahead of us (27 Myr if we require that no front has physically arrived; 9.6 Myr under the looser $\mu < 1$ test). This holds for any $qN$ above about ten. It reaches 16 Myr at $qN = 1$, one expanding civilisation per galaxy, and only 63 Myr at $qN = 0.01$ (Figure 2). The bound is set by geometry, not by abundance. Once every nearby galaxy would host an expander, adding more lineages changes nothing. What matters is how far an expanding volume, or its light, travels during the head start. At 0.5c, 14 Myr is a few megaparsecs: roughly the distance to Andromeda.
 
-So the shortest possible lineage is at least $13.6 - 0.014 \approx$ **13.59 Gyr**. Our lineage ran within about 0.1% of the fastest the universe allows, and that conclusion holds across ten orders of magnitude of the two free quantities. This is the central result. Under the process assumption, an empty sky does not ask how common life is or how often it expands. It tells us how long the process takes.
-
-![Maximum head start of the frontier over us, for shared-start clocks, against $q$ and four abundances (P(empty) = 5% solid, 37% dashed). Once there is about one loud lineage per galaxy ($qN \gtrsim 1$), every curve sits on the same geometric plateau. Left: remote visibility; right: physical arrival.](results/inference/04_head_start_bounds.png){width=100%}
+![Shared-start clocks. The largest head start the first lineages can have over us while the sky stays empty (P(empty) ≥ 5%), against $qN$, at 0.5c. Once a galaxy produces about one expanding civilisation, the bound sits on a geometric plateau of 13.7 Myr. Abundances from $10^8$ to $10^{11}$ zones per galaxy give the same curve.](figures/fig2_shared_start.png){width=80%}
 
 ## 5. What could start the clocks together?
 
@@ -85,7 +85,13 @@ Even the first-star epoch is not sharp to ten million years. First-star minihalo
 
 (Remote visibility, $10^{10}$ zones per galaxy, 0.5c, P(empty) = 5%; the same for any $q$ from 1 to $10^{-6}$.) For a first-carbon spread of 100 to 200 Myr, our lineage need only be in the first third to fifth of starts. That is a mild requirement, not a fine-tuned one. It predicts that the Milky Way's progenitor halos formed somewhat early among the first-star halos. Independent ancestry groups within a galaxy tighten it: with a hundred independent groups per galaxy and $W = 200$ Myr, the permitted offset falls to 15 Myr.
 
-## 6. What follows
+## 6. How fast the process can be
+
+Sections 4 and 5 combine into one claim. The first lineages can have reached our level at most about 14 Myr before us. Measured from a first-carbon start at 0.2 Gyr, our own lineage took 13.6 Gyr. So the shortest possible lineage is at least $13.6 - 0.014 \approx$ **13.59 Gyr**: ours ran within about 0.1% of the fastest the universe allows.
+
+This is the central result, and its two halves have different standing. The 14 Myr margin is set by geometry: it holds for any abundance and any expansion probability that give at least a few expanding civilisations per galaxy, and it does not depend on when the clocks started. The 13.59 Gyr figure also needs the start date, and that rests on the reach argument of section 5. Under the process assumption, an empty sky does not ask how common life is or how often it expands. It tells us how long the process takes.
+
+## 7. What follows
 
 If the argument holds, several things should be true that the lottery does not predict:
 
@@ -94,7 +100,7 @@ If the argument holds, several things should be true that the lottery does not p
 - **Our neighbourhood was early, but not extremely so.** If first carbon spread over 100 to 200 Myr, the Milky Way's progenitors started in roughly the first third to fifth of that spread.
 - **Many near-contemporaries, none far ahead.** Other lineages are reaching our level at about the same time, and their expansion fronts are on their way.
 
-## 7. Assumptions
+## 8. Assumptions
 
 The conclusion rests on four assumptions.
 
@@ -102,6 +108,10 @@ The conclusion rests on four assumptions.
 2. **The process is deterministic.** Suitable trajectories complete in the same time, without a lottery. This is the substantive bet. Adding a spread in pace is the next extension.
 3. **Information travels with matter.** A shared start needs lineage information to survive transport through grains, planetesimals and comets, and to keep accumulating rather than restart on arrival.
 4. **The geometry is simple.** Flat space, homogeneous galaxies, an illustrative galaxy density and ideal visibility. Cosmological expansion and survey sensitivity are extensions.
+
+## Appendix A: Computation
+
+The model is computed numerically in Python. Zones appear at a constant rate from 0.2 Gyr to the present, $N$ per galaxy today. For each clock, kernel and parameter set, the expected number of visible expanded volumes $\mu$ is integrated over galaxy completion histories and our past light cone, and the bounds quoted are root-finds of $\mu = 3$ (or 1). The grids span $N = 10^8$ to $10^{11}$, $q = 10^{-24}$ to 1, and speeds from 0.001c to 0.9c. Sampled boundaries were recomputed at doubled integration resolution; the worst relative error was about $10^{-7}$. The start-spread results in section 5 use the same machinery with a uniform start window per galaxy or per ancestry group. Code and saved grids accompany this note.
 
 ## References
 
