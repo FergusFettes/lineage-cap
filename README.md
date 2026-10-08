@@ -17,6 +17,7 @@ retained as history, with its superseded framing marked.
 
 ```bash
 make baseline  # configure environment, calculate histories, export CSV and PNG/SVG
+make inference # infer permitted head starts; sweep expansion probability and speed
 make check     # budget quadrature and cohort-conservation checks
 ```
 
@@ -27,5 +28,11 @@ Capacity is in Earth-equivalent units, normalized to one per zone today.
 
 Results are in [results/baseline](results/baseline), including a copied input
 configuration, CSV histories, a summary and three figures. The baseline
-estimates opportunity and per-path exposure; completion-time and expansion
-inference are the next stage, not results of these graphs.
+estimates opportunity and per-path exposure.
+
+The conditional head-start calculation is in [results/inference](results/inference).
+It compares planetary and inherited starts for elapsed and capacity-weighted
+clocks, and varies abundance, expansion probability and speed. Remote visibility
+and physical arrival have distinct kernels and are not combined as independent
+evidence. The first implementation is a flat-space, ideal-loud scenario; it is
+not calibrated to a particular survey.

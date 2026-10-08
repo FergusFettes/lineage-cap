@@ -63,6 +63,11 @@
     "visibility": "ideal persistent loudness after host-galaxy crossing",
     "survey_completeness": "ideal detection; not calibrated to a specific survey",
     "quadrature_order": 96,
+    "reference": {
+      "speed_c": 0.5,
+      "mu_threshold": 2.995732273553991,
+      "q_values": [1.0, 1e-6, 1e-10, 1e-12]
+    },
     "mu_contours": [1.0, 2.995732273553991],
     "infer": ["earliest_completion", "permitted_head_start", "duration", "earth_frontier_gap"]
   },

@@ -52,8 +52,11 @@ class Geometry:
 
 @lru_cache(maxsize=8)
 def quadrature(order):
-    z, w = np.polynomial.legendre.leggauss(order)
-    return (z + 1) / 2, w / 2
+    nodes, weights = np.polynomial.legendre.leggauss(order)
+    u = (nodes + 1) / 2
+    # z = r/R = 1-u^2 resolves the thin unsaturated layer at the outer edge.
+    # It also removes the square-root endpoint in the linear capacity clock.
+    return 1 - u ** 2, weights * u
 
 
 def galaxy_probability(completions, q):

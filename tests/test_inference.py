@@ -115,3 +115,16 @@ def test_capacity_clock_quadrature_convergence():
     normal = expected_count(h, g, *args)
     fine = expected_count(h, replace(g, quadrature_order=192), *args)
     assert normal == pytest.approx(fine, rel=5e-6)
+
+
+@pytest.mark.parametrize("kind,q,zones,delta,speed", [
+    ("elapsed_time", .316, 1e8, .01037, .1),
+    ("integrated_capacity", 3.16e-9, 1e11, 9.3917, .001),
+])
+def test_thin_outer_transition_is_resolved(kind, q, zones, delta, speed):
+    h, g = History(zones_now=zones), Geometry()
+    args = (delta, q, speed, "planet_linked", kind, "remote_visibility"
+            if kind == "elapsed_time" else "physical_arrival_diagnostic")
+    normal = expected_count(h, g, *args)
+    fine = expected_count(h, replace(g, quadrature_order=192), *args)
+    assert normal == pytest.approx(fine, rel=1e-7)
