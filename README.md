@@ -1,7 +1,7 @@
 # lineage-cap
 
-A short paper: if complexification is a process rather than a lottery, the empty sky bounds
-the time to build observers like us at roughly the age of the universe. Written to send to
+A paper on inherited complexification clocks: an empty sky constrains earlier completions;
+a proposed first-carbon onset then implies a lineage roughly as old as the universe. Written to send to
 Robin Hanson, as a response to the grabby-aliens model.
 
 - `paper.qmd`: the source. `make` renders `paper.pdf` and `paper.html` (Quarto).
@@ -43,3 +43,14 @@ starts across galaxies and progenitor groups. They report conditional leading
 percentiles, distinguish full window spans from standard deviations, and check
 local synchronizers and dependence on the seed epoch. Edit
 [configs/start_spread.json](configs/start_spread.json) for these scenarios.
+
+## Paper revision support
+
+The paper distinguishes the zero-spread frontier benchmark from finite start windows and
+observer-conditioned inference. Appendix A documents the implemented calculation.
+`make figures` rebuilds its three figures; `make` renders PDF and HTML.
+Numerical checks and source provenance are recorded in
+[notes/numerical-audit.md](notes/numerical-audit.md),
+[notes/verified-paper-numbers.csv](notes/verified-paper-numbers.csv),
+[notes/evidence-pack.md](notes/evidence-pack.md), and
+[notes/figure-captions.md](notes/figure-captions.md).

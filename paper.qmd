@@ -83,10 +83,10 @@ Several candidate epochs illustrate the distinction:
 | Candidate onset | Kind and reach | Timing issue |
 |---|---|---|
 | First stars, enrichment and carbon chemistry | Cosmic clock; material exchange within forming structures | Early onset, with regional differences in formation, enrichment and mixing |
-| First galaxies and reionisation | Widespread cosmic history | Extended, spatially varying transition |
-| Peak cosmic star formation | Statistical cosmic clock | Broad epoch rather than a sharp onset |
+| First galaxies and reionisation (Planck Collaboration 2016) | Widespread cosmic history | Extended, spatially varying transition |
+| Peak cosmic star formation (Madau and Dickinson 2014) | Statistical cosmic clock | Broad epoch rather than a sharp onset |
 | Galactic mergers or triggered star formation | Local material and environmental history | Can affect a galaxy or part of one; dates differ between galaxies |
-| The Sun's birth cluster | Shared local material | Can coordinate a cluster, but does not set other galaxies' clocks |
+| The Sun's birth cluster (Adams 2010) | Shared local material | Can coordinate a cluster, but does not set other galaxies' clocks |
 
 Ruiz-Lara et al. (2020), for example, identify star-formation bursts at 5.7, 1.9 and 1.0 Gyr ago in their solar-neighbourhood sample, with timings supporting a role for Sagittarius perturbations. Such events motivate local clocks; they do not establish a common onset across galaxies.
 
@@ -138,8 +138,6 @@ Four assumptions carry the interpretation.
 3. **Progress survives environmental change.** Information passes between suitable environments without repeatedly resetting the process. Survival experiments support components of this assumption, not its full cosmic history.
 4. **The geometry and population are benchmarks.** Flat space, homogeneous independent galaxies, linear zone formation and ideal visibility make the calculation tractable. In particular, the planetary-start bound samples long times and distances where cosmological expansion and population history need refinement. Numerical convergence does not measure these physical uncertainties.
 
-Under these assumptions, planetary starts require severe suppression of expansion, while an early inherited process admits common life with a relatively narrow completion epoch. First carbon supplies a proposed physical onset for that process. Its preference over later onsets rests on their physical plausibility and permitted start ranks; a complete observer-conditioned comparison remains to be done.
-
 ## Appendix A. Conditional empty-sky calculation
 
 ### Inputs and completion counts
@@ -152,6 +150,19 @@ $$
 The benchmark has $s=0.2$ Gyr, $\alpha=1$ and $N_0=10^{10}$ zones per galaxy; the abundance sweep spans $10^8$--$10^{11}$. Zones are retained after birth, so $dN/db$ supplies the birth cohorts. The $10^{11}$-star scale and appropriate-zone fraction of 0.1 provide a Fermi benchmark, not a measured count of suitable sites. The seed age, linear history and one trajectory per suitable zone are assumptions. Early zones describe progenitors of present-day galaxies, not fully assembled galaxies at $s$.
 
 Expansion probability $q$ is dimensionless and applies once to each completed zone. The speed is $v=\eta c$, with $\eta=0.5$ for the reference rows. Galaxy density $n_g=0.01\ \mathrm{Mpc^{-3}}$ is illustrative, pending population calibration. Host diameter $D=0.03$ Mpc is a rounded geometry benchmark; launch delay $\tau_\ell=0$ Gyr is configurable. These are scenario inputs, not fitted measurements.
+
+| Parameter | Reference value | Status |
+|---|---:|---|
+| Comparison date $t_0$ | 13.8 Gyr | Rounded cosmic age |
+| History start $s$ | 0.2 Gyr | Assumed onset |
+| Zones today $N_0$ | $10^{10}$ per galaxy | Fermi benchmark |
+| Formation exponent $\alpha$ | 1 | Linear-history assumption |
+| Expansion probability $q$ | Varied | Per completed zone |
+| Front speed $v$ | $0.5c$ | Scenario assumption |
+| Galaxy density $n_g$ | $0.01\ \mathrm{Mpc^{-3}}$ | Illustrative population |
+| Host diameter $D$ | 0.03 Mpc | Loudness-delay benchmark |
+| Launch delay $\tau_\ell$ | 0 Gyr | Scenario assumption |
+| Empty-sky threshold | 5% | Likelihood criterion |
 
 For an elapsed process of duration $T$, a planet-linked zone born at $b$ completes at $b+T$. An inherited zone completes at $\max(b,s+T)$. Writing the earliest frontier as $f=s+T=t_0-\delta$, their cumulative completion counts at deadline $t$ are
 $$
@@ -199,6 +210,17 @@ The independent-per-zone-start comparison is $p_g=1-(1-qF)^{N(t)}$. Group counts
 
 For $W>0$, the reported permitted start fraction is $\min(\delta_{\max}/W,1)$, with reciprocal labelled “first 1 in $K$”. A lead root beyond $W$ permits all start percentiles; it does not place our start outside the specified window. This conditional percentile ceiling is not a posterior probability for our rank. At $W=0$ the synchronized lead bound is recovered, but a start percentile is undefined. Holding $N(t)$ fixed makes the completion-date likelihood invariant to translating the seed epoch and compensating $T$; shifting the formation ramp changes $N(t)$ and therefore the likelihood. Any reused root must also fit within the new process history.
 
+Reference start-window bounds use $q=1$, $N_0=10^{10}$, $v=0.5c$, one start per galaxy and remote visibility at $\mu=-\log(0.05)$:
+
+| Full width $W$ (Myr) | Maximum start offset (Myr) | Permitted fraction of starts |
+|---:|---:|---:|
+| 30 | 23.56 | 78.52% |
+| 100 | 31.76 | 31.76% |
+| 200 | 37.73 | 18.87% |
+| 500 | 47.39 | 9.48% |
+| 1000 | 56.32 | 5.63% |
+| 5000 | 84.13 | 1.68% |
+
 ### Analytic limits and numerical provenance
 
 Let $a=(\delta-d_k)_+$. In the saturated synchronized inherited limit, $p_g=1$ throughout the interior and
@@ -221,12 +243,17 @@ From the repository root, `make baseline`, `make inference` and `make start-spre
 
 ## References
 
-- Carter, B. (1983). [The anthropic principle and its implications for biological evolution](https://doi.org/10.1098/rsta.1983.0096). *Philosophical Transactions of the Royal Society A* 310, 347.
+- Adams, F. C. (2010). [The birth environment of the Solar System](https://arxiv.org/abs/1001.5444). Review, arXiv:1001.5444.
+- Adams, F. C. and Napier, K. J. (2022). [Transfer of rocks between planetary systems: panspermia revisited](https://doi.org/10.1089/ast.2021.0187). *Astrobiology* 22, 1429–1442.
 - Bromm, V. (2013). [Formation of the first stars](https://arxiv.org/abs/1305.5178). *Reports on Progress in Physics* 76, 112901.
+- Carter, B. (1983). [The anthropic principle and its implications for biological evolution](https://doi.org/10.1098/rsta.1983.0096). *Philosophical Transactions of the Royal Society A* 310, 347.
+- Glavin, D. P., Dworkin, J. P., Alexander, C. M. O'D. et al. (2025). [Abundant ammonia and nitrogen-rich soluble organic matter in samples from asteroid (101955) Bennu](https://doi.org/10.1038/s41550-024-02472-9). *Nature Astronomy* 9, 199–210.
 - Hanson, R., Martin, D., McCarter, C. and Paulson, J. (2021). [If loud aliens explain human earliness, quiet aliens are also rare](https://arxiv.org/abs/2102.01522). *Astrophysical Journal* 922, 182.
-- Lineweaver, C. H. (2001). [An estimate of the age distribution of terrestrial planets in the universe](https://arxiv.org/abs/astro-ph/0012399). *Icarus* 151, 307.
+- Kawaguchi, Y., Shibuya, M., Kinoshita, I. et al. (2020). [DNA damage and survival time course of deinococcal cell pellets during 3 years of exposure to outer space](https://doi.org/10.3389/fmicb.2020.02050). *Frontiers in Microbiology* 11, 2050.
+- Madau, P. and Dickinson, M. (2014). [Cosmic star-formation history](https://doi.org/10.1146/annurev-astro-081811-125615). *Annual Review of Astronomy and Astrophysics* 52, 415–486.
 - Maynard Smith, J. and Szathmáry, E. (1995). *The Major Transitions in Evolution*. Oxford University Press.
+- Planck Collaboration (2016). [Planck intermediate results. XLVII. Planck constraints on reionization history](https://doi.org/10.1051/0004-6361/201628897). *Astronomy & Astrophysics* 596, A108.
 - Ruiz-Lara, T., Gallart, C., Bernard, E. J. and Cassisi, S. (2020). [The recurrent impact of the Sagittarius dwarf on the star formation history of the Milky Way](https://doi.org/10.1038/s41550-020-1097-0). *Nature Astronomy* 4, 965.
-- Sharov, A. A. and Gordon, R. (2013). [Life before Earth](https://arxiv.org/abs/1304.3381). arXiv:1304.3381.
-- Snyder-Beattie, A. E., Sandberg, A., Drexler, K. E. and Bonsall, M. B. (2021). [The timing of evolutionary transitions suggests intelligent life is rare](https://doi.org/10.1089/ast.2019.2149). *Astrobiology* 21, 265.
+- Stacy, A. and Bromm, V. (2014). [The first stars: a low-mass formation mode](https://doi.org/10.1088/0004-637X/785/1/73). *Astrophysical Journal* 785, 73.
+- Thiel, C. S., Tauber, S., Schütte, A., Schmitz, B., Nuesse, H., Moeller, R. and Ullrich, O. (2014). [Functional activity of plasmid DNA after entry into the atmosphere of Earth investigated by a new biomarker stability assay for ballistic spaceflight experiments](https://doi.org/10.1371/journal.pone.0112979). *PLOS ONE* 9, e112979.
 - Watson, A. J. (2008). [Implications of an anthropic model of evolution for emergence of complex life and intelligence](https://doi.org/10.1089/ast.2006.0115). *Astrobiology* 8, 175.
