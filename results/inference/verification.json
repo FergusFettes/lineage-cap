@@ -1,0 +1,9 @@
+{
+  "random_seed": 20261008,
+  "sampled_constrained_boundaries": 500,
+  "refinement_quadrature_order": 192,
+  "max_relative_likelihood_boundary_error": 1.4008463677939176e-07,
+  "median_relative_likelihood_boundary_error": 7.1922291455805976e-09,
+  "relative_error_tolerance": 1e-05,
+  "passed": true
+}

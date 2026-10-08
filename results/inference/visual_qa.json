@@ -1,0 +1,11 @@
+{
+  "checks_passed": 27,
+  "pngs_visually_inspected": [
+    "04_head_start_bounds.png",
+    "05_expansion_speed.png",
+    "06_clock_bounds.png",
+    "07_expansion_suppression.png"
+  ],
+  "figures_readable_without_overlapping_labels": true,
+  "numerical_refinement": "verification.json"
+}
