@@ -1,5 +1,10 @@
 # From lineage-cap to a research paper
 
+**Superseded framing:** subsequent discussion corrected this review's treatment
+of proximity to the frontier as a premise. The model infers that proximity
+from abundant suitable trajectories and the empty sky. See `SPEC.md` for the
+agreed direction; this file records the initial review, not the current plan.
+
 Initial assessment, 8 October 2026. This is a review and research plan, not a
 replacement manuscript or a completed literature review.
 

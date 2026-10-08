@@ -1,0 +1,144 @@
+# Lineage cap: numerical project spec
+
+8 October 2026. Numerical project specification.
+Background: a private note.
+
+## Question and inference
+
+Assume many suitable trajectories realise a physical complexification process.
+How much faster than our lineage could that process run without producing
+visible predecessors? Vary abundance and expansion; infer the permitted head
+start and our distance from the frontier. Do not assume that distance is small.
+
+Earth is the observed completion at cosmic age 13.8 Gyr. It is a comparison
+point, not a calibration forcing all trajectories to finish today.
+Environmental delay can appear as `epsilon_i` in the equations; population
+variation is zero in the first implementation. No hard-step lottery or separate
+probability of completing the process in suitable conditions.
+
+## Goldilocks history: the first Fermi estimate
+
+One trajectory per appropriate stellar zone. Start with
+`N_now = N_stars * f_appropriate`, not multiple independent trials per molecule.
+Use `N_stars = 1e11`, benchmark `f_appropriate = 0.1`, and sweep
+`N_now = 1e8 ... 1e11`. The appropriate fraction is an explicit rough assumption
+to refine with planet demographics, not a measured 10% result.
+
+Let `s` be the beginning of the ramp, provisionally 0.2 Gyr after the big bang
+(200 **million** years; Fergus's “200ky” is awaiting clarification). Put
+`L = t_now - s` and `x = clip((t-s)/L, 0, 1)`.
+
+\[
+N(t)=N_{\rm now}x^\alpha,\qquad
+w(t)=w_{\rm now}x^\beta,\qquad
+S(t)=\int_s^t N(u)w(u)\,du.
+\]
+
+`w` is instantaneous productive capacity per zone, initially in Earth-equivalent
+units (`w_now = 1`). Thus `S` has units Earth-equivalent zone-Gyr. It is a proxy
+for chemically useful spacetime, not the volume of empty habitable-zone shells.
+If later using physical volume, specify the chemically active material counted.
+
+Baseline: both ramps linear (`alpha = beta = 1`). Then instantaneous total
+capacity grows as `x^2`, and accumulated spacetime as `x^3`:
+
+\[
+S(t)=\frac{N_{\rm now}w_{\rm now}L}{3}x^3.
+\]
+
+With the benchmark values, `S(today) = 4.53e10` Earth-equivalent zone-Gyr.
+Compare with only the count ramp (`alpha = 1, beta = 0`) and a directly linear
+total-capacity ramp. Never integrate a quantity that already includes lifetime.
+The early history describes the galaxy's progenitors, not an already assembled
+modern Milky Way at 0.2 Gyr.
+
+## Turn opportunity into completion times
+
+Generate zone birth cohorts from `dN/dt`; retain their histories rather than
+assigning all present-day zones the same age. Ignore zone destruction initially.
+
+First implement a plain elapsed-time clock with candidate fastest duration `T`:
+
+- **Planet-linked:** a cohort born at `b` completes at `b + T`.
+- **Inherited:** the process starts at `s`; cohorts already present complete at
+  `s + T`, and later cohorts inherit the accumulated state. Completion cannot
+  precede the birth of the receiving zone.
+
+Scan `T`; do not set it equal to Earth's elapsed duration. Infer its allowed
+range from the empty sky. The gap between Earth's completion and the earliest
+completion is an output. In the inherited case that gap is `13.8 - s - T`.
+For a chosen start, subtraction translates a completion date into duration;
+the script will show all three on one timeline.
+
+Then add the capacity clock, so the second ramp can affect progress as well as
+the opportunity inventory. A planet-linked cohort accumulates
+`E(b,t) = integral_b^t w(u) du`; an inherited trajectory carries earlier exposure
+from `s`. Scan the required exposure `B` and solve `E = B` for completion.
+Report exposure and elapsed time separately. Total galactic `S` counts the
+available opportunity; it is not all poured into one lineage.
+
+## Expansion and the empty sky
+
+Sweep expansion probability per completed trajectory `q` and front speed `v/c`.
+Default to loud expansion; include a configurable launch delay. Count each
+cohort's completion once, not once per timestep.
+
+For `m` eligible completed trajectories in a galaxy, use
+`p_loud = 1 - (1-q)^m`, not an unbounded `q*m` probability. Integrate over origin
+positions and dates to obtain the expected number of observable galaxies `mu`.
+Use `P(empty) = exp(-mu)` as the initial independent-galaxy Poisson benchmark;
+plot both `mu = 1` and `mu = -log(0.05)` contours, labelled as model thresholds.
+
+Start with a flat-space geometry, then add cosmological expansion. Remote
+visibility uses emission times and a loudness delay (initially galaxy crossing
+time at `v`); physical arrival uses the expansion front at `v`. Implement these
+as separate kernels, so a contact radius is never called a survey radius. Local
+non-arrival is a diagnostic; observer conditioning belongs in its interpretation.
+
+Use an illustrative galaxy density with a configurable normalization until a
+specific galaxy population is calibrated. Keep every demographic number and
+its source/assumption status in the configuration. No additional environmental
+distribution in this first version.
+
+## Scripts, outputs and figures
+
+Proposed package: Python, NumPy, SciPy, Matplotlib; JSON scenario files and CSV
+results. Separate numerical functions from plotting and paper rendering.
+
+| File | Responsibility |
+|---|---|
+| `configs/baseline.json` | Values, units, source notes and sweep ranges |
+| `lineage_cap/history.py` | Zone cohorts, capacity and integrated spacetime |
+| `lineage_cap/clocks.py` | Elapsed/exposure clocks; planetary/inherited starts |
+| `lineage_cap/expansion.py` | Arrival and visibility kernels |
+| `lineage_cap/inference.py` | Empty-sky likelihood; allowed frontier and gap |
+| `scripts/sweep.py` | Reproducible parameter sweeps to CSV |
+| `scripts/figures.py` | Publication figures from saved results |
+
+Figures, in order:
+
+1. **Opportunity history:** zone count, per-zone capacity, accumulated spacetime.
+2. **Clocks:** planetary versus inherited cohort completions, with Earth marked.
+3. **Permitted head start:** contours against abundance and expansion probability,
+   with panels for expansion speed.
+4. **What the bound implies:** allowed durations and Earth's inferred gap;
+   planetary and inherited cases shown together.
+
+First implementation milestone: analytic ramps, cohort clocks and flat-space
+expansion, with these figures generated by one command. Only then replace the
+ramps with literature histories and add cosmology. Validate the analytic
+integrals, probability saturation, zero-expansion limit and numerical convergence.
+Paper prose and quoted numbers must come from the saved configuration/results.
+
+## Initial sources
+
+- [ESA's galaxy overview](https://www.esa.int/Science_Exploration/Space_Science/Gaia/Guide_to_our_galaxy)
+  supplies the approximately 100-billion-star scale.
+- [Bryson et al.](https://arxiv.org/abs/2010.14812) estimates rocky habitable-zone
+  planets per solar-like star. Use it to refine the opportunity normalization;
+  planets per star is not automatically the fraction of stars hosting a planet.
+- [Lineweaver](https://arxiv.org/abs/astro-ph/0012399) supplies a formation-history
+  comparison to replace the ramp later.
+
+These inform abundance/history. Expansion probability, speed, capacity units
+and the linear histories are explicit benchmark choices, not observations.

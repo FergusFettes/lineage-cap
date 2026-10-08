@@ -2,3 +2,7 @@ paper.pdf
 paper.html
 paper_files/
 .quarto/
+.venv/
+__pycache__/
+.pytest_cache/
+.mplconfig/
