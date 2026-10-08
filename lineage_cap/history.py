@@ -73,6 +73,16 @@ class History:
         """Local exposure, zero until the zone exists; no inherited ancestry."""
         return np.maximum(self.capacity_time(time) - self.capacity_time(birth), 0)
 
+    def time_for_capacity(self, exposure):
+        """Invert the per-path capacity clock, extending today's rate if needed."""
+        exposure = np.asarray(exposure)
+        if np.any(exposure < 0) or self.capacity_now <= 0:
+            raise ValueError("Require nonnegative exposure and positive capacity")
+        at_now = self.capacity_time(self.now)
+        within = self.start + self.duration * (
+            np.minimum(exposure, at_now) / at_now) ** (1 / (self.beta + 1))
+        return within + np.maximum(exposure - at_now, 0) / self.capacity_now
+
     def cohorts(self, bins=2000):
         """Present-day zones by birth cohort; no destruction or sub-zone trials."""
         if self.alpha <= 0:
