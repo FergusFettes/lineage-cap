@@ -41,7 +41,7 @@ We use a deliberately simple scenario model, computed numerically.
 - **Expansion.** A lineage that reaches our level expands with probability $q$ at speed $v$; our baseline is $v = 0.5c$. A galaxy with $m$ such lineages hosts at least one expander with probability $1-(1-q)^m$.
 - **The empty sky.** Galaxies sit at $0.01\ \mathrm{Mpc^{-3}}$ in flat space. Summing over our past light cone gives $\mu$, the expected number of expanded volumes we would see now. We take $P(\text{empty}) = e^{-\mu}$ and report the boundary where an empty sky has probability 5%.
 
-Two kernels are computed: remote visibility, where we would see their expanded volume, and physical arrival, where their front would have reached us. We quote visibility unless stated. The model is conditional: no cosmological expansion, no spread in pace between lineages, ideal visibility. The numbers come from the lineage-cap calculation (commit 8594c5d), in which 31,040 boundaries pass a doubled-resolution integration check.
+Two kernels are computed: remote visibility, where we would see their expanded volume, and physical arrival, where their front would have reached us. We quote visibility unless stated. The model is conditional: no cosmological expansion, no spread in pace between lineages, ideal visibility. The numbers come from the lineage-cap calculation (commits 8594c5d and ab6a52c); sampled boundaries pass a doubled-resolution integration check, with worst relative error about $10^{-7}$.
 
 ## 3. If life began on Earth
 
@@ -72,9 +72,18 @@ Shared causes come in two kinds:
 - **Shared matter.** Trajectories intersect and structured information passes between sites. These events are local. The Sun formed with thousands of siblings in one birth cluster 4.6 Gyr ago. The Milky Way's disk had bursts of star formation 5.7, 1.9 and 1.0 Gyr ago, which coincide with passages of the Sagittarius dwarf (Ruiz-Lara et al. 2020). Each synchronises a cluster or a galaxy at most. After the earliest epoch, matter in different galaxies never shares trajectories.
 - **A shared clock.** The same cosmic history unfolds everywhere at about the same time, without contact. Peak star formation around 10 Gyr ago is universal but spread over billions of years. The first stars and the first carbon chemistry, about 0.2 Gyr after the Big Bang, are universal and comparatively sharp.
 
-Only the second kind can reach across galaxies, and only its earliest member is sharp enough. Hence the title. A lineage that is common, synchronised and leaves the sky empty must have started with the first carbon. Any later start needs either a filter or a synchroniser that no one has identified.
+Only the second kind can reach across galaxies, and only its earliest member is sharp enough. Hence the title. A lineage that is common, synchronised and leaves the sky empty must have started with the first carbon. The timing calculation alone does not single out that date: the head-start bound is unchanged if the seed date moves and the zone history stays fixed. The case for first carbon rests on reach. A synchroniser confined to one galaxy fails it. If each galaxy restarts its clocks at its own date, spread over a 5 Gyr window, and our start sits at the median, the sky allows at most $1.4 \times 10^{-16}$ of completed lineages to expand: a filter again. A galaxy-local synchroniser escapes the filter only by placing us near the leading edge of its own window.
 
-One refinement remains open. Even the first-star epoch is not sharp to ten million years: different halos lit up over roughly 100 to 200 Myr. With a spread in start times, the empty sky further requires that our lineage began near the leading edge of that spread. That is a statement about the Milky Way's progenitor halos, and the calculation is in progress.
+Even the first-star epoch is not sharp to ten million years. First-star minihalos formed around redshift 20 to 30, and some halos later still, near redshift 15: a spread of about 170 Myr in cosmic time. So we computed a shared clock whose start is spread uniformly over a window of width $W$, with one start per galaxy. The empty sky then requires our lineage to have started within a fixed offset of the earliest starts, so it has to lie in the leading part of the window:
+
+| Start window $W$ | Latest permitted start after the earliest | Our lineage among the first |
+|---:|---:|---:|
+| 30 Myr | 24 Myr | 79% |
+| 100 Myr | 32 Myr | 32% (1 in 3) |
+| 200 Myr | 38 Myr | 19% (1 in 5) |
+| 500 Myr | 47 Myr | 9.5% (1 in 11) |
+
+(Remote visibility, $10^{10}$ zones per galaxy, 0.5c, P(empty) = 5%; the same for any $q$ from 1 to $10^{-6}$.) For a first-carbon spread of 100 to 200 Myr, our lineage need only be in the first third to fifth of starts. That is a mild requirement, not a fine-tuned one. It predicts that the Milky Way's progenitor halos formed somewhat early among the first-star halos. Independent ancestry groups within a galaxy tighten it: with a hundred independent groups per galaxy and $W = 200$ Myr, the permitted offset falls to 15 Myr.
 
 ## 6. What follows
 
@@ -82,7 +91,7 @@ If the argument holds, several things should be true that the lottery does not p
 
 - **Lineages run long.** The minimum time to build observers is most of cosmic history. Sharov and Gordon's (2013) extrapolation of genome complexity, to an origin about 9.7 ± 2.5 Gyr ago, is in the same range. Their date would then mark the start of genetic information, not of the lineage.
 - **Life elsewhere in the solar system is related to ours.** Shared ancestry, not independent origin.
-- **Our neighbourhood was early.** The Milky Way's progenitors formed among the first structures, close to the leading edge of first-star formation.
+- **Our neighbourhood was early, but not extremely so.** If first carbon spread over 100 to 200 Myr, the Milky Way's progenitors started in roughly the first third to fifth of that spread.
 - **Many near-contemporaries, none far ahead.** Other lineages are reaching our level at about the same time, and their expansion fronts are on their way.
 
 ## 7. Assumptions
@@ -97,6 +106,7 @@ The conclusion rests on four assumptions.
 ## References
 
 - Carter, B. (1983). [The anthropic principle and its implications for biological evolution](https://doi.org/10.1098/rsta.1983.0096). *Philosophical Transactions of the Royal Society A* 310, 347.
+- Bromm, V. (2013). [Formation of the first stars](https://arxiv.org/abs/1305.5178). *Reports on Progress in Physics* 76, 112901.
 - Hanson, R., Martin, D., McCarter, C. and Paulson, J. (2021). [If loud aliens explain human earliness, quiet aliens are also rare](https://arxiv.org/abs/2102.01522). *Astrophysical Journal* 922, 182.
 - Lineweaver, C. H. (2001). [An estimate of the age distribution of terrestrial planets in the universe](https://arxiv.org/abs/astro-ph/0012399). *Icarus* 151, 307.
 - Maynard Smith, J. and Szathmáry, E. (1995). *The Major Transitions in Evolution*. Oxford University Press.
