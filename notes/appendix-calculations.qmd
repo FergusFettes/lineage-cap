@@ -1,0 +1,78 @@
+## Appendix A. Conditional empty-sky calculation
+
+### Inputs and completion counts
+
+Times are cosmic ages in Gyr, distances are Mpc, and $c=306.6014\ \mathrm{Mpc\,Gyr^{-1}}$. The comparison completion is $t_0=13.8$ Gyr. The zone formation history is
+$$
+L=t_0-s,\qquad x(t)=\operatorname{clip}((t-s)/L,0,1),\qquad
+N(t)=N_0x(t)^\alpha.
+$$
+The benchmark has $s=0.2$ Gyr, $\alpha=1$ and $N_0=10^{10}$ zones per galaxy; the abundance sweep spans $10^8$--$10^{11}$. Zones are retained after birth, so $dN/db$ supplies the birth cohorts. The $10^{11}$-star scale is drawn from ESA's galaxy overview; the appropriate-zone fraction of 0.1 is an explicit Fermi assumption, not a measured planet-host fraction. The seed age, linear history and one trajectory per suitable zone are assumptions. Early zones describe progenitors of present-day galaxies, not fully assembled galaxies at $s$.
+
+Expansion probability $q$ is dimensionless and applies once to each completed zone. The speed is $v=\eta c$, with $\eta=0.5$ for the reference rows. Galaxy density $n_g=0.01\ \mathrm{Mpc^{-3}}$ is illustrative, pending population calibration. Host diameter $D=0.03$ Mpc is a rounded geometry benchmark; launch delay $\tau_\ell=0$ Gyr is configurable. These are scenario inputs, not fitted measurements. The productive-capacity ramp in the separate opportunity calculation is measured in Earth-equivalent capacity; its integral has units Earth-equivalent zone-Gyr and is not a physical volume or an elapsed process duration.
+
+For an elapsed process of duration $T$, a planet-linked zone born at $b$ completes at $b+T$. An inherited zone completes at $\max(b,s+T)$. Writing the earliest frontier as $f=s+T=t_0-\delta$, their cumulative completion counts at deadline $t$ are
+$$
+m_{\mathrm{planet}}(t;T)=N(t-T),\qquad
+m_{\mathrm{inherited}}(t;f)=\mathbf 1_{t\ge f}N(t).
+$$
+The second expression includes zones born after the frontier: they inherit completed state and complete at birth. It is not frozen at $N(f)$. Each cohort enters the cumulative count once; completions are not resampled at successive timesteps. Earth supplies the comparison date, not a condition that the earliest completion occurs today. For the inherited clock, an inferred lead gives $T=L-\delta$.
+
+### Galaxy probability and observation kernels
+
+Independent expansion decisions among $m$ eligible zones give
+$$
+p_g(t)=1-(1-q)^{m(t)}.
+$$
+The implementation evaluates this as $-\operatorname{expm1}[m\operatorname{log1p}(-q)]$, with $p_g=0$ at $m=0$, including $q=1$. Continuous cohort counts are used as a deterministic population approximation. The approximation $p_g\simeq qm$ requires $qm\ll1$ and small $q$; it cannot replace the saturating expression generally. At arbitrary $q$, equal $qN_0$ does not guarantee exactly equal galaxy probabilities.
+
+Remote visibility requires launch, expansion across the host, and light travel to us. Physical arrival requires launch and travel of the front. Their completion deadlines at radius $r$ are, respectively,
+$$
+t_{\mathrm{vis}}(r)=t_0-\tau_\ell-D/v-r/c,\qquad
+t_{\mathrm{arr}}(r)=t_0-\tau_\ell-r/v.
+$$
+Thus write $t_k(r)=t_0-d_k-r/c_k$, with $(d_k,c_k)=(\tau_\ell+D/v,c)$ for visibility and $(\tau_\ell,v)$ for arrival. Visibility counts external host galaxies that have become persistently loud by their emission deadline, assuming perfect detection. It does not compute projected overlap or a survey response to an expanding volume. Arrival counts origin galaxies whose fronts could have reached our position; it is a separate diagnostic. The kernels are alternatives, not independent observations to multiply together. For the positive host diameter used here, $v=0$ produces neither visible hosts nor arrivals.
+
+Homogeneous Poisson galaxy positions, independently marked by the galaxy event probability, give
+$$
+\mu_k=4\pi n_g\int_0^{R_k}r^2p_g[t_k(r)]\,dr,\qquad
+R_k=c_k(\delta-d_k)_+,\qquad
+P(\mathrm{empty})=e^{-\mu_k}.
+$$
+This is a conditional scenario likelihood. It assumes homogeneous histories and independent galaxies in flat space, ideal persistent loudness, no environmental dispersion and no observer conditioning. Cosmological expansion, clustering, actual detection limits, transport between galaxies and the probability of our existence require additional modelling.
+
+### Inversion and distributed inherited starts
+
+The 5% boundary solves $\mu_k=-\log(0.05)=2.995732273553991$; the separate $\mu_k=1$ contour has empty probability $e^{-1}=0.3679$. Neither is a posterior credibility statement. Monotone bisection searches $0\le\delta\le L$. If the threshold is not reached at $L$, the reported value is a history cap with `constrained_within_history=False`, not an inferred frontier. At $q=0$ there is no exclusion. A specified completion date can instead be used to invert for a per-zone $q$ ceiling; a ceiling of one with a false constraint flag means all probabilities are allowed.
+
+For distributed inherited starts, $S=s_{\mathrm{first}}+U$ with $U\sim\mathrm{Uniform}(0,W)$. Here $W$ is the full width and $\sigma_S=W/\sqrt{12}$. All groups have the same fixed duration $T$. Our completion at $t_0$ implies $T=t_0-S_{\mathrm{ours}}$, so $\delta=S_{\mathrm{ours}}-s_{\mathrm{first}}$ is also the earliest completion lead. The fraction of start groups completed at deadline $t$ is
+$$
+F(t)=\operatorname{clip}((t-t_0+\delta)/W,0,1).
+$$
+With a single shared start per galaxy, marginalization must precede galaxy saturation: $p_g=F[1-(1-q)^{N(t)}]$. For $H$ equal-sized independent start groups,
+$$
+p_g=1-\left\{1-F\left[1-(1-q)^{N(t)/H}\right]\right\}^{H}.
+$$
+The independent-per-zone-start comparison is $p_g=1-(1-qF)^{N(t)}$. Group counts are correlation sensitivities, not inferred halo counts. Expansion decisions remain per zone in every case; a galaxy expansion probability cannot be substituted for $q$.
+
+For $W>0$, the reported permitted start fraction is $\min(\delta_{\max}/W,1)$, with reciprocal labelled “first 1 in $K$”. A lead root beyond $W$ permits all start percentiles; it does not place our start outside the specified window. This conditional percentile ceiling is not a posterior probability for our rank. At $W=0$ the synchronized lead bound is recovered, but a start percentile is undefined. Holding $N(t)$ fixed makes the completion-date likelihood invariant to translating the seed epoch and compensating $T$; shifting the formation ramp changes $N(t)$ and therefore the likelihood. Any reused root must also fit within the new process history.
+
+### Analytic limits and numerical provenance
+
+Let $a=(\delta-d_k)_+$. In the saturated synchronized inherited limit, $p_g=1$ throughout the interior and
+$$
+\mu_k=\frac{4\pi n_gc_k^3a^3}{3},\qquad
+\delta_{\max}=d_k+\left(\frac{3\mu_*}{4\pi n_gc_k^3}\right)^{1/3}.
+$$
+This requires a positive propagation speed, saturation of eligible galaxies and a root within the history. For one shared start and finite width, saturation gives $p_g=F$. If $0<a\le W$,
+$$
+\mu_k=4\pi n_gc_k^3\int_0^a u^2\frac{a-u}{W}\,du
+=\frac{\pi n_gc_k^3a^4}{3W}.
+$$
+Consequently the lead above the delay scales as $W^{1/4}$ and the allowed start fraction approximately as $W^{-3/4}$ where the delay is negligible. This expression assumes saturated completed galaxies, a single shared start, no history truncation of the integration region and $a\le W$; it does not hold for independent zone starts. For completeness, when $a>W$ the saturated integral is $\pi n_gc_k^3[a^4-(a-W)^4]/(3W)$, recovering the synchronized sphere as $W\to0$.
+
+Radial integration uses 96-node Gauss--Legendre quadrature after the substitution $z=r/R=1-u^2$, resolving the thin unsaturated outer boundary. For nonzero $W$, it splits at the kink where $F$ reaches one and applies the rule on each smooth interval. Lead bisection stops at a bracket width of $10^{-9}$ Gyr or 64 iterations. Probability ceilings use 60 bisections in $\log_{10}q$ on $[-40,0]$, with an error if the lower bracket is insufficient. These numerical tolerances are distinct from uncertainty in the scenario assumptions.
+
+Saved verification recomputes 500 constrained baseline boundaries at 192 nodes: the maximum relative likelihood-boundary error is $1.40\times10^{-7}$. For start spreads, 600 boundaries and 60 probability ceilings checked at 192 nodes have maximum relative error $1.10\times10^{-7}$; both are below the declared $10^{-5}$ tolerance. Analytic-limit, cohort, correlation and inverse-likelihood tests provide separate checks.
+
+From the repository root, `make baseline`, `make inference` and `make start-spread` reproduce the numerical outputs; `make check` runs the tests. Each results directory retains its input configuration, summaries and tabulated grids; start-spread summaries also record the configuration SHA256. `verification.json` records refinement checks and sampling seeds. Quoted values should be read from these saved outputs rather than estimated from plotted curves. The timing calculation does not derive attainable complexity from causal-past opportunity budgets.
