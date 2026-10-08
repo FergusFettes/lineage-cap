@@ -2,6 +2,7 @@
   "status": "abundance/history implemented; completion and expansion inference specified",
   "time": {
     "now_gyr": 13.8,
+    "earth_age_gyr": 4.6,
     "ramp_start_gyr": 0.2,
     "ramp_start_note": "provisional: 200 million years, awaiting clarification of 200ky"
   },
