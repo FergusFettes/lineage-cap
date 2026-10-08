@@ -71,6 +71,9 @@ def save(fig, name):
     for suffix in ("png", "svg"):
         fig.savefig(OUT / f"{name}.{suffix}", dpi=200, facecolor="white",
                     bbox_inches="tight")
+        if suffix == "svg":
+            path = OUT / f"{name}.svg"
+            path.write_text("\n".join(line.rstrip() for line in path.read_text().splitlines()) + "\n")
     plt.close(fig)
 
 
@@ -101,7 +104,7 @@ def earth_origin():
     ax.annotate("Earth-age crossing\n$qN = 2.06\\times10^{-8}$", xy=(crossing, EARTH_AGE),
                 xytext=(2e-5, 7.5), color=MUTED, fontsize=8.5,
                 arrowprops={"arrowstyle": "-", "color": MUTED, "lw": .7})
-    ax.text(2e-12, 2.9, "Allowed\nterrestrial\ndurations", color=MUTED, fontsize=8)
+    ax.text(2e-12, 2.5, "Allowed\nterrestrial\ndurations", color=MUTED, fontsize=8)
     ax.set_ylim(0, 14.5)
     ax.set_ylabel("Minimum process duration (Gyr)")
     save(fig, "fig1_earth_origin")
@@ -118,7 +121,7 @@ def shared_start():
     ax.plot(qn, np.where(constrained, head, np.nan), color=BLUE, linewidth=2)
     ax.plot(qn, np.where(~constrained, head, np.nan), color=MUTED,
             linewidth=1.3, linestyle=(0, (4, 3)))
-    ax.text(2e-12, 2000, "No constraint\nwithin modeled history\n(13.6 Gyr)",
+    ax.text(2e-12, 1400, "No constraint\nwithin modeled\nhistory\n(13.6 Gyr)",
             color=MUTED, fontsize=7.8)
     ax.text(3e3, head[-1] * 1.4, f"Plateau: {head[-1]:.1f} Myr", fontsize=9)
     ax.set_ylabel("Maximum candidate frontier lead (Myr)")
