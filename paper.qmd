@@ -1,5 +1,5 @@
 ---
-title: "The lineage cap: an empty sky dates the start of our lineage"
+title: "The lineage cap: an empty sky and a cosmic-age lineage"
 author: "Fergus Fettes"
 date: 2026-10-08
 format:
@@ -18,100 +18,206 @@ format:
 
 ## Abstract
 
-Why are we so early? The standard answer treats the origin of observers as a lottery: a number of improbable "hard steps", whose count and difficulty are tuned until the model fits. We replace the lottery with a simpler assumption. Every suitable place runs the same complexification process, and the only free quantities are how many such places exist and how many of the lineages they produce expand where we could see them. Using a numerical model of zone abundance, process clocks and expansion, we find the following. If each lineage's clock starts when its planet forms, as an Earth origin of life requires, the empty sky demands that fewer than about one galaxy in fifty million ever produce an expanding civilisation. The lottery returns under another name. If instead lineages share a start, the empty sky allows the first lineages to have reached our level at most about 14 Myr before us. That figure barely moves across ten orders of magnitude of abundance and expansion probability. Only a universal event can synchronise lineages across the galaxies an expanding civilisation could reach in that time, and the only sharp universal event early enough is the first carbon chemistry, about 0.2 Gyr after the Big Bang. Measured from that start, the shortest possible lineage is at least 13.59 Gyr, within 0.1% of our own. Common life, an empty sky and no lottery together point to a lineage as old as the chemistry that made it possible.
+Why are we so early? Hard-step accounts treat the emergence of observers as a sequence of improbable transitions; expansion by earlier civilisations then limits the time available for later origins. We examine a different hypothesis: suitable lineages accumulate inherited progress through a physical process with a common characteristic duration. In a flat-space, ideal-visibility model, planetary starts and an Earth-length process require fewer than about one expanding civilisation per fifty million galaxies, even if all suitable zones eventually complete. Inherited clocks allow a different explanation. Once expansion is common at the galaxy level, the empty sky limits the lead of a candidate completion frontier to about 14 Myr in the zero-spread benchmark. A common cosmic onset can supply approximately contemporary lineages without contact between galaxies. First carbon is a candidate: an illustrative 100--200 Myr spread in starts requires our lineage to be among roughly the first third to fifth of starts, under a common-duration model. Broader windows remain possible but require an earlier position within their distributions. Measured from a first-carbon onset, the inferred duration is roughly 13.6 Gyr. The head-start constraint is a geometrical result; the long-lineage interpretation additionally assumes an early onset, continuity of inherited information, and limited variation in process duration.
 
 ## 1. Two ways to be early
 
-Humanity appeared 13.8 Gyr after the Big Bang. That sounds like a long time, and it is usually treated as one: the universe has had ample time to produce life, so the question is only how often it does. On the timescale of habitability it is short. Stars will keep forming for hundreds of billions of years, and the red dwarfs among them shine for trillions. If observers arise wherever conditions allow, nearly all of them should appear far later than us. Our date is an observation, and few accounts of life in the universe treat it as one. Those that do give two kinds of explanation, and they differ in what our arrival date is taken to measure.
+Humanity appeared 13.8 Gyr after the Big Bang. On the timescale of potential habitability, that may be early: long-lived stars could offer suitable environments far into the future. Models that allow observers to arise throughout those environments put most arrivals much later than ours (Hanson et al. 2021). Our date therefore belongs among the observations an account of life should explain, alongside Earth's history and the empty sky.
 
-**The lottery.** The hard-steps model (Carter 1983; Watson 2008) treats the emergence of observers as a sequence of $n$ improbable steps, each expected to take longer than a planet's habitable window. Conditioned on success, the chance of finishing by time $t$ grows as $t^n$. Hanson, Martin, McCarter and Paulson (2021) combine this with a deadline: "grabby" civilisations expand, fill the universe within a few Gyr, and prevent later origins inside their volumes. Anyone who exists at all must therefore be early.
+The question is how much exceptional good fortune an explanation requires. Is the emergence of observers extremely rare? Does almost every civilisation fail to expand visibly? Or do we occupy the early part of a broadly shared process? Observer selection matters in all these accounts. Their differences lie in the physical histories and probabilities that selection acts on.
 
-The lottery carries two free quantities, and neither has a principled value. The number of steps is read off Earth's history; Hanson et al. put it "near the range 3 to 9", and other authors place it elsewhere (Snyder-Beattie et al. 2021). The overall improbability is not measured at all. Hanson et al. set their birth constant by *assuming* a uniform distribution over our rank among civilisation birth dates. The major evolutionary transitions identified by Maynard Smith and Szathmáry (1995) are real events in our lineage. Nothing in that analysis says each was improbable, and nothing fixes how improbable it was. So under the lottery, the probability that a suitable world produces observers is not an input. It is the residual: the number that reconciles common habitats with an empty sky.
+**The lottery.** The hard-steps model (Carter 1983; Watson 2008) treats the emergence of observers as a sequence of $n$ improbable steps, each expected to take longer than a planet's habitable window. Conditioned on success, the chance of finishing by time $t$ grows as $t^n$. Hanson, Martin, McCarter and Paulson (2021) combine this with a deadline: expanding civilisations occupy regions in which later independent civilisations can no longer arise. This selects for arrivals before occupation.
 
-**The process.** The alternative assumes less. Complexity accumulates along suitable trajectories at a rate set by physics, so every suitable place runs the same process and finishes in a characteristic time, not by luck. Two quantities remain free: how many suitable places there are, and what share of the lineages they produce go on to expand visibly. The rest of this note shows that the sky's answer barely depends on either. What it does depend on is when the clocks start.
+The number and difficulty of the hard steps are not independently established. The major evolutionary transitions identified by Maynard Smith and Szathmáry (1995) are real events; identifying them does not by itself measure their improbability. Hanson et al. calibrate their birth-rate timescale using our arrival date and an assumed uniform distribution over our rank among civilisation births. They use the absence of visible alien volumes to constrain expansion speed. The model turns these observations into parameter estimates, but it does not independently measure the probability that a suitable world produces observers.
+
+**The process.** We instead assume that suitable lineages accumulate progress at a characteristic pace. Their history can span successive environments: the formation of a new planet need not reset the clock. This is a substantive physical hypothesis. We first calculate clocks with a common duration, then examine a bounded spread in their starting dates. We leave variation in the duration itself unspecified, assuming it does not create a substantial population of much earlier completers.
+
+The comparison is between the consequences of these assumptions. With a planetary start, common life gives older planets a large head start. With inherited progress and an approximately shared onset, contemporary completion can follow from contemporary beginnings. The empty sky constrains how far ahead the earlier completions may be.
 
 ## 2. The model
 
 We use a deliberately simple scenario model, computed numerically.
 
-- **Suitable zones.** Each galaxy holds $N$ suitable zones today. Our baseline is $10^{10}$: about $10^{11}$ stars, one in ten with a suitable zone. Zones appear at a steady rate from 0.2 Gyr after the Big Bang. One zone hosts one lineage.
-- **Process clock.** Every zone runs the same deterministic process. Two ways for its clock to start are considered:
-    - *planet-linked*: the clock starts when the zone forms, so older zones finish first;
-    - *shared*: all lineages share a start and later zones inherit the accumulated state, so zone age gives no head start.
-- **Expansion.** A lineage that reaches our level expands with probability $q$ at speed $v$; our baseline is $v = 0.5c$. A galaxy with $m$ such lineages hosts at least one expander with probability $1-(1-q)^m$.
-- **The empty sky.** Galaxies sit at $0.01\ \mathrm{Mpc^{-3}}$ in flat space. Summing over our past light cone gives $\mu$, the expected number of expanded volumes we would see now. Expanded volumes appear independently, so the chance of seeing none is $P(\text{empty}) = e^{-\mu}$. We reject a scenario when an empty sky would have less than a 5% chance ($\mu > 3$). A looser test asks only that we expect less than one visible volume ($\mu < 1$); even then the sky is empty only 37% of the time. We quote the 5% boundary unless stated.
+- **Suitable zones.** Each galaxy has $N$ suitable zones today. The baseline is $10^{10}$: about $10^{11}$ stars and an assumed suitable-zone fraction of one in ten. Zones accumulate at a steady rate from cosmic age 0.2 Gyr. The early history represents a galaxy's progenitors. One zone hosts one lineage; destruction of zones is omitted.
+- **Process clocks.** A planet-linked lineage begins when its zone forms. An inherited lineage carries progress from an earlier start; entering a later zone does not reset it. For a lineage already in a suitable environment, completion occurs at $t_{\mathrm{start}}+T$. Receiving zones cannot complete before they exist. The first calculation scans a candidate completion frontier with zero spread; the extension gives lineages a uniform spread of starts and a common duration $T$.
+- **Expansion.** Each completed lineage expands with probability $q$ at speed $v$, with baseline $v=0.5c$. A galaxy with $m$ eligible completions hosts at least one expander with probability $1-(1-q)^m$.
+- **Visibility and arrival.** For remote visibility, a galaxy becomes persistently detectable after an expander crosses its assumed 30 kpc diameter, and its light then travels to us at $c$. The separate arrival calculation asks whether a front travelling at $v$ reaches us. These are two different observation rules.
+- **The empty sky.** External galaxies form a homogeneous Poisson population of density $0.01\ \mathrm{Mpc^{-3}}$ in flat space. Integrating their detection probabilities gives the expected visible count $\mu$, with $P(\text{empty})=e^{-\mu}$. We report the boundary $\mu=-\log(0.05)\approx3$. The alternative $\mu=1$ boundary requires an empty sky to have probability at least 37% and is more restrictive.
 
-Two kernels are computed: remote visibility, where we would see their expanded volume, and physical arrival, where their front would have reached us. We quote visibility unless stated. The model is conditional: no cosmological expansion, no spread in pace between lineages, ideal visibility. Appendix A describes the computation.
+These are scenario likelihoods, with ideal detection and no cosmological expansion. The visibility model counts detectable host galaxies; it does not calculate the appearance of intergalactic expansion fronts. The calculations omit earlier expanders inside our own galaxy. Appendix A gives the equations and numerical checks.
 
-One combination recurs. Every bound below depends on $q$ and $N$ only through their product $qN$: the number of expanding civilisations a galaxy would produce if every zone completed. The figures are plotted against it.
+The combination $qN$ is useful: it is the expected number of expansion decisions if every present-day zone completes. It is not a galaxy's expansion probability. For small $q$, $1-(1-q)^m\approx1-e^{-qm}$, so curves approximately collapse against $qN$; at large $qm$ they saturate. The figures use this effective abundance, with the approximation checked across the modeled range.
 
-## 3. If life began on Earth
+## 3. Planetary starts
 
-Suppose each zone's clock starts when its planet forms, and the process takes as long as it took on Earth, 4.6 Gyr. Earth is a late planet. Lineweaver (2001) estimates that three quarters of Earth-like planets are older than Earth, by 1.8 ± 0.9 Gyr on average; our steady zone history gives two thirds, older by 2.2 Gyr. Most lineages would then have reached our level billions of years before us, and any of them that went loud would be in our sky.
+Suppose each zone's clock starts when its planet forms and the process takes 4.6 Gyr. This is a generous upper limit for a wholly terrestrial history, allowing the process the entire age of Earth. A later start would leave less time.
 
-The empty sky therefore caps expansion. With $10^{10}$ zones per galaxy, at most $q \approx 2 \times 10^{-18}$ of completed lineages may expand. The arrival kernel gives $2 \times 10^{-17}$, and a capacity-weighted clock gives the same order. The ceiling scales inversely with abundance, so the real constraint is on $qN$: each galaxy may produce an expanding civilisation with probability no more than about $2 \times 10^{-8}$ over its history. That is fewer than one galaxy in fifty million.
+In the linear zone history, about two thirds of present-day zones are old enough to have completed such a process. The earliest completions occur at cosmic age 4.8 Gyr, nine billion years before us. An expanding civilisation among those predecessors could have become visible long ago.
 
-Planetary starts, common suitable zones and an empty sky are therefore incompatible unless almost every lineage dies, stays home or hides. That is a great filter, and it does the same work as the hard-steps lottery: a probability chosen to fit, with no independent support. Figure 1 shows the conflict directly. With a planetary start, the empty sky sets a minimum on how long the process takes, and that minimum exceeds Earth's 4.6 Gyr once a galaxy produces more than a few $\times 10^{-8}$ expanding civilisations.
+With $10^{10}$ zones per galaxy, the empty sky permits at most $q\approx2.1\times10^{-18}$ per completed lineage under the visibility model. The arrival diagnostic gives $q\approx1.7\times10^{-17}$. The ceiling scales approximately inversely with abundance: $qN\lesssim2.1\times10^{-8}$ for visibility. Even if every present-day zone eventually completes, the expected yield is only about one expander per fifty million galaxies. The probability of a galaxy having an expander by today is about $1.4\times10^{-8}$, or one in 73 million, because only some zones have completed.
 
-![Planet-linked clocks. The shortest process duration compatible with an empty sky (P(empty) ≥ 5%), against the number of expanding civilisations per galaxy, $qN$, at 0.5c. The dashed line is Earth's 4.6 Gyr. An Earth origin is possible only where the curve lies below it, which requires $qN \lesssim 3 \times 10^{-8}$ (grid resolution; the exact boundary is $2 \times 10^{-8}$).](figures/fig1_earth_origin.png){width=80%}
+Thus common suitable zones, a common Earth-length process and planetary starts require an extremely small expansion fraction in this model. Almost every completed lineage must fail to expand visibly. That suppression has the role of a filter, whether its explanation is biological, technological or behavioural. Figure 1 shows the same constraint as a lower bound on process duration.
 
-## 4. If lineages share a start
+![Planet-linked clocks. Minimum process duration compatible with $P(\text{empty})\geq5\%$, against expected expansion decisions per galaxy if all zones complete, $qN$. The benchmark uses $v=0.5c$ and ideal remote visibility. Earth's age is an upper limit on a wholly terrestrial process. The crossing requires $qN\lesssim2.1\times10^{-8}$.](figures/fig1_earth_origin.png){width=80%}
 
-Now let all lineages share a start. A zone's age then gives no head start: zones forming late inherit a lineage whose clock is already running. Completions begin together at a frontier date and then follow the growing number of zones. Our completion is a data point, and the question becomes how far ahead of us the frontier can be.
+## 4. The head-start cap
 
-The answer is short. The frontier can be at most **13.7 Myr** ahead of us (27 Myr if we require that no front has physically arrived; 9.6 Myr under the looser $\mu < 1$ test). This holds for any $qN$ above about ten. It reaches 16 Myr at $qN = 1$, one expanding civilisation per galaxy, and only 63 Myr at $qN = 0.01$ (Figure 2). The bound is set by geometry, not by abundance. Once every nearby galaxy would host an expander, adding more lineages changes nothing. What matters is how far an expanding volume, or its light, travels during the head start. At 0.5c, 14 Myr is a few megaparsecs: roughly the distance to Andromeda.
+For inherited clocks, the age of the receiving planet gives no automatic head start. We scan a candidate frontier date and ask how far it can precede our observed arrival without producing a visible population of predecessors.
 
-![Shared-start clocks. The largest head start the first lineages can have over us while the sky stays empty (P(empty) ≥ 5%), against $qN$, at 0.5c. Once a galaxy produces about one expanding civilisation, the bound sits on a geometric plateau of 13.7 Myr. Abundances from $10^8$ to $10^{11}$ zones per galaxy give the same curve.](figures/fig2_shared_start.png){width=80%}
+The zero-spread calculation is a benchmark for that frontier. It does not assign a distribution of individual delays between the frontier and our arrival. If every lineage, including ours, literally shares both its start and its duration, all existing lineages finish together and our lead over the frontier is zero. The scanned bound instead limits how early a proposed frontier could be. Section 5 introduces distinct completion dates through a spread in starts.
+
+At $v=0.5c$, the visibility bound approaches **13.7 Myr** once $qN$ is above about ten. The physical-arrival bound is 27 Myr; the more restrictive $\mu=1$ visibility boundary gives 9.6 Myr. At $qN=1$ the visibility bound is 16 Myr, rising to 63 Myr at $qN=0.01$ (Figure 2).
+
+The plateau has a simple explanation. Once nearly every eligible galaxy contains an expander, increasing the number of lineages changes little. The relevant volume is then set by the time light has had to reach us after the host becomes loud. At the plateau it extends only a few megaparsecs. Nearby galaxies therefore control the bound when expansion is common. More distant galaxies matter for sparser expanders or histories allowing much earlier completions. No synchronisation of every galaxy at its present cosmic time is required: the calculation samples the times at which its light could reach us.
+
+![Zero-spread inherited-clock benchmark. Maximum candidate frontier lead compatible with $P(\text{empty})\geq5\%$ at $v=0.5c$. The curves approximately collapse against $qN$ over the modeled abundance range. The lower plateau is 13.7 Myr; the upper capped segment means no constraint within the modeled history.](figures/fig2_shared_start.png){width=80%}
 
 ## 5. What could start the clocks together?
 
-A shared start needs a shared cause, and its reach is fixed by the scale found above. Expanding civilisations cross the distances between galaxies quickly. At 0.5c, Andromeda is 5 Myr away and the Virgo cluster about 110 Myr. A synchroniser therefore has to act on every galaxy within a few megaparsecs, and on every galaxy whose light we see, to within about ten million years.
+An approximately shared onset needs a physical explanation with two properties: sufficient **reach** across the galaxies relevant to visibility or arrival, and a sufficiently limited **spread in starting times**. Reach excludes a purely local event as a complete explanation of cross-galaxy timing. Spread trades against our permitted position in the start distribution: a broad window can work if we start sufficiently early within it.
 
-Shared causes come in two kinds:
+There are two kinds of shared cause. **Shared matter** allows trajectories to intersect and information to pass between environments. A birth cluster can share material; a galactic disturbance can affect many local environments. **A shared cosmic clock** permits independent lineages to begin under similar conditions at approximately the same epoch, without exchanging information between galaxies. Their later histories may still require local material inheritance.
 
-- **Shared matter.** Trajectories intersect and structured information passes between sites. These events are local. The Sun formed with thousands of siblings in one birth cluster 4.6 Gyr ago. The Milky Way's disk had bursts of star formation 5.7, 1.9 and 1.0 Gyr ago, which coincide with passages of the Sagittarius dwarf (Ruiz-Lara et al. 2020). Each synchronises a cluster or a galaxy at most. After the earliest epoch, matter in different galaxies never shares trajectories.
-- **A shared clock.** The same cosmic history unfolds everywhere at about the same time, without contact. Peak star formation around 10 Gyr ago is universal but spread over billions of years. The first stars and the first carbon chemistry, about 0.2 Gyr after the Big Bang, are universal and comparatively sharp.
+Several candidate epochs illustrate the distinction:
 
-Only the second kind can reach across galaxies, and only its earliest member is sharp enough. Hence the title. A lineage that is common, synchronised and leaves the sky empty must have started with the first carbon. The timing calculation alone does not single out that date: the head-start bound is unchanged if the seed date moves and the zone history stays fixed. The case for first carbon rests on reach. A synchroniser confined to one galaxy fails it. If each galaxy restarts its clocks at its own date, spread over a 5 Gyr window, and our start sits at the median, the sky allows at most $1.4 \times 10^{-16}$ of completed lineages to expand: a filter again. A galaxy-local synchroniser escapes the filter only by placing us near the leading edge of its own window.
+| Candidate onset | Kind and reach | Timing issue |
+|---|---|---|
+| First stars, enrichment and carbon chemistry | Cosmic clock; material exchange within forming structures | Early onset, with regional differences in formation, enrichment and mixing |
+| First galaxies and reionisation | Widespread cosmic history | Extended, spatially varying transition |
+| Peak cosmic star formation | Statistical cosmic clock | Broad epoch rather than a sharp onset |
+| Galactic mergers or triggered star formation | Local material and environmental history | Can affect a galaxy or part of one; dates differ between galaxies |
+| The Sun's birth cluster | Shared local material | Can coordinate a cluster, but does not set other galaxies' clocks |
 
-Even the first-star epoch is not sharp to ten million years. First-star minihalos formed around redshift 20 to 30, and some halos later still, near redshift 15: a spread of about 170 Myr in cosmic time. So we computed a shared clock whose start is spread uniformly over a window of width $W$, with one start per galaxy. The empty sky then requires our lineage to have started within a fixed offset of the earliest starts, so it has to lie in the leading part of the window:
+Ruiz-Lara et al. (2020), for example, identify star-formation bursts at 5.7, 1.9 and 1.0 Gyr ago in their solar-neighbourhood sample, with timings supporting a role for Sagittarius perturbations. Such events motivate local clocks; they do not establish a common onset across galaxies.
 
-| Start window $W$ | Latest permitted start after the earliest | Our lineage among the first |
-|---:|---:|---:|
-| 30 Myr | 24 Myr | 79% |
-| 100 Myr | 32 Myr | 32% (1 in 3) |
-| 200 Myr | 38 Myr | 19% (1 in 5) |
-| 500 Myr | 47 Myr | 9.5% (1 in 11) |
+First carbon is our proposed onset because it provides an early, widespread enabling condition for carbon chemistry. It is not selected uniquely by the visibility integral. Holding the zone history and completion frontier fixed leaves that integral unchanged when the seed epoch moves. The case for first carbon therefore rests on a physical account of how progress begins, together with the temporal spread and positioning required by alternatives.
 
-(Remote visibility, $10^{10}$ zones per galaxy, 0.5c, P(empty) = 5%; the same for any $q$ from 1 to $10^{-6}$.) For a first-carbon spread of 100 to 200 Myr, our lineage need only be in the first third to fifth of starts. That is a mild requirement, not a fine-tuned one. It predicts that the Milky Way's progenitor halos formed somewhat early among the first-star halos. Independent ancestry groups within a galaxy tighten it: with a hundred independent groups per galaxy and $W = 200$ Myr, the permitted offset falls to 15 Myr.
+**A finite start window.** To make that comparison concrete, let each galaxy's inherited clock start uniformly within a window of full width $W$, with a common process duration. Our offset from the earliest start then equals the earliest completion's lead over us. Primordial minihalo formation and enrichment motivate testing windows of 100--200 Myr (Bromm 2013; Stacy and Bromm 2014). These are illustrative spans, not measurements of a uniform first-carbon distribution; carbon production and mixing can introduce additional delays.
 
-## 6. How fast the process can be
+With one shared start per galaxy and expansion saturated at the galaxy level, the 5% visibility boundary permits offsets of 32 Myr for $W=100$ Myr and 38 Myr for $W=200$ Myr: approximately the first third and first fifth of starts. A 500 Myr window permits the first 9.5%; a 5 Gyr window permits the first 1.7%, or roughly one in sixty (Figure 3). Broader windows are possible. Their cost is an earlier position within the assumed distribution, not an automatic requirement for an extremely small $q$.
 
-Sections 4 and 5 combine into one claim. The first lineages can have reached our level at most about 14 Myr before us. Measured from a first-carbon start at 0.2 Gyr, our own lineage took 13.6 Gyr. So the shortest possible lineage is at least $13.6 - 0.014 \approx$ **13.59 Gyr**: ours ran within about 0.1% of the fastest the universe allows.
+![Start-window sensitivity. Latest permitted position within a uniform start window under the 5% empty-sky criterion, with one start per galaxy and saturated expansion. $W$ is the full window width. The marked first-carbon range is illustrative; the fractions are conditional start-rank ceilings, not posterior probabilities for our ancestry.](figures/fig3_start_spread.png){width=80%}
 
-This is the central result, and its two halves have different standing. The 14 Myr margin is set by geometry: it holds for any abundance and any expansion probability that give at least a few expanding civilisations per galaxy, and it does not depend on when the clocks started. The 13.59 Gyr figure also needs the start date, and that rests on the reach argument of section 5. Under the process assumption, an empty sky does not ask how common life is or how often it expands. It tells us how long the process takes.
+A different comparison holds our rank fixed. If our start is at the median of a 5 Gyr window, the permitted per-lineage expansion probability falls to about $1.4\times10^{-16}$ at $N=10^{10}$. A broad window can therefore be reconciled with the sky through early positioning or suppressed expansion. Those are different assumptions, and their numerical probabilities should not be identified with one another.
 
-## 7. What follows
+Correlation also matters. With a hundred independent ancestry groups per galaxy and $W=200$ Myr, the allowed offset falls to about 15 Myr. This is a sensitivity example, not an inferred number of progenitor groups. We retain a common process duration and do not attempt to fit its variation here.
 
-If the argument holds, several things should be true that the lottery does not predict:
+## 6. Observer selection and lineage duration
 
-- **Lineages run long.** The minimum time to build observers is most of cosmic history. Sharov and Gordon's (2013) extrapolation of genome complexity, to an origin about 9.7 ± 2.5 Gyr ago, is in the same range. Their date would then mark the start of genetic information, not of the lineage.
-- **Life elsewhere in the solar system is related to ours.** Shared ancestry, not independent origin.
-- **Our neighbourhood was early, but not extremely so.** If first carbon spread over 100 to 200 Myr, the Milky Way's progenitors started in roughly the first third to fifth of that spread.
-- **Many near-contemporaries, none far ahead.** Other lineages are reaching our level at about the same time, and their expansion fronts are on their way.
+Both lottery and process accounts can use observer selection. If expanding civilisations prevent later independent origins, observers arising independently must precede occupation. But an expander can be visible before it arrives, so non-occupation does not by itself imply an empty sky. A quantitative comparison needs the probability of the observed sky conditional on a region remaining available for our origin, and a specified way of sampling observers.
 
-## 8. Assumptions
+The present calculation reports external visibility and arrival separately; it does not construct that observer-conditioned population. In particular, being within the first fifth of a uniform start distribution is a rank constraint, not a statement that our observed existence had probability one fifth. This limits what we can claim about the relative amount of luck required. It does not prevent us from comparing the timing and expansion assumptions compatible with the same sky criterion.
 
-The conclusion rests on four assumptions.
+The duration follows only after choosing an onset. For an assumed first-carbon start at cosmic age 0.2 Gyr, today's elapsed interval is 13.6 Gyr. In the zero-spread frontier benchmark, subtracting the 13.7 Myr allowed lead gives **13.59 Gyr**. That is a conditional benchmark, not an independently measured biological minimum.
 
-1. **Expansion is loud.** A civilisation at our level that expands becomes visible. Staying quiet would require every civilisation, every faction within it and every replicator it releases to stay small forever. Under selection, one expander suffices. Mass can be hidden; the entropy production of a large civilisation is harder to hide.
-2. **The process is deterministic.** Suitable trajectories complete in the same time, without a lottery. This is the substantive bet. Adding a spread in pace is the next extension.
-3. **Information travels with matter.** A shared start needs lineage information to survive transport through grains, planetesimals and comets, and to keep accumulating rather than restart on arrival.
-4. **The geometry is simple.** Flat space, homogeneous galaxies, an illustrative galaxy density and ideal visibility. Cosmological expansion and survey sensitivity are extensions.
+The finite-window model has a different interpretation. With earliest start $s_{\mathrm{first}}$ and our offset $\delta$, the common duration is $T=13.8-s_{\mathrm{first}}-\delta$. For $s_{\mathrm{first}}=0.2$ Gyr and a 100--200 Myr window, the permitted offsets give a duration of roughly **13.6 Gyr**. The uncertainty in the physical onset and the assumed clock matters more than the decimal places. The 0.1% proximity of the zero-spread benchmark should not be transferred to a claim about the fastest biological lineage in a population with varying starts or rates.
 
-## Appendix A: Computation
+The proposal is thus a long process begun early, with our lineage among its first completions. The geometry limits predecessor timing; the proposed cosmic onset translates that timing into a lineage age.
 
-The model is computed numerically in Python. Zones appear at a constant rate from 0.2 Gyr to the present, $N$ per galaxy today. For each clock, kernel and parameter set, the expected number of visible expanded volumes $\mu$ is integrated over galaxy completion histories and our past light cone, and the bounds quoted are root-finds of $\mu = 3$ (or 1). The grids span $N = 10^8$ to $10^{11}$, $q = 10^{-24}$ to 1, and speeds from 0.001c to 0.9c. Sampled boundaries were recomputed at doubled integration resolution; the worst relative error was about $10^{-7}$. The start-spread results in section 5 use the same machinery with a uniform start window per galaxy or per ancestry group. Code and saved grids accompany this note.
+## 7. Inheritance and implications
+
+An inherited clock needs continuity of accumulated information through changing environments. It need not require a single organism or molecule to survive for billions of years: successive populations and transfers can carry the lineage. It does require enough retained progress, and sufficiently limited interruption, for the assumed characteristic duration to remain useful.
+
+There is evidence for parts of this route. Returned Bennu samples contain amino acids and nucleobases, establishing extraterrestrial supplies of biological ingredients (Glavin et al. 2025). Shielded cell aggregates have retained viable bacteria after three years of space exposure (Kawaguchi et al. 2020). Plasmid DNA recovered after a short rocket flight retained function when introduced into existing cells (Thiel et al. 2014). These support ingredient delivery and some forms of biological survival; they do not demonstrate the entire sequence of ejection, long transit, capture and establishment. Adams and Napier (2022) find interstellar rock exchange but low successful-seeding probabilities under their adopted assumptions. Continuity remains a substantive hypothesis here.
+
+If that hypothesis and an early shared onset hold, the following expectations follow:
+
+- **Lineages predate their present planets.** Earth inherits substantial prior progress. The proposed history is longer than terrestrial biological history alone.
+- **A population of near-contemporary completions.** With common suitable zones and appreciable expansion, there should be other lineages near our stage, with few sufficiently early predecessors to be visible now.
+- **An early ancestral start.** In the illustrative first-carbon windows, our inherited lineage starts in the leading part of the distribution. Connecting that rank to actual Milky Way progenitors requires a model of ancestry and mixing.
+- **Related solar-system life under common seeding.** If the solar system inherited a common founding population, life elsewhere in it should share ancestry with ours. Timing alone does not exclude multiple unrelated arrivals.
+
+These consequences belong to the combined physical hypothesis. They are not all independent predictions of the visibility calculation.
+
+## 8. Assumptions and scope
+
+Four assumptions carry the interpretation.
+
+1. **Expansion becomes detectable.** After the modeled host-crossing delay, an expanding civilisation produces a persistent signature we would recognise. The expansion fraction $q$ includes failure to enter this detectable state. Actual survey sensitivity is not modeled.
+2. **Progress has a characteristic duration.** Suitable lineages follow a common process. The calculations use equal durations, and the interpretation assumes rate variation does not produce a substantial earlier population. The finite-window exercise varies starts only.
+3. **Progress survives environmental change.** Information passes between suitable environments without repeatedly resetting the process. Survival experiments support components of this assumption, not its full cosmic history.
+4. **The geometry and population are benchmarks.** Flat space, homogeneous independent galaxies, linear zone formation and ideal visibility make the calculation tractable. In particular, the planetary-start bound samples long times and distances where cosmological expansion and population history need refinement. Numerical convergence does not measure these physical uncertainties.
+
+Under these assumptions, planetary starts require severe suppression of expansion, while an early inherited process admits common life with a relatively narrow completion epoch. First carbon supplies a proposed physical onset for that process. Its preference over later onsets rests on their physical plausibility and permitted start ranks; a complete observer-conditioned comparison remains to be done.
+
+## Appendix A. Conditional empty-sky calculation
+
+### Inputs and completion counts
+
+Times are cosmic ages in Gyr, distances are Mpc, and $c=306.6014\ \mathrm{Mpc\,Gyr^{-1}}$. The comparison completion is $t_0=13.8$ Gyr. The zone formation history is
+$$
+L=t_0-s,\qquad x(t)=\operatorname{clip}((t-s)/L,0,1),\qquad
+N(t)=N_0x(t)^\alpha.
+$$
+The benchmark has $s=0.2$ Gyr, $\alpha=1$ and $N_0=10^{10}$ zones per galaxy; the abundance sweep spans $10^8$--$10^{11}$. Zones are retained after birth, so $dN/db$ supplies the birth cohorts. The $10^{11}$-star scale and appropriate-zone fraction of 0.1 provide a Fermi benchmark, not a measured count of suitable sites. The seed age, linear history and one trajectory per suitable zone are assumptions. Early zones describe progenitors of present-day galaxies, not fully assembled galaxies at $s$.
+
+Expansion probability $q$ is dimensionless and applies once to each completed zone. The speed is $v=\eta c$, with $\eta=0.5$ for the reference rows. Galaxy density $n_g=0.01\ \mathrm{Mpc^{-3}}$ is illustrative, pending population calibration. Host diameter $D=0.03$ Mpc is a rounded geometry benchmark; launch delay $\tau_\ell=0$ Gyr is configurable. These are scenario inputs, not fitted measurements.
+
+For an elapsed process of duration $T$, a planet-linked zone born at $b$ completes at $b+T$. An inherited zone completes at $\max(b,s+T)$. Writing the earliest frontier as $f=s+T=t_0-\delta$, their cumulative completion counts at deadline $t$ are
+$$
+m_{\mathrm{planet}}(t;T)=N(t-T),\qquad
+m_{\mathrm{inherited}}(t;f)=\mathbf 1_{t\ge f}N(t).
+$$
+The second expression includes zones born after the frontier: they inherit completed state and complete at birth. It is not frozen at $N(f)$. Each cohort enters the cumulative count once; completions are not resampled at successive timesteps. Earth supplies the comparison date, not a condition that the earliest completion occurs today. For the inherited clock, an inferred lead gives $T=L-\delta$.
+
+### Galaxy probability and observation kernels
+
+Independent expansion decisions among $m$ eligible zones give
+$$
+p_g(t)=1-(1-q)^{m(t)}.
+$$
+The implementation evaluates this as $-\operatorname{expm1}[m\operatorname{log1p}(-q)]$, with $p_g=0$ at $m=0$, including $q=1$. Continuous cohort counts are used as a deterministic population approximation. The approximation $p_g\simeq qm$ requires $qm\ll1$ and small $q$; it cannot replace the saturating expression generally. At arbitrary $q$, equal $qN_0$ does not guarantee exactly equal galaxy probabilities.
+
+Remote visibility requires launch, expansion across the host, and light travel to us. Physical arrival requires launch and travel of the front. Their completion deadlines at radius $r$ are, respectively,
+$$
+t_{\mathrm{vis}}(r)=t_0-\tau_\ell-D/v-r/c,\qquad
+t_{\mathrm{arr}}(r)=t_0-\tau_\ell-r/v.
+$$
+Thus write $t_k(r)=t_0-d_k-r/c_k$, with $(d_k,c_k)=(\tau_\ell+D/v,c)$ for visibility and $(\tau_\ell,v)$ for arrival. Visibility counts external host galaxies that have become persistently loud by their emission deadline, assuming perfect detection. It does not compute projected overlap or a survey response to an expanding volume. Arrival counts origin galaxies whose fronts could have reached our position; it is a separate diagnostic. The kernels are alternatives, not independent observations to multiply together. For the positive host diameter used here, $v=0$ produces neither visible hosts nor arrivals.
+
+Homogeneous Poisson galaxy positions, independently marked by the galaxy event probability, give
+$$
+\mu_k=4\pi n_g\int_0^{R_k}r^2p_g[t_k(r)]\,dr,\qquad
+R_k=c_k(\delta-d_k)_+,\qquad
+P(\mathrm{empty})=e^{-\mu_k}.
+$$
+This is a conditional scenario likelihood. It assumes homogeneous histories and independent galaxies in flat space, ideal persistent loudness, no dispersion in process duration and no observer conditioning. Cosmological expansion, clustering, actual detection limits, transport between galaxies and the probability of our existence require additional modelling.
+
+### Inversion and distributed inherited starts
+
+The 5% boundary solves $\mu_k=-\log(0.05)=2.995732273553991$; the separate $\mu_k=1$ contour has empty probability $e^{-1}=0.3679$. Neither is a posterior credibility statement. Monotone bisection searches $0\le\delta\le L$. If the threshold is not reached at $L$, the reported value is a history cap with `constrained_within_history=False`, not an inferred frontier. At $q=0$ there is no exclusion. A specified completion date can instead be used to invert for a per-zone $q$ ceiling; a ceiling of one with a false constraint flag means all probabilities are allowed.
+
+For distributed inherited starts, $S=s_{\mathrm{first}}+U$ with $U\sim\mathrm{Uniform}(0,W)$. Here $W$ is the full width and $\sigma_S=W/\sqrt{12}$. All groups have the same fixed duration $T$. Our completion at $t_0$ implies $T=t_0-S_{\mathrm{ours}}$, so $\delta=S_{\mathrm{ours}}-s_{\mathrm{first}}$ is also the earliest completion lead. The fraction of start groups completed at deadline $t$ is
+$$
+F(t)=\operatorname{clip}((t-t_0+\delta)/W,0,1).
+$$
+With a single shared start per galaxy, marginalization must precede galaxy saturation: $p_g=F[1-(1-q)^{N(t)}]$. For $H$ equal-sized independent start groups,
+$$
+p_g=1-\left\{1-F\left[1-(1-q)^{N(t)/H}\right]\right\}^{H}.
+$$
+The independent-per-zone-start comparison is $p_g=1-(1-qF)^{N(t)}$. Group counts are correlation sensitivities, not inferred halo counts. Expansion decisions remain per zone in every case; a galaxy expansion probability cannot be substituted for $q$.
+
+For $W>0$, the reported permitted start fraction is $\min(\delta_{\max}/W,1)$, with reciprocal labelled “first 1 in $K$”. A lead root beyond $W$ permits all start percentiles; it does not place our start outside the specified window. This conditional percentile ceiling is not a posterior probability for our rank. At $W=0$ the synchronized lead bound is recovered, but a start percentile is undefined. Holding $N(t)$ fixed makes the completion-date likelihood invariant to translating the seed epoch and compensating $T$; shifting the formation ramp changes $N(t)$ and therefore the likelihood. Any reused root must also fit within the new process history.
+
+### Analytic limits and numerical provenance
+
+Let $a=(\delta-d_k)_+$. In the saturated synchronized inherited limit, $p_g=1$ throughout the interior and
+$$
+\mu_k=\frac{4\pi n_gc_k^3a^3}{3},\qquad
+\delta_{\max}=d_k+\left(\frac{3\mu_*}{4\pi n_gc_k^3}\right)^{1/3}.
+$$
+This requires a positive propagation speed, saturation of eligible galaxies and a root within the history. For one shared start and finite width, saturation gives $p_g=F$. If $0<a\le W$,
+$$
+\mu_k=4\pi n_gc_k^3\int_0^a u^2\frac{a-u}{W}\,du
+=\frac{\pi n_gc_k^3a^4}{3W}.
+$$
+Consequently the lead above the delay scales as $W^{1/4}$ and the allowed start fraction approximately as $W^{-3/4}$ where the delay is negligible. This expression assumes saturated completed galaxies, a single shared start, no history truncation of the integration region and $a\le W$; it does not hold for independent zone starts. For completeness, when $a>W$ the saturated integral is $\pi n_gc_k^3[a^4-(a-W)^4]/(3W)$, recovering the synchronized sphere as $W\to0$.
+
+Radial integration uses 96-node Gauss--Legendre quadrature after the substitution $z=r/R=1-u^2$, resolving the thin unsaturated outer boundary. For nonzero $W$, it splits at the kink where $F$ reaches one and applies the rule on each smooth interval. Lead bisection stops at a bracket width of $10^{-9}$ Gyr or 64 iterations. Probability ceilings use 60 bisections in $\log_{10}q$ on $[-40,0]$, with an error if the lower bracket is insufficient. These numerical tolerances are distinct from uncertainty in the scenario assumptions.
+
+Saved verification recomputes 500 constrained baseline boundaries at 192 nodes: the maximum relative likelihood-boundary error is $1.40\times10^{-7}$. For start spreads, 600 boundaries and 60 probability ceilings checked at 192 nodes have maximum relative error $1.10\times10^{-7}$; both are below the declared $10^{-5}$ tolerance. Analytic-limit, cohort, correlation and inverse-likelihood tests provide separate checks.
+
+From the repository root, `make baseline`, `make inference` and `make start-spread` reproduce the numerical outputs; `make check` runs the tests. Each results directory retains its input configuration, summaries and tabulated grids; start-spread summaries also record the configuration SHA256. `verification.json` records refinement checks and sampling seeds. Quoted values should be read from these saved outputs rather than estimated from plotted curves. The timing calculation does not derive attainable complexity from causal-past opportunity budgets.
 
 ## References
 
