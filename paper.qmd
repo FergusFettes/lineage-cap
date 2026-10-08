@@ -1,5 +1,5 @@
 ---
-title: "The lineage cap: if complexity is a process, the empty sky dates our lineage"
+title: "The lineage cap: an empty sky dates the start of our lineage"
 author: "Fergus Fettes"
 date: 2026-10-08
 format:
@@ -10,6 +10,7 @@ format:
     fontsize: 11pt
     number-sections: false
     colorlinks: true
+    fig-pos: "t"
   html:
     toc: false
     html-math-method: katex
@@ -17,100 +18,89 @@ format:
 
 ## Abstract
 
-If complexification is a process rather than a lottery, the empty sky implies that building observers like us takes at least ~11 billion years, from a lineage clock that started almost simultaneously across the universe.
+Why are we so early? The standard answer treats the origin of observers as a lottery: a number of improbable "hard steps", whose count and difficulty are tuned until the model fits. We replace the lottery with a simpler assumption. Every suitable place runs the same complexification process, and the only free quantities are how many such places exist and how many of the lineages they produce expand where we could see them. Using a numerical model of zone abundance, process clocks and expansion, we find the following. If each lineage's clock starts when its planet forms, as an Earth origin of life requires, the empty sky demands that fewer than about one galaxy in fifty million ever produce an expanding civilisation. The lottery returns under another name. If instead lineages share a start, the empty sky allows the first lineages to have reached our level at most about 14 Myr before us. That figure barely moves across ten orders of magnitude of abundance and expansion probability. So the shortest possible lineage is at least 13.59 Gyr, within 0.1% of our own. Finally, only a universal event can synchronise lineages across the galaxies an expanding civilisation could reach in that time. The only sharp universal event early enough is the first carbon chemistry, about 0.2 Gyr after the Big Bang. Common life, an empty sky and no lottery together point to a lineage as old as the chemistry that made it possible.
 
-Hanson et al. explain our earliness with a lottery (life needs several hard steps) and a deadline (expanding "grabby" civilisations fill the universe soon). Here we drop the lottery. Suppose that in suitable conditions complexity accumulates at a rate bounded by physics, so the minimum time to reach our level, $T_{\min}$, is a property of the universe, not of luck. Lineweaver estimates that Earth-like planets are typically ~2 Gyr older than Earth. If each lineage started when its planet formed, most would be ~2 Gyr ahead of us and visibly expanding, and an empty sky rules that out unless almost every suitable planet fails, which brings the lottery back. The picture that survives has a lineage clock starting near-simultaneously, with the universe's first carbon chemistry, and running for most of cosmic history. Earliness then needs neither a lottery nor a deadline: everyone who can be here is roughly here now.
+## 1. Two ways to be early
 
-## 1. Earliness, two ways
+Humanity appeared 13.8 Gyr after the Big Bang. Stars will keep forming habitable planets for trillions of years, so most observers ought to appear much later than us. Any account of life in the universe has to explain why we are this early. There are two kinds of explanation, and they differ in what our arrival date is taken to measure.
 
-The two explanations differ in what our arrival date measures: a deadline, or a physical minimum time.
+**The lottery.** The hard-steps model (Carter 1983; Watson 2008) treats the emergence of observers as a sequence of $n$ improbable steps, each expected to take longer than a planet's habitable window. Conditioned on success, the chance of finishing by time $t$ grows as $t^n$. Hanson, Martin, McCarter and Paulson (2021) combine this with a deadline: "grabby" civilisations expand, fill the universe within a few Gyr, and prevent later origins inside their volumes. Anyone who exists at all must therefore be early.
 
-**The lottery.** Hanson, Martin, McCarter and Paulson (2021) model advanced life as $n$ hard steps, so the chance of finishing by time $t$ grows as $t^n$, with $n$ around 6. Without a deadline, most civilisations would arise trillions of years from now around red dwarfs, and 13.8 Gyr would be absurdly early. The deadline is grabby civilisations, expanding at a good fraction of $c$, which fill the universe within a few Gyr. Anyone who exists must therefore be early. We are a typical draw among origins that beat the deadline, and our date measures the deadline.
+The lottery carries two free quantities, and neither has a principled value. The number of steps is read off Earth's history; Hanson et al. put it "near the range 3 to 9", and other authors place it elsewhere (Snyder-Beattie et al. 2021). The overall improbability is not measured at all. Hanson et al. set their birth constant by *assuming* a uniform distribution over our rank among civilisation birth dates. The major evolutionary transitions identified by Maynard Smith and Szathmáry (1995) are real events in our lineage. Nothing in that analysis says each was improbable, and nothing fixes how improbable it was. So under the lottery, the probability that a suitable world produces observers is not an input. It is the residual: the number that reconciles common habitats with an empty sky.
 
-**The process.** Complexity accumulates along suitable trajectories at a rate limited by physics: energy flux, chemistry, the time to copy and select. The growth compounds, like the log-linear rise in genome complexity that Sharov and Gordon (2013) fit. There is then a cap, $T_{\min}$, the shortest time in which any lineage can reach our level. Given suitable conditions and time $T_{\min}$, success is close to certain; differences between sites come from environment, not luck. Our date then measures $T_{\min}$.
+**The process.** The alternative assumes less. Complexity accumulates along suitable trajectories at a rate set by physics, so every suitable place runs the same process and finishes in a characteristic time, not by luck. Two quantities remain free: how many suitable places there are, and what share of the lineages they produce go on to expand visibly. The rest of this note shows that the sky's answer barely depends on either. What it does depend on is when the clocks start.
 
-This note asks what the empty sky says about $T_{\min}$ under the process view.
+## 2. The model
 
-## 2. Setup
+We use a deliberately simple scenario model, computed numerically.
 
-The empty sky caps how many lineages can have reached our level more than $\Delta$ before us, and under the process view that cap translates directly into a bound on $T_{\min}$.
+- **Suitable zones.** Each galaxy holds $N$ suitable zones today. Our baseline is $10^{10}$: about $10^{11}$ stars, one in ten with a suitable zone. Zones appear at a steady rate from 0.2 Gyr after the Big Bang. One zone hosts one lineage.
+- **Process clock.** Every zone runs the same deterministic process. Two ways for its clock to start are considered:
+    - *planet-linked*: the clock starts when the zone forms, so older zones finish first;
+    - *shared*: all lineages share a start and later zones inherit the accumulated state, so zone age gives no head start.
+- **Expansion.** A lineage that reaches our level expands with probability $q$ at speed $v$; our baseline is $v = 0.5c$. A galaxy with $m$ such lineages hosts at least one expander with probability $1-(1-q)^m$.
+- **The empty sky.** Galaxies sit at $0.01\ \mathrm{Mpc^{-3}}$ in flat space. Summing over our past light cone gives $\mu$, the expected number of expanded volumes we would see now. We take $P(\text{empty}) = e^{-\mu}$ and report the boundary where an empty sky has probability 5%.
 
-Each site $i$ (a planet, or more generally a suitable trajectory of matter) has a lineage clock that starts at time $s_i$. Under the process view it reaches our level at
+Two kernels are computed: remote visibility, where we would see their expanded volume, and physical arrival, where their front would have reached us. We quote visibility unless stated. The model is conditional: no cosmological expansion, no spread in pace between lineages, ideal visibility. The numbers come from the lineage-cap calculation (commit 8594c5d), in which 31,040 boundaries pass a doubled-resolution integration check.
 
-$$
-a_i = s_i + T_{\min} + \epsilon_i, \qquad \epsilon_i \ge 0
-$$
+## 3. If life began on Earth
 
-where $\epsilon_i$ is an environmental delay with typical spread $\sigma$. We arrived at $t_0 = 13.8$ Gyr. A lineage that arrives $\Delta = t_0 - a_i$ before us, and then expands at speed $v$, has had time to reach every galaxy within roughly $v\Delta$. Call the number of galaxies in that sphere $G(\Delta)$. At $v \approx 0.5c$, $G$ is about $10^5$ to $10^6$ for $\Delta = 1$ Gyr and about $10^7$ to $10^8$ for $\Delta = 5$ Gyr.
+Suppose each zone's clock starts at its birth, and the process takes as long as it took on Earth, 4.6 Gyr. The oldest zones, born at 0.2 Gyr, then completed at a cosmic age of 4.8 Gyr: 9 Gyr before us. Any of those 9 Gyr of completions that went loud would be in our sky.
 
-We exist and see no expansion, so no such lineage is within reach:
+The empty sky therefore caps expansion. With $10^{10}$ zones per galaxy, at most $q \approx 2 \times 10^{-18}$ of completed lineages may expand. The arrival kernel gives $2 \times 10^{-17}$, and a capacity-weighted clock gives the same order. The ceiling scales inversely with abundance, so the real constraint is on $qN$. Each galaxy may produce an expanding civilisation with probability no more than about $2 \times 10^{-8}$ over its history: fewer than one galaxy in fifty million.
 
-$$
-p(\Delta)\, G(\Delta) \lesssim 1
-$$
+Planetary starts, common suitable zones and an empty sky are therefore incompatible unless almost every lineage dies, stays home or hides. That is a great filter, and it does the same work as the hard-steps lottery: a probability chosen to fit, with no independent support. Figure 1 shows the conflict directly. With a planetary start, the sky's lower bound on the process duration exceeds Earth's 4.6 Gyr for every $q$ above about $10^{-18}$.
 
-where $p(\Delta)$ is the chance that a given galaxy hosts a lineage arriving at least $\Delta$ before us. Under a lottery, $p$ can be tiny and nothing follows. Under a process, $p$ is set by how many sites started early, and the inequality becomes a statement about when lineage clocks start and how long they run.
+![Minimum process duration permitted by an empty sky, against the expansion probability $q$, for $10^{10}$ zones per galaxy at 0.5c (P(empty) = 5%). The orange line is Earth's 4.6 Gyr: with a planetary start, every bound above it contradicts Earth's history. Left: elapsed-time clock. Right: capacity-weighted clock.](results/inference/06_clock_bounds.png){width=100%}
 
-## 3. Case A: the clock starts when the planet forms
+## 4. If lineages share a start
 
-If lineages start with their planets, a process plus an empty sky is impossible unless suitable sites are about one in $10^{14}$, which is a lottery under another name.
+Now let all lineages share a start. A zone's age then gives no head start: zones forming late inherit a lineage whose clock is already running. Completions begin together at a frontier date and then follow the growing number of zones. Our completion is a data point, and the question becomes how far ahead of us the frontier can be.
 
-Take $s_i$ to be planet formation. Earth's lineage then took about 4.6 Gyr, and under the process view $T_{\min}$ is about that, since nothing says we were slow. Lineweaver (2001) estimates that Earth-like planets in the universe are on average about $1.8 \pm 0.9$ Gyr older than Earth. Three quarters of them are older than Earth, so a large share, conservatively half, started at least 1 Gyr before us and would have arrived at least 1 Gyr earlier.
+The answer is short. At $q = 1$, the frontier can be at most **13.7 Myr** ahead of us (27 Myr for physical arrival; 9.6 Myr if the empty sky only needs a 37% probability). It stays the same all the way down to $q = 10^{-6}$. It reaches 16 Myr at $q = 10^{-10}$, and only 63 Myr at $q = 10^{-12}$. The bound is set by geometry, not by abundance. Once every nearby galaxy would host an expander, adding more lineages changes nothing. What matters is how far an expanding volume, or its light, travels during the head start. At 0.5c, 14 Myr is a few megaparsecs: roughly the distance to Andromeda.
 
-A galaxy like ours holds roughly $10^8$ to $10^9$ Earth-sized planets in the habitable zones of Sun-like stars. If a fraction $f$ of them are suitable for the process, then
+So the shortest possible lineage is at least $13.6 - 0.014 \approx$ **13.59 Gyr**. Our lineage ran within about 0.1% of the fastest the universe allows, and that conclusion holds across ten orders of magnitude of the two free quantities. This is the central result. Under the process assumption, an empty sky does not ask how common life is or how often it expands. It tells us how long the process takes.
 
-$$
-p(1\,\mathrm{Gyr}) \approx \tfrac{1}{2}\, f\, N_{\mathrm{sites}} \approx \tfrac{1}{2}\, f \times 10^{8\text{--}9}
-$$
+![Maximum head start of the frontier over us, for shared-start clocks, against $q$ and four abundances (P(empty) = 5% solid, 37% dashed). Once there is about one loud lineage per galaxy ($qN \gtrsim 1$), every curve sits on the same geometric plateau. Left: remote visibility; right: physical arrival.](results/inference/04_head_start_bounds.png){width=100%}
 
-and the empty sky, with $G(1\,\mathrm{Gyr}) \approx 10^5$ to $10^6$, requires $f \lesssim 10^{-15}$ to $10^{-13}$. Essentially no planet in any galaxy is suitable. That is not a process. It is the hard-steps lottery, or a rare-Earth assumption, reintroduced through $f$.
+## 5. What could start the clocks together?
 
-So planetary start, process and loud expansion cannot all hold.
+A shared start needs a shared cause, and its reach is fixed by the scale found above. Expanding civilisations cross the distances between galaxies quickly. At 0.5c, Andromeda is 5 Myr away and the Virgo cluster about 110 Myr. A synchroniser therefore has to act on every galaxy within a few megaparsecs, and on every galaxy whose light we see, to within about ten million years.
 
-## 4. Case B: the clock starts with the universe's chemistry
+Shared causes come in two kinds:
 
-If lineage clocks start together, the empty sky is expected, and it bounds the cap at $T_{\min} \gtrsim 11$ Gyr: our lineage is within a Gyr or two of the fastest possible.
+- **Shared matter.** Trajectories intersect and structured information passes between sites. These events are local. The Sun formed with thousands of siblings in one birth cluster 4.6 Gyr ago. The Milky Way's disk had bursts of star formation 5.7, 1.9 and 1.0 Gyr ago, which coincide with passages of the Sagittarius dwarf (Ruiz-Lara et al. 2020). Each synchronises a cluster or a galaxy at most. After the earliest epoch, matter in different galaxies never shares trajectories.
+- **A shared clock.** The same cosmic history unfolds everywhere at about the same time, without contact. Peak star formation around 10 Gyr ago is universal but spread over billions of years. The first stars and the first carbon chemistry, about 0.2 Gyr after the Big Bang, are universal and comparatively sharp.
 
-Suppose the lineage's information begins with the first carbon chemistry after the first supernovae, around $t_{\mathrm{start}} \approx 0.2$ to $0.5$ Gyr, and is carried between sites: grains, planetesimals, comets, young planets. A planet that forms at time $t_p$ then inherits a lineage that is already $t_p - t_{\mathrm{start}}$ old. A planet's age gives no head start, because the clock was running before the planet existed. Every branch shares nearly the same start, and arrivals cluster at $t_{\mathrm{start}} + T_{\min}$, spread by $\sigma$.
+Only the second kind can reach across galaxies, and only its earliest member is sharp enough. Hence the title. A lineage that is common, synchronised and leaves the sky empty must have started with the first carbon. Any later start needs either a filter or a synchroniser that no one has identified.
 
-Under the process view, the fast tail of that spread is well populated, so the leaders arrive near $t_{\mathrm{start}} + T_{\min}$. The empty sky allows them at most $\Delta_{\max} \approx 1$ to $2$ Gyr ahead of us, where $p(\Delta)\,G(\Delta)$ reaches 1 for a non-negligible $p$:
+One refinement remains open. Even the first-star epoch is not sharp to ten million years: different halos lit up over roughly 100 to 200 Myr. With a spread in start times, the empty sky further requires that our lineage began near the leading edge of that spread. That is a statement about the Milky Way's progenitor halos, and the calculation is in progress.
 
-$$
-T_{\min} \;\ge\; t_0 - t_{\mathrm{start}} - \Delta_{\max} \;\approx\; 13.8 - 0.3 - (1\text{ to }2) \;\approx\; 10.5\text{ to }12.5\ \mathrm{Gyr}
-$$
+## 6. What follows
 
-Two readings of the same inequality:
+If the argument holds, several things should be true that the lottery does not predict:
 
-- **The cap is long.** Building observers takes most of cosmic history. That is why nobody is much earlier than us, with no lottery and no deadline needed.
-- **We are near-optimal.** Our own lineage took $t_0 - t_{\mathrm{start}} \approx 13.5$ Gyr, so it ran within $\Delta_{\max}$, roughly 10 to 15%, of the fastest possible.
+- **Lineages run long.** The minimum time to build observers is most of cosmic history. Sharov and Gordon's (2013) extrapolation of genome complexity, to an origin about 9.7 ± 2.5 Gyr ago, is in the same range. Their date would then mark the start of genetic information, not of the lineage.
+- **Life elsewhere in the solar system is related to ours.** Shared ancestry, not independent origin.
+- **Our neighbourhood was early.** The Milky Way's progenitors formed among the first structures, close to the leading edge of first-star formation.
+- **Many near-contemporaries, none far ahead.** Other lineages are reaching our level at about the same time, and their expansion fronts are on their way.
 
-This fits Sharov and Gordon's extrapolation of genome complexity to an origin about $9.7 \pm 2.5$ Gyr ago. On this reading, their date marks the start of genetic information, preceded by about 4 Gyr of pre-genetic chemistry since $t_{\mathrm{start}}$.
+## 7. Assumptions
 
-## 5. Predictions that separate the pictures
+The conclusion rests on four assumptions.
 
-The sharpest test is whether life found elsewhere in the solar system turns out to be related to ours.
-
-| Observable | Lottery (hard steps) | Process, cosmic start |
-|---|---|---|
-| Life elsewhere in the solar system | absent, or an independent origin | present and related: shared deep ancestry |
-| Timing of Earth's major transitions | evenly spaced, last one near the end of the habitable window | accelerating: each stage shorter, a log-linear complexity clock |
-| Organics in comets and interstellar objects | abiotic, low assembly index | some material above the abiotic assembly ceiling |
-| Minimum assembly time from lab and simulation calibration | unconstrained | about 10 Gyr or more to reach observed biological assembly |
-| Other civilisations | rare; any grabby ones arrived at random times | many near-contemporaries, none more than 1 to 2 Gyr older |
-
-## 6. Assumptions
-
-The conclusion rests on four assumptions; the first two are the ones a critic should attack.
-
-1. **Civilisations are loud.** A civilisation at our level expands within centuries, and its expansion is visible or reaches us. Staying quiet requires every civilisation, every faction within it and every replicator it releases to stay thermodynamically small forever: a universal singleton with satiable values. Under selection one expander is enough. Mass can be hidden, entropy production cannot, and if complexity tracks dissipation, a quiet civilisation is a simple one.
-2. **Complexification is a process.** The fast tail of arrival times is well populated, so $f$ is not astronomically small. This is the substantive bet. If it fails, both cases reduce to the lottery, and the predictions in section 5 are how to tell.
-3. **Lineage information travels between sites.** The clock can start before a planet forms only if information, not individual molecules, survives transport through grains, planetesimals and comets over Gyr. The accumulated assembly must also survive arrival on a new planet rather than restart there. Without both, older planets regain a head start and case B collapses into case A.
-4. **The numbers are order-of-magnitude.** Lineweaver's ages, the galaxy counts $G(\Delta)$ and $t_{\mathrm{start}}$ are rough. Case A fails by many orders of magnitude, so it is robust to them; the 11 Gyr figure in case B moves by about a Gyr with $\Delta_{\max}$.
-
-"Our level" means able to expand, which on present trends is within centuries of now, so our arrival time is $t_0$ to within a rounding error.
+1. **Expansion is loud.** A civilisation at our level that expands becomes visible. Staying quiet would require every civilisation, every faction within it and every replicator it releases to stay small forever. Under selection, one expander suffices. Mass can be hidden; the entropy production of a large civilisation is harder to hide.
+2. **The process is deterministic.** Suitable trajectories complete in the same time, without a lottery. This is the substantive bet. Adding a spread in pace is the next extension.
+3. **Information travels with matter.** A shared start needs lineage information to survive transport through grains, planetesimals and comets, and to keep accumulating rather than restart on arrival.
+4. **The geometry is simple.** Flat space, homogeneous galaxies, an illustrative galaxy density and ideal visibility. Cosmological expansion and survey sensitivity are extensions.
 
 ## References
 
+- Carter, B. (1983). [The anthropic principle and its implications for biological evolution](https://doi.org/10.1098/rsta.1983.0096). *Philosophical Transactions of the Royal Society A* 310, 347.
 - Hanson, R., Martin, D., McCarter, C. and Paulson, J. (2021). [If loud aliens explain human earliness, quiet aliens are also rare](https://arxiv.org/abs/2102.01522). *Astrophysical Journal* 922, 182.
-- Lineweaver, C. H. (2001). [An estimate of the age distribution of terrestrial planets in the universe: quantifying metallicity as a selection effect](https://arxiv.org/abs/astro-ph/0012399). *Icarus* 151, 307.
+- Lineweaver, C. H. (2001). [An estimate of the age distribution of terrestrial planets in the universe](https://arxiv.org/abs/astro-ph/0012399). *Icarus* 151, 307.
+- Maynard Smith, J. and Szathmáry, E. (1995). *The Major Transitions in Evolution*. Oxford University Press.
+- Ruiz-Lara, T., Gallart, C., Bernard, E. J. and Cassisi, S. (2020). [The recurrent impact of the Sagittarius dwarf on the star formation history of the Milky Way](https://doi.org/10.1038/s41550-020-1097-0). *Nature Astronomy* 4, 965.
 - Sharov, A. A. and Gordon, R. (2013). [Life before Earth](https://arxiv.org/abs/1304.3381). arXiv:1304.3381.
+- Snyder-Beattie, A. E., Sandberg, A., Drexler, K. E. and Bonsall, M. B. (2021). [The timing of evolutionary transitions suggests intelligent life is rare](https://doi.org/10.1089/ast.2019.2149). *Astrobiology* 21, 265.
+- Watson, A. J. (2008). [Implications of an anthropic model of evolution for emergence of complex life and intelligence](https://doi.org/10.1089/ast.2006.0115). *Astrobiology* 8, 175.
