@@ -1,0 +1,70 @@
+{
+  "status": "abundance/history implemented; completion and expansion inference specified",
+  "time": {
+    "now_gyr": 13.8,
+    "earth_age_gyr": 4.6,
+    "ramp_start_gyr": 0.2,
+    "ramp_start_note": "provisional: 200 million years, awaiting clarification of 200ky"
+  },
+  "abundance": {
+    "stars_now": 100000000000,
+    "appropriate_fraction": 0.1,
+    "appropriate_fraction_status": "Fermi benchmark, not measured",
+    "trajectories_per_appropriate_zone": 1,
+    "per_zone_capacity_now": 1.0,
+    "capacity_unit": "Earth-equivalent productive capacity",
+    "galaxy_density_mpc3": 0.01,
+    "galaxy_density_status": "illustrative; population calibration pending"
+  },
+  "history": {
+    "count_exponent": 1,
+    "capacity_exponent": 1,
+    "zone_destruction": false,
+    "environmental_delay_gyr": 0.0,
+    "comparison_exponents": [[1, 0], [0, 1]]
+  },
+  "clocks": {
+    "modes": ["planet_linked", "inherited"],
+    "primary_clock": "elapsed_time",
+    "secondary_clock": "integrated_capacity",
+    "earth_completion_gyr": 13.8,
+    "earth_completion_is_fitted_frontier": false
+  },
+  "expansion": {
+    "launch_delay_gyr": 0.0,
+    "loud_after_galaxy_crossing": true,
+    "host_galaxy_diameter_kpc": 30.0,
+    "diameter_status": "rounded geometry benchmark",
+    "kernels": ["remote_visibility", "physical_arrival_diagnostic"]
+  },
+  "sweep": {
+    "zones_now": [100000000, 1000000000, 10000000000, 100000000000],
+    "expansion_probability": {
+      "min": 1e-12,
+      "max": 1.0,
+      "points": 49,
+      "spacing": "log"
+    },
+    "speed_c": [0.001, 0.01, 0.1, 0.5, 0.9],
+    "candidate_duration_gyr": {
+      "min": 0.0,
+      "max": 13.6,
+      "search": "adaptive, resolving the empty-sky boundary"
+    },
+    "candidate_exposure": {
+      "min": 0.0,
+      "max": "integral of per-zone capacity from ramp start to today"
+    },
+    "special_limits": ["q=0", "v=0 for physical arrival", "q=1"]
+  },
+  "inference": {
+    "model": "independent-galaxy Poisson benchmark",
+    "mu_contours": [1.0, 2.995732273553991],
+    "infer": ["earliest_completion", "permitted_head_start", "duration", "earth_frontier_gap"]
+  },
+  "sources": {
+    "star_count": "https://www.esa.int/Science_Exploration/Space_Science/Gaia/Guide_to_our_galaxy",
+    "planet_demographics_for_refinement": "https://arxiv.org/abs/2010.14812",
+    "formation_history_for_refinement": "https://arxiv.org/abs/astro-ph/0012399"
+  }
+}

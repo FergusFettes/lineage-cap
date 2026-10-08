@@ -1,0 +1,33 @@
+{
+  "scope": "opportunity baseline; no completion or expansion inference yet",
+  "config_sha256": "84a93dcaa114b50c34f236a2b6da6fb632624c8acf43aaca0be551554d00b98d",
+  "assumed_history": {
+    "now": 13.8,
+    "start": 0.2,
+    "zones_now": 10000000000.0,
+    "capacity_now": 1.0,
+    "alpha": 1,
+    "beta": 1
+  },
+  "units": {
+    "capacity": "Earth-equivalent productive capacity",
+    "spacetime": "Earth-equivalent zone-Gyr",
+    "per_path_exposure": "Earth-equivalent Gyr"
+  },
+  "spacetime_today": {
+    "both_linear": 45333333333.333336,
+    "count_only": 68000000000.00001,
+    "capacity_only": 68000000000.00001
+  },
+  "mean_local_exposure_per_present_zone": 4.533333333333333,
+  "oldest_continuous_path_exposure": 6.800000000000001,
+  "earth_birth_reference_exposure": 3.822058823529411,
+  "fraction_zones_older_than_earth": 0.661764705882353,
+  "zones_older_than_earth": 6617647058.82353,
+  "cohort_budget_relative_error": 3.124999994390151e-08,
+  "sources": {
+    "star_count": "https://www.esa.int/Science_Exploration/Space_Science/Gaia/Guide_to_our_galaxy",
+    "planet_demographics_for_refinement": "https://arxiv.org/abs/2010.14812",
+    "formation_history_for_refinement": "https://arxiv.org/abs/astro-ph/0012399"
+  }
+}
