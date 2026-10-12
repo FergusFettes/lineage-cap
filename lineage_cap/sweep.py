@@ -9,7 +9,7 @@ from pathlib import Path
 import numpy as np
 
 from .baseline import write_csv
-from .clocks import KINDS, MODES, required_threshold
+from .clocks import KINDS, MODES, completed_zones, required_threshold
 from .expansion import KERNELS, Geometry, expected_count, galaxy_probability
 from .history import History
 from .inference import (
@@ -27,6 +27,17 @@ CEILING_COLUMNS = [
     "earth_case_frontier_cosmic_age_gyr", "earth_case_head_start_gyr",
     "q_max", "constrained", "galaxy_expansion_probability_today_at_q_max",
 ]
+
+
+def earth_case_galaxy_probability_today(h, frontier, kind, q_max):
+    """Galaxy expander probability by today at the Earth-case q ceiling.
+
+    Only planet-linked zones old enough to have completed by today are
+    eligible; zones that would complete in the future do not count. This
+    differs from the all-complete yield ``1-(1-q)**zones_now``.
+    """
+    completions = completed_zones(h, h.now, frontier, "planet_linked", kind)
+    return float(galaxy_probability(completions, q_max))
 
 
 def run(config_path: Path, output: Path):
@@ -78,7 +89,8 @@ def run(config_path: Path, output: Path):
                             "earth_case_head_start_gyr": h.now - frontier,
                             "q_max": q_max, "constrained": constrained,
                             "galaxy_expansion_probability_today_at_q_max":
-                                float(galaxy_probability(scenario.zones_now, q_max)),
+                                earth_case_galaxy_probability_today(
+                                    scenario, frontier, kind, q_max),
                         })
     write_csv(output / "head_start_bounds.csv", BOUND_COLUMNS,
               ([row[col] for col in BOUND_COLUMNS] for row in bounds))

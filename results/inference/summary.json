@@ -158,7 +158,7 @@
       "earth_case_head_start_gyr": 9.0,
       "q_max": 2.05758910103982e-18,
       "constrained": true,
-      "galaxy_expansion_probability_today_at_q_max": 2.0575890798714555e-08
+      "galaxy_expansion_probability_today_at_q_max": 1.3616398370060364e-08
     },
     {
       "clock_kind": "elapsed_time",
@@ -170,7 +170,7 @@
       "earth_case_head_start_gyr": 9.0,
       "q_max": 1.6459281497687925e-17,
       "constrained": true,
-      "galaxy_expansion_probability_today_at_q_max": 1.6459280143148262e-07
+      "galaxy_expansion_probability_today_at_q_max": 1.0892170986155317e-07
     },
     {
       "clock_kind": "integrated_capacity",
@@ -182,7 +182,7 @@
       "earth_case_head_start_gyr": 3.403922322775294,
       "q_max": 2.1872732684061876e-17,
       "constrained": true,
-      "galaxy_expansion_probability_today_at_q_max": 2.1872730291979875e-07
+      "galaxy_expansion_probability_today_at_q_max": 1.4474601463941002e-07
     },
     {
       "clock_kind": "integrated_capacity",
@@ -194,7 +194,7 @@
       "earth_case_head_start_gyr": 3.403922322775294,
       "q_max": 1.7494643850542727e-16,
       "constrained": true,
-      "galaxy_expansion_probability_today_at_q_max": 1.7494628547423482e-06
+      "galaxy_expansion_probability_today_at_q_max": 1.1577331140535939e-06
     }
   ],
   "interpretation": {

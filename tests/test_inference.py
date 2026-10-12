@@ -102,6 +102,24 @@ def test_expansion_ceiling_brackets_earth_case_and_matches_rare_limit():
     assert mu == pytest.approx(-math.log(.05), rel=1e-10)
 
 
+def test_earth_case_today_probability_uses_completed_zones_only():
+    from lineage_cap.sweep import earth_case_galaxy_probability_today
+
+    h, g, speed = History(), Geometry(), .5
+    frontier = earth_case_frontier(h, 4.6, "elapsed_time")
+    q, constrained = expansion_probability_ceiling(
+        h, g, frontier, speed, "planet_linked", "elapsed_time",
+        "remote_visibility")
+    assert constrained
+    today = earth_case_galaxy_probability_today(h, frontier, "elapsed_time", q)
+    # Only zones born early enough to finish a 4.6 Gyr process by today count:
+    # N(13.8 - 4.6) = 6.62e9 of 1e10 zones, not the full present-day count.
+    assert completed_zones(h, h.now, frontier, "planet_linked",
+                           "elapsed_time") == pytest.approx(6.61764705882353e9)
+    assert today == pytest.approx(1.36163983700604e-8, rel=1e-6)
+    assert today < float(galaxy_probability(h.zones_now, q))
+
+
 def test_capacity_earth_case_uses_observed_local_exposure():
     h = History()
     frontier = earth_case_frontier(h, 4.6, "integrated_capacity")
