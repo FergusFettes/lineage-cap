@@ -4,7 +4,7 @@
   superseded framing, not the current plan.
 - Track work in beads (`bd ready`, `bd update`, `bd close`). Export
   `.beads/issues.jsonl` before commits; do not commit the Dolt database.
-- Make small logical commits. This repository currently has no git remote.
+- Make small logical commits. Remote: private GitHub repo `FergusFettes/lineage-cap` (`origin`, SSH).
 - Run the baseline with `make baseline` and checks with `make check`.
 - Keep source assumptions and units in the scenario configuration. Report
   Earth-equivalent capacity separately from elapsed time and physical volume.
