@@ -18,7 +18,7 @@ format:
 
 ## Abstract
 
-Why are we so early? Hard-step accounts treat the emergence of observers as a sequence of improbable transitions; expansion by earlier civilisations then limits the time available for later origins. We examine a different hypothesis: suitable lineages accumulate inherited progress through a physical process with a common characteristic duration. In a flat-space, ideal-visibility model, planetary starts and an Earth-length process require fewer than about one expanding civilisation per fifty million galaxies, even if all suitable zones eventually complete. Inherited clocks allow a different explanation. Once expansion is common at the galaxy level, the empty sky limits the lead of a candidate completion frontier to about 14 Myr in the zero-spread benchmark. A common cosmic onset can supply approximately contemporary lineages without contact between galaxies. First carbon is a candidate: an illustrative 100--200 Myr spread in starts requires our lineage to be among roughly the first third to fifth of starts, under a common-duration model. Broader windows remain possible but require an earlier position within their distributions. Measured from a first-carbon onset, the inferred duration is roughly 13.6 Gyr. The head-start constraint is a geometrical result; the long-lineage interpretation additionally assumes an early onset, continuity of inherited information, and limited variation in process duration.
+Why are we so early? Hard-step accounts treat the emergence of observers as a sequence of improbable transitions; expansion by earlier civilisations then limits the time available for later origins. We examine a different hypothesis: suitable lineages accumulate inherited progress through a physical process with a common characteristic duration. In a flat-space, ideal-visibility model, planetary starts and an Earth-length process require fewer than about one expanding civilisation per fifty million galaxies, even if all suitable zones eventually complete. Inherited clocks allow a different explanation. Once expansion is common at the galaxy level, the empty sky limits the lead of a candidate completion frontier to about 14 Myr in the zero-spread benchmark. A common cosmic onset can supply approximately contemporary lineages without contact between galaxies. First carbon is a candidate: an illustrative 100--200 Myr spread in starts requires our lineage to be among roughly the first third to fifth of starts, under a common-duration model. Broader windows remain possible but require an earlier position within their distributions. Independent variation in development duration strengthens this requirement, with results highly sensitive to the fast tail of the duration distribution. Measured from a first-carbon onset, our lineage age is roughly 13.6 Gyr; the typical duration in a variable population can be longer. The head-start constraint is a geometrical result; the long-lineage interpretation additionally assumes an early onset, continuity of inherited information, and limited variation in process duration.
 
 ## 1. Two ways to be early
 
@@ -100,7 +100,21 @@ With one shared start per galaxy and expansion saturated at the galaxy level, th
 
 A different comparison holds our rank fixed. If our start is at the median of a 5 Gyr window, the permitted per-lineage expansion probability falls to about $1.4\times10^{-16}$ at $N=10^{10}$. A broad window can therefore be reconciled with the sky through early positioning or suppressed expansion. Those are different assumptions, and their numerical probabilities should not be identified with one another.
 
-Correlation also matters. With a hundred independent ancestry groups per galaxy and $W=200$ Myr, the allowed offset falls to about 15 Myr. This is a sensitivity example, not an inferred number of progenitor groups. We retain a common process duration and do not attempt to fit its variation here.
+Correlation also matters. With a hundred independent ancestry groups per galaxy and $W=200$ Myr, the allowed offset falls to about 15 Myr. This is a sensitivity example, not an inferred number of progenitor groups.
+
+**Variation in developmental duration.** A common onset does not ensure closely grouped completions if development proceeds at different rates. To test this, retain one shared clock per galaxy and saturated expansion, but add an independent, uniformly distributed duration excess of full width $D$ to the uniform start window. The completion distribution is the convolution of the two windows. A full duration range of 1.36 Gyr, or 10% of the 13.6 Gyr reference, reduces the allowed completion rank to the first 2.1--3.2%, approximately one in 32--48, for the 100--200 Myr start windows. These are completion ranks; with variable durations they no longer identify our start rank.
+
+The distribution's early tail matters as much as its width. For comparison, let durations follow a normal distribution truncated below zero and fit its location to the same empty-sky boundary. At equal standard deviation, this smooth tail gives much stronger earliness requirements than the bounded uniform law:
+
+| Duration standard deviation, relative to 13.6 Gyr | Uniform durations: permitted completion fraction | Normal durations: permitted completion fraction |
+|---:|---:|---:|
+| 1% (136 Myr) | 3.9--6.0% | 0.53--0.58% |
+| 3% (408 Myr) | 2.0--3.1% | 0.039--0.040% |
+| 10% (1.36 Gyr) | 0.99--1.46% | 0.00175% |
+
+Ranges cover the two start windows, at the same 5% visibility boundary. For uniform durations $D=\sqrt{12}\sigma_T$: a 10% standard deviation is a full range of 4.71 Gyr, not 1.36 Gyr. The normal case with $\sigma_T=1.36$ Gyr requires roughly the first one in 57,000 completions and a fitted duration location near 19.1 Gyr. It does not describe a population centred on a 13.6 Gyr duration. Rare earlier completions receive a large visibility weight because the accessible volume grows with the cube of their lead.
+
+We have no empirical estimate of this inter-lineage dispersion. These widths and shapes are sensitivity assumptions. Many independent small increments can yield a narrow total duration, whereas persistent differences in developmental rates need not average away. A physical explanation of synchrony therefore needs to constrain the early tail, not merely assert a long average duration. The bounded calculation assumes a sharp minimum duration; the normal comparison tests the consequence of removing that edge. Neither supplies an observer-conditioned probability for our position.
 
 ## 6. Observer selection and lineage duration
 
@@ -112,7 +126,7 @@ The duration follows only after choosing an onset. For an assumed first-carbon s
 
 The finite-window model has a different interpretation. With earliest start $s_{\mathrm{first}}$ and our offset $\delta$, the common duration is $T=13.8-s_{\mathrm{first}}-\delta$. For $s_{\mathrm{first}}=0.2$ Gyr and a 100--200 Myr window, the permitted offsets give a duration of roughly **13.6 Gyr**. The uncertainty in the physical onset and the assumed clock matters more than the decimal places. The 0.1% proximity of the zero-spread benchmark should not be transferred to a claim about the fastest biological lineage in a population with varying starts or rates.
 
-The proposal is thus a long process begun early, with our lineage among its first completions. The geometry limits predecessor timing; the proposed cosmic onset translates that timing into a lineage age.
+The proposal is thus a long process begun early, with our lineage among its first completions. The geometry limits predecessor timing; the proposed cosmic onset translates that timing into a lineage age. The common-duration bound does not become a lower bound on every duration in a variable population: the smooth-tail comparison instead constrains a distribution and can require a substantially longer typical duration than our own.
 
 ## 7. Inheritance and implications
 
@@ -124,7 +138,7 @@ If that hypothesis and an early shared onset hold, the following expectations fo
 
 - **Lineages predate their present planets.** Earth inherits substantial prior progress. The proposed history is longer than terrestrial biological history alone.
 - **A population of near-contemporary completions.** With common suitable zones and appreciable expansion, there should be other lineages near our stage, with few sufficiently early predecessors to be visible now.
-- **An early ancestral start.** In the illustrative first-carbon windows, our inherited lineage starts in the leading part of the distribution. Connecting that rank to actual Milky Way progenitors requires a model of ancestry and mixing.
+- **An early completion.** With common durations, the illustrative first-carbon windows place our ancestral start in the leading part of the distribution. With variable durations, early completion can also reflect faster development. Connecting either interpretation to actual Milky Way progenitors requires a model of ancestry and mixing.
 - **Related solar-system life under common seeding.** If the solar system inherited a common founding population, life elsewhere in it should share ancestry with ours. Timing alone does not exclude multiple unrelated arrivals.
 
 These consequences belong to the combined physical hypothesis. They are not all independent predictions of the visibility calculation.
@@ -192,7 +206,7 @@ $$
 R_k=c_k(\delta-d_k)_+,\qquad
 P(\mathrm{empty})=e^{-\mu_k}.
 $$
-This is a conditional scenario likelihood. It assumes homogeneous histories and independent galaxies in flat space, ideal persistent loudness, no dispersion in process duration and no observer conditioning. Cosmological expansion, clustering, actual detection limits, transport between galaxies and the probability of our existence require additional modelling.
+This is a conditional scenario likelihood. The baseline assumes homogeneous histories and independent galaxies in flat space, ideal persistent loudness, no dispersion in process duration and no observer conditioning. The duration sensitivities below relax the common-duration assumption only in the saturated, single-clock-per-galaxy limit. Cosmological expansion, clustering, actual detection limits, transport between galaxies and the probability of our existence require additional modelling.
 
 ### Inversion and distributed inherited starts
 
@@ -221,6 +235,31 @@ Reference start-window bounds use $q=1$, $N_0=10^{10}$, $v=0.5c$, one start per 
 | 1000 | 56.32 | 5.63% |
 | 5000 | 84.13 | 1.68% |
 
+### Independent start and duration variation
+
+In the saturated one-clock-per-galaxy sensitivity, let $U\sim\mathrm{Uniform}(0,W)$ describe the start offset and $V\sim\mathrm{Uniform}(0,D)$ an independent duration excess. Completion occurs at $s_{\mathrm{first}}+T_{\min}+X$, where $X=U+V$. Our completion today sets $\delta=t_0-s_{\mathrm{first}}-T_{\min}$. For positive widths the completion CDF is
+$$
+F_X(x)=\frac{x_+^2-(x-W)_+^2-(x-D)_+^2+(x-W-D)_+^2}{2WD}.
+$$
+Here $x_+=\max(x,0)$. The output rank is $F_X(\delta)$, not $\delta/(W+D)$. Independence gives $\sigma_X^2=(W^2+D^2)/12$. With visibility delay $d$ and $a=(\delta-d)_+$, averaging the accessible sphere volumes gives
+$$
+\mu=\frac{4\pi n_gc^3}{3}\mathbb E[(a-X)_+^3]
+=\frac{\pi n_gc^3}{15WD}\left[a^5-(a-W)_+^5-(a-D)_+^5+(a-W-D)_+^5\right].
+$$
+At $D=0$ this recovers the previous uniform-start result. When $a<\min(W,D)$, the bound scales as $a\propto(WD)^{1/5}$, while $F_X(\delta)=\delta^2/(2WD)$ if also $\delta<\min(W,D)$. Adding the two full widths and treating their sum as uniform would give a different early tail.
+
+For the smooth-tail comparison, duration $T$ follows a normal law with location $m$ and scale $\sigma_T$, conditioned on $T\ge0$. Its CDF for $t\ge0$ is
+$$
+F_T(t)=\frac{\Phi((t-m)/\sigma_T)-\Phi(-m/\sigma_T)}{1-\Phi(-m/\sigma_T)},
+$$
+and is zero for $t<0$. With $L=t_0-s_{\mathrm{first}}$, the completion fraction by elapsed time $y$ is $F_C(y)=W^{-1}\int_0^W F_T(y-u)\,du$. We solve
+$$
+\mu=4\pi n_gc^3\int_0^{(L-d)_+}\tau^2 F_C(L-d-\tau)\,d\tau=\mu_*
+$$
+for $m$, and report $F_C(L)$. Thus $m$ is inferred separately for each chosen $\sigma_T$; it is not fixed to Earth's age or the 13.6 Gyr reference. At the tabulated solutions truncation is negligible, so $m$ and $\sigma_T$ are effectively the duration mean and standard deviation. Both comparisons use independent galaxies, internally shared start-duration pairs, $n_g=0.01\,\mathrm{Mpc}^{-3}$, $v=0.5c$, the 30 kpc host delay, and $\mu_*=-\log(0.05)$. They do not cover independent duration draws within each galaxy or correlations between starts and rates.
+
+These calculations do not determine a physically reasonable dispersion. For example, $n$ independent equal-mean increments with individual coefficient of variation $c_v$ give $\sigma_T/\mathbb E[T]=c_v/\sqrt n$. Persistent lineage-specific rate differences introduce another source of variation that this averaging argument does not remove. Neither the effective number of independent increments nor the between-lineage rate dispersion is specified by the process hypothesis alone.
+
 ### Analytic limits and numerical provenance
 
 Let $a=(\delta-d_k)_+$. In the saturated synchronized inherited limit, $p_g=1$ throughout the interior and
@@ -239,7 +278,9 @@ Radial integration uses 96-node Gauss--Legendre quadrature after the substitutio
 
 Saved verification recomputes 500 constrained baseline boundaries at 192 nodes: the maximum relative likelihood-boundary error is $1.40\times10^{-7}$. For start spreads, 600 boundaries and 60 probability ceilings checked at 192 nodes have maximum relative error $1.10\times10^{-7}$; both are below the declared $10^{-5}$ tolerance. Analytic-limit, cohort, correlation and inverse-likelihood tests provide separate checks.
 
-From the repository root, `make baseline`, `make inference` and `make start-spread` reproduce the numerical outputs; `make check` runs the tests. Each results directory retains its input configuration, summaries and tabulated grids; start-spread summaries also record the configuration SHA256. `verification.json` records refinement checks and sampling seeds. Quoted values should be read from these saved outputs rather than estimated from plotted curves. The timing calculation does not derive attainable complexity from causal-past opportunity budgets.
+The separate `make duration-spread` calculation saves bounded and normal-tail tables and its configuration under `results/duration_spread`. Bounded radial integration splits at the convolution CDF's polynomial breaks and uses eight Gauss--Legendre nodes per piece, checked against exact sphere moments and 16 nodes. The normal start convolution is analytic; its radial integral uses 192 nodes and is checked at 384 nodes with a relative boundary tolerance of $10^{-7}$. Each distribution's location is inverted by 64 bisections. Fractional widths refer to a fixed 13.6 Gyr scale, not to a fitted mean. The saved verification includes the configuration SHA256.
+
+From the repository root, `make baseline`, `make inference`, `make start-spread` and `make duration-spread` reproduce the numerical outputs; `make check` runs the tests. Each results directory retains its input configuration and tabulated outputs; the sweep summaries or verification files also record configuration hashes. `verification.json` records refinement checks and sampling seeds where applicable. Quoted values should be read from these saved outputs rather than estimated from plotted curves. The timing calculation does not derive attainable complexity from causal-past opportunity budgets.
 
 ## References
 

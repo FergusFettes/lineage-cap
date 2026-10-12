@@ -172,3 +172,19 @@ correspondence. Old migrated blog comments often display 2023 dates; those
 were not treated as dates of the original posts. Some arXiv HTML conversions
 display a spurious 2026 document date; chronology here follows submission and
 publication metadata.
+
+## Follow-up found while checking duration variance
+
+The next search located Oleg Ponfilenok's GitHub manuscript,
+[The Critical Path of Evolution](https://github.com/oponfil/critical-path-of-evolution/blob/main/critical_path_evolution_en.tex).
+It is a substantially closer conceptual overlap than the sources above:
+many easy steps, a cosmic-age developmental path, common cosmic timing,
+and a dispersion bound inferred from the absence of loud civilisations.
+It uses a CMB thermal gate and an independent-increment concentration argument.
+This discovery narrows the earlier novelty assessment. Repository availability
+does not establish its publication status, priority, or validity, and its
+specific quantitative and physical claims have not been audited here.
+The mathematical concentration argument alone does not establish that
+different lineages share the same mean rate or that environmental variation
+is negligible. The new duration-spread calculation in this project treats
+dispersion and tail shape as explicit sensitivities instead.
