@@ -1,0 +1,22 @@
+{
+  "status": "sensitivity only; no empirical estimate of development-time dispersion",
+  "reference_duration_gyr": 13.6,
+  "now_gyr": 13.8,
+  "earliest_start_gyr": 0.2,
+  "start_spans_gyr": [0.1, 0.2],
+  "duration_full_span_fractions": [0, 0.01, 0.03, 0.1, 0.3],
+  "duration_std_fractions": [0.01, 0.03, 0.1],
+  "distribution": "independent uniform start U in [0,W] and excess duration V in [0,D]",
+  "fraction_definition": "D or sigma_T divided by the fixed 13.6 Gyr reference, not the fitted mean duration",
+  "correlation": "one (start,duration) pair shared by each galaxy; pairs independent across galaxies",
+  "galaxy_density_mpc3": 0.01,
+  "speed_c": 0.5,
+  "host_diameter_mpc": 0.03,
+  "launch_delay_gyr": 0,
+  "mu_threshold": 2.995732273553991,
+  "geometry": "flat space; ideal persistent host visibility; galaxy expansion saturated",
+  "interpretation": "completion-rank ceilings, not posterior probabilities; lower duration endpoint fitted to empty-sky boundary",
+  "scope": "no observer conditioning, independent-within-galaxy duration draws, or empirical carbon distribution",
+  "smooth_tail_comparison": "normal duration distribution truncated below zero; fixed sigma as a fraction of reference duration; fit normal location to empty sky; same uniform starts and one clock per galaxy",
+  "normal_quadrature_order": 192
+}

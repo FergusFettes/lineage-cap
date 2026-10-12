@@ -1,0 +1,11 @@
+{
+  "config_sha256": "f10c23dc88edf6c832f0247d7185f42bc7f96d8c2b0f839841d6147e3554467f",
+  "rows": 16,
+  "method": "8-node piecewise polynomial integration, checked with 16 nodes",
+  "max_relative_boundary_error": 1.5543122344752192e-15,
+  "tolerance": 1e-10,
+  "normal_rows": 6,
+  "normal_method": "radial Gauss-Legendre quadrature at 192 and 384 nodes; analytic start convolution",
+  "normal_max_relative_boundary_error": 8.626432901337466e-14,
+  "normal_tolerance": 1e-07
+}

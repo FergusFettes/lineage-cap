@@ -210,3 +210,27 @@ Implementation: `lineage_cap/start_spread.py`; numerical runner and plotting
 modules produce `results/start_spread` with `make start-spread`. This extension
 does not yet assign a capacity-weighted completion clock to dispersed starts;
 that requires specifying how capacity histories shift with the seed.
+
+## Development-duration sensitivity (12 October, requested by Fergus)
+
+Keep the baseline unchanged. Add a saturated, one-clock-per-galaxy comparison
+with independent start and duration variation. Uniform starts have full width
+W=0.1 or 0.2 Gyr. First take durations T_min+V, V uniform on [0,D], independent
+of the start offset U. Infer delta=t_now-s_first-T_min from the same ideal
+host-visibility threshold and report the completion rank P(U+V<=delta).
+Report full ranges and standard deviations separately. Fractional inputs are
+relative to 13.6 Gyr, not to a subsequently fitted population mean.
+
+Compare the bounded duration law to a normal duration law truncated below zero,
+with sigma=1%,3%,10% of 13.6 Gyr. Fit its location rather than impose a typical
+duration of 13.6 Gyr; the normal model has a faster tail and no positive hard
+minimum. This is distribution-shape sensitivity, not a measured biological law.
+Both start and duration are shared within each galaxy and independent between
+galaxies. No observer-conditioned likelihood or within-galaxy rate variation
+is introduced. The calculation is a special saturated limit, not a replacement
+for the existing q/abundance sweeps.
+
+`make duration-spread` reads `configs/duration_spread.json`, writes bounded and
+normal-tail tables under `results/duration_spread`, and saves refinement checks.
+Tests compare the bounded radial integral to exact convolved sphere moments
+and the zero-duration-scatter limit to the existing start-window model.
