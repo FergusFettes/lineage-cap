@@ -1,6 +1,8 @@
 ---
 title: "The lineage cap: an empty sky and a cosmic-age lineage"
-author: "Fergus Fettes"
+author:
+  - name: "Fergus Fettes"
+    affiliation: "Independent researcher, Glasgow, UK"
 date: 2026-10-08
 format:
   pdf:
@@ -18,7 +20,7 @@ format:
 
 ## Abstract
 
-Why are we so early? Hard-step accounts treat the emergence of observers as a sequence of improbable transitions; expansion by earlier civilisations then limits the time available for later origins. We examine a different hypothesis: suitable lineages accumulate inherited progress through a physical process with a common characteristic duration. In a flat-space, ideal-visibility model, planetary starts and an Earth-length process require fewer than about one expanding civilisation per fifty million galaxies, even if all suitable zones eventually complete. Inherited clocks allow a different explanation. Once expansion is common at the galaxy level, the empty sky limits the lead of a candidate completion frontier to about 14 Myr in the zero-spread benchmark. A common cosmic onset can supply approximately contemporary lineages without contact between galaxies. First carbon is a candidate: an illustrative 100--200 Myr spread in starts requires our lineage to be among roughly the first third to fifth of starts, under a common-duration model. Broader windows remain possible but require an earlier position within their distributions. Independent variation in development duration strengthens this requirement, with results highly sensitive to the fast tail of the duration distribution. Measured from a first-carbon onset, our lineage age is roughly 13.6 Gyr; the typical duration in a variable population can be longer. The head-start constraint is a geometrical result; the long-lineage interpretation additionally assumes an early onset, continuity of inherited information, and limited variation in process duration.
+Why are we so early? Hard-step accounts treat the emergence of observers as a sequence of improbable transitions; expansion by earlier civilisations then limits the time available for later origins. We examine a different hypothesis: suitable lineages accumulate inherited progress through a physical process with a common characteristic duration. In a flat-space, ideal-visibility model, planetary starts and an Earth-length process give an expected yield of fewer than about one expander per fifty million galaxies if every suitable zone eventually completes; counting only zones old enough to have completed by today, the probability that a galaxy hosts an expander by today is about one in 73 million. Inherited clocks allow a different explanation. Once expansion is common at the galaxy level ($qN$ above about ten), the empty sky limits the lead of a candidate completion frontier to about 14 Myr in the zero-spread benchmark. A common cosmic onset can supply approximately contemporary lineages without contact between galaxies. First carbon is a candidate: an illustrative 100--200 Myr spread in starts requires our lineage to be among roughly the first third to fifth of starts, under a common-duration model. Broader windows remain possible but require an earlier position within their distributions. Independent variation in development duration strengthens this requirement, with results highly sensitive to the fast tail of the duration distribution. Measured from a first-carbon onset, our lineage age is roughly 13.6 Gyr; the typical duration in a variable population can be longer. The head-start constraint is a geometrical result; the long-lineage interpretation additionally assumes an early onset, continuity of inherited information, and limited variation in process duration. All quoted bounds are conditional on this scenario: the timing calculation constrains completion dates under an assumed inherited process, and does not derive attainable complexity from accumulated opportunity in causal pasts. No bound here is a measured rate or a posterior probability.
 
 ## 1. Two ways to be early
 
@@ -54,7 +56,7 @@ Suppose each zone's clock starts when its planet forms and the process takes 4.6
 
 In the linear zone history, about two thirds of present-day zones are old enough to have completed such a process. The earliest completions occur at cosmic age 4.8 Gyr, nine billion years before us. An expanding civilisation among those predecessors could have become visible long ago.
 
-With $10^{10}$ zones per galaxy, the empty sky permits at most $q\approx2.1\times10^{-18}$ per completed lineage under the visibility model. The arrival diagnostic gives $q\approx1.7\times10^{-17}$. The ceiling scales approximately inversely with abundance: $qN\lesssim2.1\times10^{-8}$ for visibility. Even if every present-day zone eventually completes, the expected yield is only about one expander per fifty million galaxies. The probability of a galaxy having an expander by today is about $1.4\times10^{-8}$, or one in 73 million, because only some zones have completed.
+With $10^{10}$ zones per galaxy, the empty sky permits at most $q\approx2.1\times10^{-18}$ per completed lineage under the visibility model. The arrival diagnostic gives $q\approx1.7\times10^{-17}$. The ceiling scales approximately inversely with abundance: $qN\lesssim2.1\times10^{-8}$ for visibility. If every present-day zone eventually completes, the expected number of expanders per galaxy is $qN\approx2.1\times10^{-8}$ --- an expected yield of about one expander per fifty million galaxies, not a probability. Counting only the zones old enough to have completed by today, the probability of a galaxy having an expander by today is about $1.4\times10^{-8}$, or one in 73 million.
 
 Thus common suitable zones, a common Earth-length process and planetary starts require an extremely small expansion fraction in this model. Almost every completed lineage must fail to expand visibly. That suppression has the role of a filter, whether its explanation is biological, technological or behavioural. Figure 1 shows the same constraint as a lower bound on process duration.
 
@@ -145,12 +147,13 @@ These consequences belong to the combined physical hypothesis. They are not all 
 
 ## 8. Assumptions and scope
 
-Four assumptions carry the interpretation.
+Five assumptions carry the interpretation.
 
 1. **Expansion becomes detectable.** After the modeled host-crossing delay, an expanding civilisation produces a persistent signature we would recognise. The expansion fraction $q$ includes failure to enter this detectable state. Actual survey sensitivity is not modeled.
 2. **Progress has a characteristic duration.** Suitable lineages follow a common process. The calculations use equal durations, and the interpretation assumes rate variation does not produce a substantial earlier population. The finite-window exercise varies starts only.
 3. **Progress survives environmental change.** Information passes between suitable environments without repeatedly resetting the process. Survival experiments support components of this assumption, not its full cosmic history.
 4. **The geometry and population are benchmarks.** Flat space, homogeneous independent galaxies, linear zone formation and ideal visibility make the calculation tractable. In particular, the planetary-start bound samples long times and distances where cosmological expansion and population history need refinement. Numerical convergence does not measure these physical uncertainties.
+5. **The process hypothesis is assumed, not derived.** The calculation constrains completion timing given an inherited process with a characteristic duration. It does not calculate accumulated Goldilocks opportunity across past light cones, and it does not derive what complexity such an opportunity budget could attain. A physical derivation of that mapping, and an observer-conditioned likelihood, remain open work; until then every number in this paper is a conditional scenario bound, not an empirical estimate.
 
 ## Appendix A. Conditional empty-sky calculation
 
