@@ -10,6 +10,14 @@ Existing tracked work this spec organises: bead lc-03q (ideal-loud
 calibration + observer-conditioned likelihood), bead lc-q9v (Goldilocks
 opportunity budgets across past light cones), bead lc-qs9 (bibliography).
 
+Implemented since this plan was drafted: the short note now contains a
+simplified global-start, independent-normal-duration estimate with the
+Milky Way expected count and first-external-arrival median
+(`lineage_cap/iid_tail.py`). E1 below is the remaining generalisation to
+galaxy-specific starts, correlation, other duration laws, spatial
+within-galaxy propagation and observer conditioning; it is not a request to
+redo that bounded estimate.
+
 ## Central questions
 
 1. **What physical process could give a characteristic duration with a
@@ -41,16 +49,18 @@ k effective steps — the lottery↔process continuum made explicit).
 - **Conflation rule**: start and duration spreads combine by convolution
   only within one correlation level. Across levels they do not; E1 must
   always report which variance lives at which level.
-- Include **our own galaxy**: earliest completer in the Milky Way, its lead
-  distribution, and non-occupation/non-visibility within-Galaxy. For
-  iid D_i this constraint rivals or exceeds the extragalactic one.
+- Include **our own galaxy spatially**: earliest completer and incoming-front
+  lead distributions, plus non-occupation/non-visibility within the Galaxy.
+  The note's Poisson expected count and external first-arrival median are the
+  starting approximations, not this treatment.
 - Outputs: required σ_D (zero-luck branch) and implied F(t₀) (tail branch)
   as surfaces over (N, q, W, number H of shared groups), compared with a
   *properly sourced* hard-steps per-zone success probability (recompute
   from Hanson et al. 2021 parameters; do not import a bare 10⁻¹⁵).
-  **Baseline decision (Fergus, 2026-10-13): bite the 10⁻¹⁰.** The tail
-  branch (F(t₀) ~ 1/qN, typical duration in the future, per-zone eventual
-  success ~1) is the preferred reading in both papers. Rate universality
+  **Baseline decision (Fergus, 2026-10-13): accept the early tail.** The
+  note's global-start normal examples give F(t₀) = 5.9×10⁻¹⁰ to
+  2.7×10⁻¹³ for σ_T = 30–408 Myr, with typical emergence in the future and
+  per-trajectory eventual success ~1. Rate universality
   (σ_D/T ≲ 10⁻⁴) and binary cohort selection are sensitivity alternatives,
   not assumptions: cohort selection relocates the lottery into an
   unpriced membership fraction and must be priced as such wherever used.
@@ -74,12 +84,12 @@ anthropic scheme (cf. Olson2020SIA) the ratio is relative to. This upgrades
 - FLRW extension of both kernels (Olson2015Homogeneous machinery) so the
   planetary-starts bound over Gyr/Gpc is trustworthy, not just the 4 Mpc
   plateau.
-- Galaxy population: replace identical 10¹⁰-zone galaxies at
-  n_g=0.01 Mpc⁻³ with a luminosity/mass-weighted zone abundance; Local
+- Galaxy population: replace identical 10¹⁰-effective-trajectory galaxies at
+  n_g=0.01 Mpc⁻³ with a luminosity/mass-weighted effective abundance; Local
   Volume census for the plateau regime instead of homogeneous Poisson.
-- Zone histories from literature ramps (MadauDickinson2014,
+- Effective-trajectory histories from literature ramps (MadauDickinson2014,
   Lineweaver2004, BehrooziPeeples2015) replacing the linear ramp; separate
-  Earth-equivalent capacity from zone count (SPEC.md units discipline).
+  Earth-equivalent capacity from trajectory count (SPEC.md units discipline).
 - Survey response: replace ideal visibility with an actual detection model
   anchored to Wright2014G/Griffith2015G (Ĝ) limits — what fraction of
   "loud" hosts in the model volume would current surveys have seen?
@@ -129,7 +139,7 @@ the next arena up is off-planet.
   persistence generate apparent hard steps in a single chronology and
   supply the fat early tail of D_i in E1. The gate's waiting-time
   distribution, not an indecomposable transition probability, sets σ.
-- **Two thresholds per stage — hysteresis**: the arena needed to *retain*
+- **Two thresholds per complexity level — hysteresis**: the arena needed to *retain*
   a complexity level is smaller than the arena needed to *originate the
   next* level. An environment can sit between them for Gyr: progress
   preserved, clock paused. This formalises Mills-style windows: a window
@@ -139,22 +149,22 @@ the next arena up is off-planet.
 - **Opportunity functional**: the frontier at (x,t) is set by the largest
   connected arena 𝒜_k in the causal/exchange past, not by integrated
   𝒢 alone. Total 𝒢 approximates parallel search correctly for
-  microbial stages, where disconnected oases are substitutable; it
-  increasingly misleads at late stages. Report integrated Earth-
+  low-complexity regimes, where disconnected oases are substitutable; it
+  increasingly misleads at high complexity. Report integrated Earth-
   equivalent capacity and connected-arena capacity separately (SPEC.md
   units discipline).
 - **Catastrophes — progress saved, timing perturbed**: complexity sits
-  at clade level with many near-equivalent carriers, so one survivor
-  through an impact preserves the frontier (Chicxulub arguably released
-  mammals after ~150 Myr of dinosaur suppression). But synchrony is
-  about timing and the sign is irrelevant: a handful of shocks each
-  shifting the leading edge by ~Myr contributes σ ~ Myr, and a shock
-  that fragments an arena below its origination threshold (but above
+- **Where the gating sits: late.** Low-complexity regimes fit in tiny oases and
+  may be near-synchronous; high-complexity regimes need planetary-scale arenas
+  (Ponfilenok concedes this for large predators — this spec turns the
+  concession into the main effect). Predicted variance budget: step
+  stochasticity early, arena waiting late; dispersion *grows* along the
+  trajectory rather than concentrating all the way.
   retention) pauses the clock without erasing it. Model catastrophes as
   marked shocks to arena state — not automatic full resets, and not
   ignorable noise. A few large shocks/waits dominate σ over millions of
   easy steps: CLT works against synchrony here, which is another reason
-  the note bites the 10⁻¹⁰ tail instead of claiming tight synchrony.
+  the note accepts the early-tail branch instead of claiming tight synchrony.
 - **Where the gating sits: late.** Early stages fit in tiny oases and
   may be near-synchronous; late stages need planetary-scale arenas
   (Ponfilenok concedes this for large predators — this spec turns the
@@ -170,7 +180,7 @@ the next arena up is off-planet.
   cultural loss (Henrich2004, contested: Vaesen2016) as an arena below
   retention threshold for some toolkit complexity. Cultural-evolution
   data are analogies for arena scaling, not direct evidence about
-  biological stages.
+  biological regimes.
 - **Priced cohort, at last**: Ponfilenok's binary cohort membership is
   replaced by an explicit arena-availability history per zone. If the
   eventual fraction of zones ever reaching the final arena is < 1, that
@@ -192,28 +202,28 @@ the next arena up is off-planet.
   time; intrinsic time ∝ log extrinsic time). Interesting because a
   logarithmic intrinsic clock stretches equal complexity steps
   exponentially in Newtonian time — superficially Sharov-like. Not to be
-  cited as support anywhere until someone derives a testable consequence
+  for duration structure from it. Keep in parking lot.
   for stage durations from it. Keep in parking lot.
 
 ## Distinguishing predictions (required section)
 
 1. **Maturity vs planet age**: inherited/frontier clocks predict biosphere
-   stage correlates with cosmic time, weakly with host-planet age (for
-   planets older than the relevant frontier stage); planetary clocks
+   complexity correlates with cosmic time, weakly with host-planet age (for
+   planets older than the relevant frontier state); planetary clocks
    predict strong age correlation. Testable with exoplanet biosignature
    demographics + asteroseismic ages.
 2. **Solar-system relatedness**: any extant solar-system life shares
-   ancestry/chemistry under common seeding from the same frontier stage.
+   ancestry/chemistry under common seeding from the same frontier state.
 3. **Contemporary cohort**: technosignatures, if any, from near-cohort
    civilisations (within ~Myr-scale offsets), none ancient.
-4. **LUCA complexity/earliness** as retrodiction, labelled as such.
-5. **Arena signatures**: biosphere stage correlates with largest connected
+4. **LUCA complexity/timing** as retrodiction, labelled as such.
+5. **Arena signatures**: biosphere complexity correlates with largest connected
    habitable arena and its stability duration, not only with planet age
    or total integrated exposure; inter-lineage timing dispersion grows
-   for late (large-arena) stages relative to early stages; repeated,
-   near-coincident origins of a stage once its arena becomes widespread
+   for high-complexity, large-arena regimes relative to low-complexity ones;
+   repeated, near-coincident advances once an arena becomes widespread
    (agriculture-shaped, not single-lottery-shaped); catastrophes shift
-   stage timing without erasing stage level except where they drive an
+   timing without erasing complexity except where they drive an
    arena below its *retention* threshold.
 
 ## Non-goals

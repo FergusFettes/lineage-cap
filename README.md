@@ -2,7 +2,7 @@
 
 **An empty sky under a shared-onset lineage clock** — Fergus Fettes
 
-[Read the publication (PDF)](head-start-cap.pdf) · [Source](head-start-cap.qmd) · [Model specification](SPEC.md)
+[Read the publication (PDF)](head-start-cap.pdf) · [Interactive page](https://www.fergusfettes.com/lineage-cap/) · [Source](head-start-cap.qmd) · [Model specification](SPEC.md)
 
 If technological lineages share an early cosmic start and inherit progress between
 environments, how much earlier than us could they have emerged without leaving

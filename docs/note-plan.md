@@ -1,12 +1,24 @@
 # SPEC — Paper 1: the note (geometry of the head-start cap)
 
-Development brief, 13 October 2026. Some outline and figure targets below predate
-the current note; see `head-start-cap.qmd` for the implemented publication.
+Development brief, 13 October 2026; as-built status updated 16 October 2026.
+
+## Status: implemented; historical targets below
+
+The current publication is `head-start-cap.qmd` (13-page PDF) with six figures.
+It departs from the original brief in four recorded ways: it is longer and has
+more figures than the 2,000–3,000-word / 2–3-figure target; the independent
+normal-duration tail and first-arrival estimate were implemented in the note
+(`lineage_cap/iid_tail.py`) rather than deferred; references expanded beyond
+the initial list; and the galaxy-shared duration numbers were removed from the
+note. The sections below are retained as the design record. Where they call
+something a target, non-goal or task, this status section supersedes them.
+Remaining publication steps (external deposit/submission and any final author
+red pen) are not represented as completed here.
 
 Companion to `SPEC.md` (numerical model authority) and
-`docs/full-paper-plan.md` (mechanism paper). Source draft: `paper.qmd` (full-paper
-draft; do not cannibalise it). Output: new file `head-start-cap.qmd` wired to
-`references.bib`.
+`docs/full-paper-plan.md` (mechanism paper). Source draft: `paper.qmd`
+(full-paper draft; do not cannibalise it). Current short-publication source:
+`head-start-cap.qmd`, wired to `references.bib`.
 
 ## Purpose and venue discipline
 
@@ -72,6 +84,11 @@ Appendix: current Appendix A, lightly trimmed, as supplement.
 
 ### Fastest-runner paragraph (analytic, no new numerics) — DECISION: bite the tail bullet
 
+> Implementation note (2026-10-16): the published note replaced this shortcut
+> with the integrated external-galaxy calculation in `lineage_cap/iid_tail.py`.
+> The broader decision to accept an early-tail position stands; the rough
+> `F(t0) ~ 1/qN` value is no longer the quoted estimate.
+
 State the extreme-value bound as an analytic order-of-magnitude: with
 per-lineage iid durations, a galaxy's earliest completer sits ~Φ⁻¹(1−1/N)·σ_T
 ≈ 6.4σ_T ahead of the mean for N=10¹⁰, so the 14 Myr cap requires either
@@ -124,7 +141,7 @@ per-zone eventual success ~1 (process) vs ~3×10⁻¹⁵–10⁻¹² (lottery
 reconstruction above); loud probability per Milky-Way-equivalent ~1 vs
 ~3×10⁻⁵–10⁻².
 
-## Numbers allowed (all must trace to `results/` + `notes/verified-paper-numbers.csv`)
+## Numbers allowed (historical design target; current numbers trace to `results/`, saved CSVs and `results/iid_tail/`)
 
 - Planetary: q ≲ 2.1×10⁻¹⁸ (visibility), qN ≲ 2.1×10⁻⁸; 1 in 73M galaxies
   hosting an expander by today.
@@ -132,10 +149,12 @@ reconstruction above); loud probability per Milky-Way-equivalent ~1 vs
   9.6 Myr at μ=1.
 - Start windows: W=100/200 Myr → offsets 32/38 Myr, ranks ~32%/19%;
   W=5 Gyr → 1.7%.
-- Duration-tail table: keep at most the normal-vs-uniform contrast in
-  two sentences (full table → full paper).
+- Independent normal-duration tail (added during drafting): sigma = 30/136/408 Myr
+  gives F(t0) = 5.9e-10 / 6.2e-12 / 2.7e-13 and first-arrival medians in
+  `results/iid_tail/normal_tail_estimate.csv`. The older normal-vs-uniform
+  galaxy-shared table is not used in the current note.
 
-## References for the note (~15, from references.bib)
+## Initial references for the note (expanded during drafting)
 
 Carter1983, Watson2008, Hanson2021, Mills2025, SnyderBeattie2021,
 Olson2018Envelope (credit the geometry), OlsonOrd2021, Annis1999,
@@ -146,13 +165,14 @@ AdamsNapier2022 (transfer rates are low — honesty), Wright2014G (what
 "empty sky" observations actually are). Hanson2024NoHardSteps as the
 objection being answered.
 
-## Explicit non-goals (→ full paper)
+## Explicit non-goals (original brief; iid item superseded)
 
 Origin-of-life chemistry; assembly theory and MEPP/entropic time (at most one
-future-work sentence, no citation of Martyushev2025EMT); iid-σ numerical
-sweep; observer-conditioned likelihood / Bayes factors; FLRW cosmology;
+future-work sentence, no citation of Martyushev2025EMT);
+observer-conditioned likelihood / Bayes factors; FLRW cosmology;
 survey-response modelling; opportunity budgets 𝒢; panspermia evidence
-review (cut current §7 by ≥half — Bennu/plasmid material goes).
+review. The original plan also deferred an iid-σ numerical sweep; the
+implemented note instead includes the bounded `iid_tail` normal estimate.
 
 ## Claims discipline
 
@@ -162,18 +182,22 @@ Every number is a conditional scenario bound. Banned: "measured",
 not the lineage age (e.g. "The head-start cap: …"); "lineage cap" if kept
 must be defined in text.
 
-## Acceptance
+## Acceptance and outcome
 
-- `head-start-cap.qmd` renders (pdf+html) using `references.bib`; all citations resolve.
-- Every quoted number spot-checked against CSV; `make check` still passes.
-- Main text ≤3,000 words (appendix excluded).
-- Fergus has read Mills2025 + Ponfilenok2026 + Olson2018Envelope before
-  submission (bead lc-qs9).
+- `head-start-cap.qmd` renders to PDF (default) and optional HTML using
+  `references.bib`; citations resolve.
+- Quoted sweep and tail numbers trace to saved outputs; `make check` passes.
+- The original main-text and figure-count targets were deliberately exceeded;
+  the implemented publication has six figures and is 13 PDF pages.
+- Priority-source review remains tracked separately in bead lc-qs9.
 
-## Task sequence
+## Historical task sequence
 
-1. Download/verify section-B bib entries (other agent; lc-qs9).
-2. Fergus reviews priority PDFs.
-3. Trim pass: paper.qmd → head-start-cap.qmd per outline above.
-4. Analytic runner paragraph checked against a throwaway numeric integral.
-5. Render, word count, number audit, arXiv.
+1. Downloads and bibliography verification: done for the cited set; broader
+   review remains in lc-qs9.
+2. Fergus reviews priority PDFs: author-side step, not closed by this plan.
+3. Trim/rewrite into `head-start-cap.qmd`: done.
+4. Runner estimate checked by numeric integration and implemented in
+   `lineage_cap/iid_tail.py`: done.
+5. Render and number audit: done. External deposit/submission: not recorded
+   as done here.
