@@ -11,6 +11,3 @@ quoted in `head-start-cap.qmd`. `.github/workflows/pages.yml` runs that check an
 deploys `index.html`, `model.js` and the PDF to GitHub Pages on pushes to `main`.
 
 Preview locally by opening `site/index.html` in a browser.
-
-`empty-sky.html` is an earlier illustration that predates the note. It embeds an
-old extract of the inference grids and is not linked from the site.
