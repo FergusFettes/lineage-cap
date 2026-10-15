@@ -1,13 +1,16 @@
-# The Empty Sky (earlier interactive illustration)
+# Site
 
-This page predates the current short publication and is retained as a research
-illustration. For the current argument, read [the note](../head-start-cap.pdf).
+`index.html` is the public interactive companion to the note. It recomputes the
+note's numbers in the browser with `model.js`, a port of the Python model
+(`lineage_cap/expansion.py`, `start_spread.py`, `iid_tail.py`): the planet-clock
+ceiling on Λ = qN, the shared-start lead and start window, and the independent
+normal-duration first flush. Defaults are the note's baseline (`configs/baseline.json`).
 
-`empty-sky.html` is self-contained. It embeds a compact extract of the inference grids
-(`results/inference/head_start_bounds.csv`, `earth_origin_q_ceilings.csv`, elapsed-time clock,
-commit 8594c5d) as `const LC`. Two facts make the extract small, both checked against the CSVs:
-head start depends only on q × N (to 1e-7 inherited, 1e-5 planet-linked), and the
-Earth-origin q ceiling scales exactly as 1/N and linearly in mu.
+`make site-check` (`node site/check_model.js`) checks the port against every number
+quoted in `head-start-cap.qmd`. `.github/workflows/pages.yml` runs that check and
+deploys `index.html`, `model.js` and the PDF to GitHub Pages on pushes to `main`.
 
-Not yet on the page: the start-spread results (`results/start_spread/`, commit ab6a52c) and
-the corrected local-synchroniser ceilings.
+Preview locally by opening `site/index.html` in a browser.
+
+`empty-sky.html` is an earlier illustration that predates the note. It embeds an
+old extract of the inference grids and is not linked from the site.

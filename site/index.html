@@ -1,0 +1,544 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<!--artifact-head-->
+<title>The Head-Start Cap</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<meta name="description" content="How far ahead of us could anyone have been, given an empty sky? An interactive companion to the research note by Fergus Fettes.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;0,6..72,700;1,6..72,400&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap">
+<style>
+/* Layout: a technical paper you can operate. Centred column; a two-clock comparison
+   figure, its parameters directly below, then the duration-spread figure and the fine print. */
+:root {
+  --planet: #8b4513;      /* every planet starts its own clock */
+  --shared: #1e3a5f;      /* shared starting gun */
+  --paper: #fdfbf7; --paper-2: #f5f0e8; --card: #ffffff;
+  --ink: #1a1a1a; --ink-2: #4a4a4a; --ink-3: #85817a;
+  --rule: #d4cfc4; --rule-2: #e8e4db;
+  --forbid: rgba(26, 26, 26, 0.06);
+  --good: #2f6b3a; --bad: #a3341f;
+  --serif: "Newsreader", Georgia, "Times New Roman", serif;
+  --sans: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --mono: "JetBrains Mono", ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  --width: 920px;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --planet: #e0915a; --shared: #84aee6;
+    --paper: #15161a; --paper-2: #111215; --card: #1d1f24;
+    --ink: #ece8df; --ink-2: #bdb8ad; --ink-3: #8a867e;
+    --rule: #3a3a3d; --rule-2: #2a2b2f; --forbid: rgba(236, 232, 223, 0.06);
+    --good: #7cc48a; --bad: #f08a72; color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --planet: #e0915a; --shared: #84aee6;
+  --paper: #15161a; --paper-2: #111215; --card: #1d1f24;
+  --ink: #ece8df; --ink-2: #bdb8ad; --ink-3: #8a867e;
+  --rule: #3a3a3d; --rule-2: #2a2b2f; --forbid: rgba(236, 232, 223, 0.06);
+  --good: #7cc48a; --bad: #f08a72; color-scheme: dark;
+}
+* { box-sizing: border-box; }
+[hidden] { display: none !important; }
+html { -webkit-font-smoothing: antialiased; }
+body {
+  margin: 0; font: 17px/1.7 var(--serif); color: var(--ink);
+  background: var(--paper); background-image: linear-gradient(180deg, var(--paper) 0%, var(--paper-2) 100%);
+  padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px));
+}
+.paper { max-width: var(--width); margin: 0 auto; padding-block: 3.5rem 4rem; display: grid; gap: 3rem; }
+a { color: inherit; text-decoration-color: var(--rule); text-underline-offset: 3px; }
+a:hover { text-decoration-color: var(--ink-2); }
+:focus-visible { outline: 2px solid var(--shared); outline-offset: 2px; }
+
+header { text-align: center; padding-bottom: 2.5rem; border-bottom: 1px solid var(--rule); display: grid; gap: .9rem; justify-items: center; }
+.eyebrow, .label, .section-heading { font-family: var(--sans); text-transform: uppercase; font-weight: 600; }
+.eyebrow { font-size: .7rem; letter-spacing: .15em; color: var(--ink-3); }
+h1 { margin: 0; font: 700 clamp(2.1rem, 6vw, 3rem)/1.12 var(--serif); letter-spacing: -.02em; text-wrap: balance; }
+.subtitle { margin: 0; font-style: italic; font-size: 1.18rem; color: var(--ink-2); max-width: 34ch; text-wrap: balance; }
+.byline { font: 500 .8rem/1.4 var(--sans); color: var(--ink-3); display: flex; flex-wrap: wrap; gap: .4rem 1rem; justify-content: center; }
+.byline a { color: var(--ink-2); }
+
+.intro { max-width: 60ch; margin: 0 auto; display: grid; gap: 1.1rem; }
+.intro p { margin: 0; font-size: 1.1rem; hyphens: auto; }
+.drop::first-letter { float: left; font-size: 4.1rem; line-height: .85; padding: .1rem .5rem 0 0; font-weight: 600; }
+.note, .intro p.note { font: .8rem/1.6 var(--sans); color: var(--ink-3); }
+
+section { display: grid; gap: 1.25rem; min-width: 0; }
+.section-heading { margin: 0; font-size: .78rem; letter-spacing: .1em; padding-bottom: .45rem; border-bottom: 2px solid var(--ink); justify-self: start; }
+.label { font-size: .68rem; letter-spacing: .12em; color: var(--ink-3); }
+.lede { margin: 0; max-width: 64ch; color: var(--ink-2); }
+
+.scenarios { display: flex; flex-wrap: wrap; gap: .5rem; }
+.chip { font: 500 .8rem/1.2 var(--sans); color: var(--ink-2); background: var(--card); border: 1px solid var(--rule); border-radius: 3px; padding: .5rem .8rem; cursor: pointer; text-align: left; }
+.chip:hover { border-color: var(--ink-3); color: var(--ink); }
+.chip[aria-pressed="true"] { background: var(--ink); border-color: var(--ink); color: var(--paper); }
+.chip small { display: block; font-weight: 400; font-size: .7rem; opacity: .75; margin-top: .15rem; }
+
+.compare { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; }
+@media (max-width: 760px) { .compare { grid-template-columns: minmax(0, 1fr); } }
+.column { background: var(--card); border-radius: 4px; box-shadow: 0 1px 3px rgba(0,0,0,.06); padding: 1.4rem; display: grid; gap: 1rem; align-content: start; min-width: 0; }
+.col-head { display: flex; gap: .75rem; align-items: flex-start; padding-bottom: 1rem; border-bottom: 1px solid var(--rule-2); }
+.indicator { width: 4px; height: 44px; border-radius: 2px; flex-shrink: 0; }
+.planet .indicator { background: var(--planet); }
+.shared .indicator { background: var(--shared); }
+.col-head h3 { margin: 0; font: 600 .95rem/1.3 var(--sans); }
+.col-head p { margin: .2rem 0 0; font: .8rem/1.45 var(--sans); color: var(--ink-3); }
+.big { display: grid; gap: .1rem; }
+.big output { font: 600 1.9rem/1.15 var(--mono); letter-spacing: -.02em; font-variant-numeric: tabular-nums; }
+.planet .big output { color: var(--planet); }
+.shared .big output { color: var(--shared); }
+.big span { font: .82rem/1.45 var(--sans); color: var(--ink-2); }
+.verdict { display: inline-flex; align-items: center; gap: .45rem; font: 600 .72rem/1 var(--sans); letter-spacing: .06em; text-transform: uppercase; padding: .4rem .6rem; border-radius: 3px; border: 1px solid currentColor; justify-self: start; }
+.verdict.ok { color: var(--good); }
+.verdict.no { color: var(--bad); }
+.verdict::before { content: ""; width: .5rem; height: .5rem; border-radius: 50%; background: currentColor; }
+.stats { border-top: 1px dashed var(--rule); padding-top: .6rem; display: grid; }
+.stat { display: flex; justify-content: space-between; align-items: baseline; gap: 1rem; padding: .3rem 0; }
+.stat span { font: .8rem/1.4 var(--sans); color: var(--ink-3); }
+.stat output { font: 500 .85rem/1.4 var(--mono); color: var(--ink); text-align: right; font-variant-numeric: tabular-nums; white-space: nowrap; }
+
+.chart { position: relative; min-width: 0; }
+.chart svg { display: block; width: 100%; height: auto; overflow: visible; }
+.chart text { font: 10.5px var(--sans); fill: var(--ink-3); }
+.chart .axis-title { font-weight: 600; fill: var(--ink-2); }
+.chart .grid { stroke: var(--rule-2); stroke-width: 1; }
+.chart .base { stroke: var(--rule); stroke-width: 1; }
+.chart .forbid { fill: var(--forbid); }
+.chart .curve { fill: none; stroke-width: 2; stroke-linejoin: round; }
+.chart .ref { stroke: var(--ink-3); stroke-dasharray: 3 3; stroke-width: 1; fill: none; }
+.chart .cross { stroke: var(--ink-3); stroke-width: 1; }
+.tip { position: absolute; pointer-events: none; background: var(--card); border: 1px solid var(--rule); border-radius: 3px; padding: .35rem .5rem; font: .72rem/1.4 var(--sans); color: var(--ink); white-space: nowrap; box-shadow: 0 2px 8px rgba(0,0,0,.08); transform: translate(-50%, -110%); }
+.tip b { font-family: var(--mono); font-weight: 500; }
+
+.params { display: grid; gap: 1.6rem; }
+.param-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1.4rem 2.5rem; }
+.param-group { display: grid; gap: .9rem; }
+.param-group .label { padding-bottom: .4rem; border-bottom: 1px dashed var(--rule); }
+.slider { display: grid; gap: .25rem; min-width: 0; }
+.slider-head { display: flex; justify-content: space-between; align-items: baseline; gap: .75rem; }
+.slider-head label { font: 500 .85rem/1.3 var(--sans); color: var(--ink); }
+.slider-head output { font: 600 .85rem/1.3 var(--mono); white-space: nowrap; font-variant-numeric: tabular-nums; }
+.slider p { margin: 0; font: .75rem/1.45 var(--sans); color: var(--ink-3); }
+input[type=range] { -webkit-appearance: none; appearance: none; width: 100%; height: 22px; background: transparent; margin: 0; cursor: pointer; }
+input[type=range]::-webkit-slider-runnable-track { height: 4px; background: var(--rule-2); border-radius: 2px; }
+input[type=range]::-moz-range-track { height: 4px; background: var(--rule-2); border-radius: 2px; }
+input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; width: 16px; height: 16px; margin-top: -6px; border-radius: 50%; background: var(--ink); border: 2px solid var(--card); box-shadow: 0 0 0 1px var(--ink-3); }
+input[type=range]::-moz-range-thumb { width: 14px; height: 14px; border-radius: 50%; background: var(--ink); border: 2px solid var(--card); }
+.planet-param input::-webkit-slider-thumb { background: var(--planet); }
+.planet-param input::-moz-range-thumb { background: var(--planet); }
+.shared-param input::-webkit-slider-thumb { background: var(--shared); }
+.shared-param input::-moz-range-thumb { background: var(--shared); }
+.planet-param .slider-head output { color: var(--planet); }
+.shared-param .slider-head output { color: var(--shared); }
+.ticks { display: flex; justify-content: space-between; font: .66rem/1 var(--mono); color: var(--ink-3); }
+
+.flush { display: grid; grid-template-columns: minmax(0, 300px) minmax(0, 1fr); gap: 2rem; align-items: start; }
+@media (max-width: 760px) { .flush { grid-template-columns: minmax(0, 1fr); } }
+
+.prose { max-width: 64ch; display: grid; gap: 1rem; }
+.prose p { margin: 0; }
+.prose ul { margin: 0; padding-left: 1.2rem; display: grid; gap: .45rem; }
+footer { border-top: 1px solid var(--rule); padding-top: 1.5rem; font: .8rem/1.6 var(--sans); color: var(--ink-3); display: grid; gap: .5rem; }
+footer p { margin: 0; max-width: 72ch; }
+@media (prefers-reduced-motion: no-preference) { .big output, .stat output { transition: color .2s; } }
+</style>
+</head>
+<body>
+<article class="paper">
+
+<header>
+  <div class="eyebrow">Research note · October 2026</div>
+  <h1>The Head-Start Cap</h1>
+  <p class="subtitle">If life usually gets there in the end, how far ahead of us could anyone have been in a sky this empty?</p>
+  <div class="byline">
+    <span>Fergus Fettes</span>
+    <a href="https://github.com/FergusFettes/lineage-cap/blob/main/head-start-cap.pdf">Read the note (PDF)</a>
+    <a href="https://github.com/FergusFettes/lineage-cap">Code and data</a>
+  </div>
+</header>
+
+<section class="intro">
+  <p class="drop">We are close to being able to spread beyond our own planet, and we see nobody else doing it. The usual explanation is that civilisations are rare: each planet has to win a chain of improbable transitions, the hard steps. Mills and colleagues have argued that Earth's record gives poor support for those improbable steps. The steps may simply have waited for conditions to change.</p>
+  <p>Take that seriously and a problem appears. If lineages usually get there in the end, older ones had a head start, and some of them should be visible by now. This page lets you run the note's calculation yourself. Two clocks are compared. In one, every planet starts from scratch at its own birth. In the other, progress runs from a shared cosmic start and carries between environments.</p>
+  <p class="note">Flat space, galaxies scattered at random, perfect detection of any galaxy a loud lineage has crossed. The sky counts as empty when that has at least the chance you set below (5% in the note). Every number is an edge for these inputs, not a probability about the real world.</p>
+</section>
+
+<section aria-labelledby="fig1">
+  <h2 class="section-heading" id="fig1">Figure 1 · Two clocks, one empty sky</h2>
+  <div class="scenarios" role="group" aria-label="Scenarios" id="scenarios"></div>
+  <div class="compare">
+    <div class="column planet">
+      <div class="col-head"><div class="indicator"></div><div>
+        <h3>Every planet starts its own clock</h3>
+        <p>A lineage crosses the loud threshold a fixed time <i>T</i> after its planet forms.</p>
+      </div></div>
+      <div class="big"><output id="p-big">–</output><span id="p-big-sub">loud lineages per galaxy, at most</span></div>
+      <div class="verdict" id="p-verdict">–</div>
+      <div class="stats">
+        <div class="stat"><span>First emergences</span><output id="p-first">–</output></div>
+        <div class="stat"><span>Share of trajectories crossed by today</span><output id="p-share">–</output></div>
+        <div class="stat"><span>Your loud yield Λ = qN</span><output id="p-lambda">–</output></div>
+        <div class="stat"><span>Loud galaxies we should see</span><output id="p-mu">–</output></div>
+      </div>
+      <div class="chart" id="chart-planet"></div>
+    </div>
+    <div class="column shared">
+      <div class="col-head"><div class="indicator"></div><div>
+        <h3>A shared starting gun</h3>
+        <p>Progress carries between planets from one cosmic start. What matters is how far the first emergence sits ahead of ours.</p>
+      </div></div>
+      <div class="big"><output id="s-big">–</output><span id="s-big-sub">largest lead of the first emergence over ours</span></div>
+      <div class="verdict" id="s-verdict">–</div>
+      <div class="stats">
+        <div class="stat"><span id="s-pos-label">Our start inside the window</span><output id="s-pos">–</output></div>
+        <div class="stat"><span>Lead allowed by fronts arriving here</span><output id="s-arr">–</output></div>
+        <div class="stat"><span>Radius of the exposed sphere</span><output id="s-rad">–</output></div>
+        <div class="stat"><span>Galaxies inside it</span><output id="s-gal">–</output></div>
+      </div>
+      <div class="chart" id="chart-shared"></div>
+    </div>
+  </div>
+</section>
+
+<section class="params" aria-labelledby="params">
+  <h2 class="section-heading" id="params">Parameters</h2>
+  <div class="param-grid">
+    <div class="param-group">
+      <div class="label">Shared by both clocks</div>
+      <div id="sl-shared" class="param-group"></div>
+    </div>
+    <div class="param-group">
+      <div class="label">The sky and each clock</div>
+      <div id="sl-clock" class="param-group"></div>
+    </div>
+  </div>
+</section>
+
+<section aria-labelledby="fig2">
+  <h2 class="section-heading" id="fig2">Figure 2 · Durations that vary: the first flush</h2>
+  <p class="lede">Real lineages will not all take the same time. Give each one its own duration, drawn independently from a normal distribution, all running from one shared start. The fastest of ten billion draws lands far ahead of the mean, so the sky forces the mean emergence into the future. We end up sitting in a thin leading edge: the first flush.</p>
+  <div class="flush">
+    <div class="column shared" style="box-shadow:none;background:transparent;padding:0">
+      <div id="sl-flush"></div>
+      <div class="big"><output id="f-big">–</output><span>share of zones emerged by today</span></div>
+      <div class="stats">
+        <div class="stat"><span>Typical zone emerges in</span><output id="f-mean">–</output></div>
+        <div class="stat"><span>Loud lineages ahead of us in the Milky Way</span><output id="f-home">–</output></div>
+        <div class="stat"><span>Chance we are first loud at home</span><output id="f-first">–</output></div>
+        <div class="stat"><span>Median wait for the first front to reach us</span><output id="f-wait">–</output></div>
+      </div>
+    </div>
+    <div class="chart" id="chart-flush"></div>
+  </div>
+  <p class="note">These figures depend on the far left tail of the duration law, near the 10⁻¹² percentile, where nothing physical pins the shape. A normal tail always allows a few much faster lineages. A hard minimum duration would allow none. Read this as arithmetic for one tail shape.</p>
+</section>
+
+<section aria-labelledby="assume">
+  <h2 class="section-heading" id="assume">What the calculation assumes</h2>
+  <div class="prose">
+    <ul>
+      <li><b>Trajectories, not planets.</b> <i>N</i> counts effective retained-progress trajectories per galaxy in Earth-equivalent units: 10¹¹ stars × 0.1. It grows linearly from cosmic age 0.2 Gyr to today, 13.8 Gyr. Trajectories are never destroyed.</li>
+      <li><b>Turning loud.</b> A lineage that crosses the threshold turns loud with probability <i>q</i>. It then spreads through its galaxy (30 kpc) and keeps spreading at speed <i>v</i>. The note's results mostly depend on Λ = <i>qN</i>.</li>
+      <li><b>Seeing it, or meeting it.</b> A galaxy is visible once its front has crossed it and the light has reached us. Arrival means the front itself reaching us. Each galaxy is independent, so P(empty) = e<sup>−μ</sup>.</li>
+      <li><b>Geometry.</b> Space is flat with a fixed galaxy density. That is fair for the few megaparsecs behind the 14 Myr cap. Over the gigaparsecs the planet clock integrates, treat it as a scaling statement.</li>
+      <li><b>What it does not do.</b> It does not derive the shared clock from chemistry, model survey completeness, or turn percentiles into odds for our own existence.</li>
+    </ul>
+  </div>
+</section>
+
+<footer>
+  <p>Fergus Fettes, <i>The head-start cap: an empty sky under a shared-onset lineage clock</i> (2026). The numbers on this page are recomputed in your browser by a port of the repository's Python model and match the note's tables. MIT licence.</p>
+  <p><a href="https://github.com/FergusFettes/lineage-cap">github.com/FergusFettes/lineage-cap</a></p>
+</footer>
+
+</article>
+
+<script src="model.js"></script>
+<script>
+(function () {
+  "use strict";
+  const M = window.LineageCap, B = M.BASELINE;
+  const $ = id => document.getElementById(id);
+  const SVGNS = "http://www.w3.org/2000/svg";
+
+  // ---------- formatting ----------
+  const SUP = { "-": "⁻", "0": "⁰", "1": "¹", "2": "²", "3": "³", "4": "⁴", "5": "⁵", "6": "⁶", "7": "⁷", "8": "⁸", "9": "⁹" };
+  const sup = n => String(n).split("").map(c => SUP[c] || c).join("");
+  function sci(x, digits) {
+    if (!isFinite(x)) return "∞";
+    if (x === 0) return "0";
+    const e = Math.floor(Math.log10(Math.abs(x)));
+    if (e >= -2 && e <= 3) return x.toPrecision(digits || 2).replace(/\.?0+$/, m => m.includes(".") ? "" : m);
+    let m = x / 10 ** e, mm = m.toFixed((digits || 2) - 1);
+    if (+mm >= 10) { mm = (1).toFixed((digits || 2) - 1); return mm === "1" ? `10${sup(e + 1)}` : `${mm} × 10${sup(e + 1)}`; }
+    return +mm === 1 ? `10${sup(e)}` : `${mm} × 10${sup(e)}`;
+  }
+  const pow10 = l => Math.abs(l - Math.round(l)) < 1e-9 ? ({ 0: "1", 1: "10" }[Math.round(l)] || `10${sup(Math.round(l))}`) : sci(10 ** l);
+  function dur(g) {
+    if (!isFinite(g)) return "∞";
+    if (g < 1) { const m = g * 1000; return `${m < 10 ? m.toFixed(1) : Math.round(m)} Myr`; }
+    return `${g.toFixed(g < 10 ? 2 : 1).replace(/0$/, "")} Gyr`;
+  }
+  const pct = x => x >= 0.995 ? "100%" : x >= 0.1 ? `${Math.round(100 * x)}%` : x >= 0.001 ? `${(100 * x).toPrecision(2)}%` : `${sci(100 * x)}%`;
+
+  // ---------- state and sliders ----------
+  const state = { ...B };
+  const SLIDERS = [
+    { key: "N", host: "sl-shared", label: "Trajectories per galaxy, N", min: 8, max: 11, step: 0.1,
+      to: l => 10 ** l, from: v => Math.log10(v), fmt: v => pow10(Math.log10(v)), ticks: ["10⁸", "10⁹", "10¹⁰", "10¹¹"],
+      help: "Effective Earth-equivalent trajectories in a galaxy today. Note: 10¹⁰." },
+    { key: "q", host: "sl-shared", label: "Chance a lineage turns loud, q", min: -24, max: 0, step: 0.25,
+      to: l => 10 ** l, from: v => Math.log10(v), fmt: v => pow10(Math.log10(v)), ticks: ["10⁻²⁴", "10⁻¹²", "1"],
+      help: "Probability that a lineage which crosses the threshold expands visibly. Note: 1." },
+    { key: "v", host: "sl-shared", label: "Expansion front speed, v", min: -2, max: -0.01, step: 0.01,
+      to: l => 10 ** l, from: v => Math.log10(v), fmt: v => `${v < 0.1 ? v.toFixed(3) : v.toFixed(2)} c`, ticks: ["0.01c", "0.1c", "0.98c"],
+      help: "How fast a loud lineage spreads. Note: 0.5c." },
+    { key: "ng", host: "sl-shared", label: "Galaxy density", min: -3, max: -1, step: 0.05,
+      to: l => 10 ** l, from: v => Math.log10(v), fmt: v => `${sci(v)} /Mpc³`, ticks: ["0.001", "0.01", "0.1"],
+      help: "Galaxies per cubic megaparsec. Note: 0.01." },
+    { key: "pEmpty", host: "sl-clock", label: "An empty sky needs a chance of at least", min: 0.01, max: 0.6, step: 0.01,
+      to: x => x, from: v => v, fmt: v => `${Math.round(100 * v)}% · μ ${(-Math.log(v)).toFixed(1)}`, ticks: ["1%", "30%", "60%"],
+      help: "Lower is more permissive. Note: 5%, about three loud galaxies expected." },
+    { key: "T", host: "sl-clock", cls: "planet-param", label: "Planet clock: time to emerge, T", min: 0.5, max: 13.5, step: 0.1,
+      to: x => x, from: v => v, fmt: v => `${v.toFixed(1)} Gyr`, ticks: ["0.5", "4.6 (Earth)", "13.5 Gyr"],
+      help: "Earth caps this at 4.6 Gyr for a history run on one planet." },
+    { key: "W", host: "sl-clock", cls: "shared-param", label: "Shared start: window width, W", min: -2.1, max: 0.7, step: 0.05,
+      to: l => l < -2 ? 0 : 10 ** l, from: v => v <= 0 ? -2.1 : Math.log10(v), fmt: v => v === 0 ? "one date" : dur(v), ticks: ["one date", "100 Myr", "5 Gyr"],
+      help: "Galaxies' starts scattered uniformly over this window. The note's first-star case is 100–200 Myr." },
+    { key: "sigma", host: "sl-flush", cls: "shared-param", label: "Spread of durations, σ", min: -2, max: 0.3, step: 0.02,
+      to: l => 10 ** l, from: v => Math.log10(v), fmt: v => `${dur(v)} · ${(100 * v / 13.6).toPrecision(2)}%`, ticks: ["10 Myr", "100 Myr", "2 Gyr"],
+      help: "Standard deviation of independent normal durations, and its share of 13.6 Gyr." },
+  ];
+  const inputs = {};
+  for (const s of SLIDERS) {
+    const wrap = document.createElement("div");
+    wrap.className = "slider " + (s.cls || "");
+    wrap.innerHTML = `<div class="slider-head"><label for="in-${s.key}">${s.label}</label><output id="out-${s.key}"></output></div>
+      <input type="range" id="in-${s.key}" min="${s.min}" max="${s.max}" step="${s.step}">
+      <div class="ticks">${s.ticks.map(t => `<span>${t}</span>`).join("")}</div><p>${s.help}</p>`;
+    $(s.host).appendChild(wrap);
+    const el = wrap.querySelector("input");
+    inputs[s.key] = el;
+    el.addEventListener("input", () => { state[s.key] = s.to(+el.value); schedule(); });
+  }
+  function syncSliders() {
+    for (const s of SLIDERS) {
+      inputs[s.key].value = s.from(state[s.key]);
+      $("out-" + s.key).textContent = s.fmt(state[s.key]);
+    }
+  }
+
+  // ---------- scenarios ----------
+  const SCENARIOS = [
+    { name: "The note's baseline", sub: "Λ = 10¹⁰, one start date", set: {} },
+    { name: "Rare loud lineages", sub: "q = 10⁻¹², Λ = 0.01", set: { q: 1e-12 } },
+    { name: "First-star window", sub: "starts spread over 150 Myr", set: { W: 0.15 } },
+    { name: "Wide start window", sub: "starts spread over 5 Gyr", set: { W: 5 } },
+    { name: "Slow fronts", sub: "v = 0.05c", set: { v: 0.05 } },
+    { name: "Stricter sky", sub: "μ = 1, P(empty) 37%", set: { pEmpty: Math.exp(-1) } },
+  ];
+  const chips = SCENARIOS.map(sc => {
+    const b = document.createElement("button");
+    b.type = "button"; b.className = "chip";
+    b.innerHTML = `${sc.name}<small>${sc.sub}</small>`;
+    b.addEventListener("click", () => { Object.assign(state, B, sc.set); syncSliders(); schedule(); });
+    $("scenarios").appendChild(b);
+    return { b, sc };
+  });
+  function syncChips() {
+    for (const { b, sc } of chips) {
+      const want = { ...B, ...sc.set };
+      const same = Object.keys(B).every(k => Math.abs(Math.log((state[k] || 1e-300) / (want[k] || 1e-300))) < 1e-6 || state[k] === want[k]);
+      b.setAttribute("aria-pressed", same);
+    }
+  }
+
+  // ---------- charts ----------
+  function el(tag, attrs, parent) {
+    const e = document.createElementNS(SVGNS, tag);
+    for (const k in attrs) e.setAttribute(k, attrs[k]);
+    if (parent) parent.appendChild(e);
+    return e;
+  }
+  /* A single-series line chart.  opts: xs, ys (NaN = gap), xlog, ylog, xdom, ydom, xticks, yticks,
+     xfmt, yfmt, xtitle, ytitle, color, forbid ("above"|"below"), marker {x, y}, refs [{y, label}], tip(i) */
+  function lineChart(host, o) {
+    host.innerHTML = "";
+    const W = 440, H = 250, m = { l: 62, r: 14, t: 14, b: 40 };
+    const svg = el("svg", { viewBox: `0 0 ${W} ${H}`, role: "img", "aria-label": o.aria }, host);
+    const tx = v => o.xlog ? Math.log10(v) : v, ty = v => o.ylog ? Math.log10(v) : v;
+    const [x0, x1] = o.xdom.map(tx), [y0, y1] = o.ydom.map(ty);
+    const X = v => m.l + (tx(v) - x0) / (x1 - x0) * (W - m.l - m.r);
+    const Y = v => H - m.b - (Math.min(Math.max(ty(v), y0), y1) - y0) / (y1 - y0) * (H - m.t - m.b);
+    for (const t of o.yticks) {
+      el("line", { class: "grid", x1: m.l, x2: W - m.r, y1: Y(t), y2: Y(t) }, svg);
+      el("text", { x: m.l - 6, y: Y(t) + 3.5, "text-anchor": "end" }, svg).textContent = o.yfmt(t);
+    }
+    for (const t of o.xticks) el("text", { x: X(t), y: H - m.b + 15, "text-anchor": "middle" }, svg).textContent = o.xfmt(t);
+    el("line", { class: "base", x1: m.l, x2: W - m.r, y1: H - m.b, y2: H - m.b }, svg);
+    el("text", { class: "axis-title", x: (m.l + W - m.r) / 2, y: H - 6, "text-anchor": "middle" }, svg).textContent = o.xtitle;
+    el("text", { class: "axis-title", x: 12, y: (m.t + H - m.b) / 2, "text-anchor": "middle", transform: `rotate(-90 12 ${(m.t + H - m.b) / 2})` }, svg).textContent = o.ytitle;
+    const pts = o.xs.map((x, i) => [x, o.ys[i]]).filter(p => isFinite(p[1]));
+    if (o.forbid && pts.length) {
+      const edge = o.forbid === "above" ? m.t : H - m.b;
+      const d = `M${X(pts[0][0])},${edge} ` + pts.map(p => `L${X(p[0])},${Y(p[1])}`).join(" ") + ` L${X(pts[pts.length - 1][0])},${edge} Z`;
+      el("path", { class: "forbid", d }, svg);
+      el("text", { x: o.forbid === "above" ? m.l + 8 : W - m.r - 8, y: o.forbid === "above" ? m.t + 14 : H - m.b - 8, "text-anchor": o.forbid === "above" ? "start" : "end" }, svg).textContent = "excluded";
+    }
+    for (const r of o.refs || []) {
+      el("line", { class: "ref", x1: m.l, x2: W - m.r, y1: Y(r.y), y2: Y(r.y) }, svg);
+      el("text", { x: m.l + 6, y: Y(r.y) - 4, "text-anchor": "start" }, svg).textContent = r.label;
+    }
+    if (pts.length) el("path", { class: "curve", stroke: o.color, d: "M" + pts.map(p => `${X(p[0]).toFixed(1)},${Y(p[1]).toFixed(1)}`).join(" L") }, svg);
+    for (const mk of o.markers || []) {
+      if (!isFinite(mk.y)) continue;
+      el("circle", { cx: X(mk.x), cy: Y(mk.y), r: 5.5, fill: o.color, stroke: "var(--card)", "stroke-width": 2 }, svg);
+      if (mk.label) el("text", { x: X(mk.x) + (mk.left ? -9 : 9), y: Y(mk.y) - 8, "text-anchor": mk.left ? "end" : "start", "font-weight": 600, fill: "var(--ink)" }, svg).textContent = mk.label;
+    }
+    // hover: crosshair + tooltip on the nearest sample
+    const cross = el("line", { class: "cross", y1: m.t, y2: H - m.b, visibility: "hidden" }, svg);
+    const dot = el("circle", { r: 4, fill: o.color, stroke: "var(--card)", "stroke-width": 2, visibility: "hidden" }, svg);
+    const tip = document.createElement("div"); tip.className = "tip"; tip.hidden = true; host.appendChild(tip);
+    el("rect", { x: m.l, y: m.t, width: W - m.l - m.r, height: H - m.t - m.b, fill: "transparent" }, svg);
+    function move(ev) {
+      const box = svg.getBoundingClientRect(), sx = (ev.clientX - box.left) / box.width * W;
+      let best = -1, bd = Infinity;
+      o.xs.forEach((x, i) => { if (!isFinite(o.ys[i])) return; const d = Math.abs(X(x) - sx); if (d < bd) { bd = d; best = i; } });
+      if (best < 0 || sx < m.l - 10 || sx > W - m.r + 10) return leave();
+      const px = X(o.xs[best]), py = Y(o.ys[best]);
+      cross.setAttribute("x1", px); cross.setAttribute("x2", px); cross.setAttribute("visibility", "visible");
+      dot.setAttribute("cx", px); dot.setAttribute("cy", py); dot.setAttribute("visibility", "visible");
+      tip.innerHTML = o.tip(best); tip.hidden = false;
+      tip.style.left = `${px / W * box.width}px`; tip.style.top = `${py / H * box.height}px`;
+    }
+    function leave() { cross.setAttribute("visibility", "hidden"); dot.setAttribute("visibility", "hidden"); tip.hidden = true; }
+    svg.addEventListener("pointermove", move);
+    svg.addEventListener("pointerleave", leave);
+  }
+  const decTicks = (a, b, every) => { const r = []; for (let e = Math.ceil(Math.log10(a)); e <= Math.floor(Math.log10(b)); e += every || 1) r.push(10 ** e); return r; };
+
+  // ---------- render ----------
+  let pending = false;
+  function schedule() { if (!pending) { pending = true; requestAnimationFrame(() => { pending = false; render(); }); } }
+
+  function verdict(node, mu) {
+    const p = Math.exp(-mu), ok = p >= state.pEmpty - 1e-12;
+    node.className = "verdict " + (ok ? "ok" : "no");
+    node.textContent = ok ? `Sky empty · P = ${pct(p)}` : `Sky not empty · P = ${p < 1e-4 ? sci(p) : pct(p)}`;
+  }
+
+  function render() {
+    syncSliders(); syncChips();
+    const p = state, lam = p.q * p.N;
+
+    // planet clock
+    const ceil = M.planetCeiling(p, p.T);
+    $("p-big").textContent = isFinite(ceil) ? `Λ ≤ ${sci(ceil)}` : "No limit";
+    $("p-big-sub").textContent = isFinite(ceil)
+      ? (ceil < 1 ? `loud lineages per galaxy, at most: about one galaxy in ${sci(1 / ceil)} may ever produce one` : "loud lineages per galaxy, at most")
+      : "even q = 1 leaves the sky empty at this T";
+    const muP = M.expected(p, M.T0 - M.S - p.T, "planet", "visibility");
+    verdict($("p-verdict"), muP);
+    $("p-first").textContent = `${dur(M.T0 - M.S - p.T)} before us`;
+    $("p-share").textContent = pct((M.T0 - M.S - p.T) / (M.T0 - M.S));
+    $("p-lambda").textContent = sci(lam);
+    $("p-mu").textContent = muP < 1e-3 ? "≈ 0" : sci(muP);
+
+    const Ts = [], ceils = [];
+    for (let T = 0.5; T <= 13.55; T += 0.25) { Ts.push(T); const c = M.planetCeiling(p, T); ceils.push(isFinite(c) ? Math.min(c, 1e12) : NaN); }
+    const finite = ceils.filter(isFinite);
+    const yMin = 10 ** Math.floor(Math.log10(Math.min(...finite, lam, 1e-12))), yMax = 1e12;
+    lineChart($("chart-planet"), {
+      aria: "Largest loud yield compatible with an empty sky against planet-clock duration",
+      xs: Ts, ys: ceils, ylog: true, xdom: [0.5, 13.5], ydom: [yMin, yMax],
+      xticks: [1, 4.6, 8, 12], yticks: decTicks(yMin, yMax, Math.log10(yMax / yMin) > 16 ? 6 : 4),
+      xfmt: t => t === 4.6 ? "4.6" : t, yfmt: t => pow10(Math.log10(t)),
+      xtitle: "time to emerge T (Gyr)", ytitle: "largest Λ", color: "var(--planet)", forbid: "above",
+      markers: [{ x: p.T, y: lam, label: "you", left: p.T > 9 }],
+      tip: i => `T ${Ts[i].toFixed(2)} Gyr · Λ ≤ <b>${sci(ceils[i])}</b>`,
+    });
+
+    // shared start
+    const W = p.W, lead = M.sharedLead(p, "visibility", W), arr = M.sharedLead(p, "arrival", W);
+    if (W > 0 && !lead.capped) {
+      $("s-big").textContent = "Any position";
+      $("s-big-sub").textContent = "the whole window is allowed: the sky never binds";
+    } else {
+      $("s-big").textContent = `δ ≤ ${dur(lead.delta)}`;
+      $("s-big-sub").textContent = lead.capped ? "largest lead of the first emergence over ours" : "no lead within the 13.6 Gyr history is excluded";
+    }
+    // A single date puts us at the frontier (delta = 0); a window lets us test a start mid-window.
+    $("s-verdict").hidden = !(W > 0);
+    if (W > 0) {
+      verdict($("s-verdict"), M.expected(p, Math.min(W / 2, M.T0 - M.S), "inherited", "visibility", W));
+      $("s-verdict").textContent = "Starting mid-window: " + $("s-verdict").textContent.toLowerCase();
+    }
+    $("s-pos-label").textContent = W > 0 ? `Our start must lie within the window's` : "Start window";
+    $("s-pos").textContent = W > 0 ? (lead.capped ? `first ${pct(lead.delta / W)}` : "anywhere") : "one shared date";
+    $("s-arr").textContent = arr.capped ? dur(arr.delta) : "unbounded";
+    const rad = M.C * Math.max(lead.delta - M.HOST_MPC / (p.v * M.C), 0);
+    $("s-rad").textContent = `${rad < 100 ? rad.toFixed(1) : sci(rad)} Mpc`;
+    $("s-gal").textContent = sci(4 / 3 * Math.PI * p.ng * rad ** 3);
+
+    const lams = [], leads = [];
+    for (let l = -4; l <= 8.01; l += 0.4) {
+      lams.push(10 ** l);
+      leads.push(1000 * M.sharedLead({ ...p, q: Math.min(10 ** l / p.N, 1) }, "visibility", W).delta);
+    }
+    const lo = Math.max(1, 10 ** Math.floor(Math.log10(Math.min(...leads)))), hi = Math.max(1e4, ...leads);
+    lineChart($("chart-shared"), {
+      aria: "Largest lead of a shared emergence frontier against loud yield",
+      xs: lams, ys: leads, xlog: true, ylog: true, xdom: [1e-4, 1e8], ydom: [lo, hi],
+      xticks: [1e-4, 1e-2, 1, 1e2, 1e4, 1e6, 1e8], yticks: decTicks(lo, hi),
+      xfmt: t => pow10(Math.log10(t)), yfmt: t => t >= 1000 ? `${t / 1000} Gyr` : `${t} Myr`,
+      xtitle: "loud yield Λ = qN (log)", ytitle: "largest lead δ", color: "var(--shared)", forbid: "above",
+      markers: [{ x: Math.min(Math.max(lam, 1e-4), 1e8), y: 1000 * lead.delta, label: "you", left: lam > 1e5 }],
+      tip: i => `Λ ${sci(lams[i])} · δ ≤ <b>${dur(leads[i] / 1000)}</b>`,
+    });
+
+    // duration spread
+    const r = M.durationSpread(p, p.sigma);
+    if (!r) {
+      $("f-big").textContent = "–";
+      ["f-mean", "f-home", "f-first", "f-wait"].forEach(k => $(k).textContent = "–");
+      $("chart-flush").innerHTML = `<p class="note">With these inputs the sky stays empty even with the mean emergence today, so there is nothing to fit.</p>`;
+      return;
+    }
+    $("f-big").textContent = sci(r.F);
+    $("f-mean").textContent = dur(r.meanAfter);
+    $("f-home").textContent = sci(r.home);
+    $("f-first").textContent = pct(r.pFirst);
+    $("f-wait").textContent = isFinite(r.wait) ? dur(r.wait) : "–";
+    const xs = [], Fs = [], span = r.meanAfter + 2 * p.sigma, back = Math.min(3 * p.sigma, M.T0 - M.S);
+    for (let i = 0; i <= 120; i++) { const x = -back + (span + back) * i / 120; xs.push(x); Fs.push(M.phi(x / p.sigma - r.z0)); }
+    const fLo = 10 ** (Math.floor(Math.log10(r.F)) - 3);
+    for (let i = 0; i < Fs.length; i++) if (Fs[i] < fLo) Fs[i] = NaN;
+    lineChart($("chart-flush"), {
+      aria: "Share of zones emerged against time from today",
+      xs, ys: Fs, ylog: true, xdom: [-back, span], ydom: [fLo, 1],
+      xticks: niceTicks(-back, span), yticks: decTicks(fLo, 1, 3),
+      xfmt: t => t === 0 ? "today" : (t > 0 ? "+" : "−") + dur(Math.abs(t)).replace(" ", " "), yfmt: t => pow10(Math.log10(t)),
+      xtitle: "time from today", ytitle: "share emerged F", color: "var(--shared)",
+      refs: [{ y: 1 / p.N, label: "one zone in a galaxy" }, { y: 0.5, label: "half emerged" }],
+      markers: [{ x: 0, y: r.F, label: "today" }, { x: r.meanAfter, y: 0.5, left: true }],
+      tip: i => `${xs[i] >= 0 ? "+" : "−"}${dur(Math.abs(xs[i]))} · F <b>${sci(Fs[i])}</b>`,
+    });
+  }
+  function niceTicks(a, b) {
+    const span = b - a, raw = span / 4, mag = 10 ** Math.floor(Math.log10(raw));
+    const step = [1, 2, 5, 10].map(k => k * mag).find(s => s >= raw);
+    const r = [];
+    for (let t = Math.ceil(a / step) * step; t <= b + 1e-9; t += step) r.push(Math.round(t / step) * step);
+    return r;
+  }
+
+  render();
+})();
+</script>
+</body>
+</html>

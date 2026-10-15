@@ -47,6 +47,7 @@ make iid-tail       # independent normal-duration estimates
 make note-figures   # short-publication figures from results
 make paper          # render the longer draft PDF
 make html           # optional HTML rendering of the short publication
+make site-check     # check the site's JS model against the note (needs Node)
 ```
 
 `make clean` removes superseded renderings, optional HTML output and build caches,
@@ -67,7 +68,7 @@ reference papers are not tracked.
 | `SPEC.md` | Agreed numerical model and interpretation |
 | `docs/` | Publication plans and repository audit |
 | `notes/` | Research support, numerical audits and source provenance |
-| `site/` | Earlier interactive illustration; predates the current note |
+| `site/` | Interactive companion page (GitHub Pages) and its JS port of the model |
 
 The legacy term “zone” in numerical outputs means an effective retained-progress
 trajectory in Earth-equivalent units, except in the planet-linked comparison.

@@ -1,4 +1,4 @@
-.PHONY: all note pdf html paper paper-pdf paper-html clean figures note-figures baseline inference inference-figures start-spread start-spread-figures duration-spread iid-tail reproduce check
+.PHONY: all note pdf html paper paper-pdf paper-html clean figures note-figures baseline inference inference-figures start-spread start-spread-figures duration-spread iid-tail reproduce check site-check
 
 # The short publication is the default; the longer paper remains a draft.
 all: note
@@ -25,3 +25,5 @@ start-spread: ; MPLCONFIGDIR=.mplconfig uv run python -u -m lineage_cap.start_sp
 start-spread-figures: ; MPLCONFIGDIR=.mplconfig uv run python -m lineage_cap.start_spread_figures
 duration-spread: ; uv run python -m lineage_cap.duration_spread
 check: ; uv run python -m pytest -q
+# The public site's JS port must keep matching the note's numbers.
+site-check: ; node site/check_model.js
