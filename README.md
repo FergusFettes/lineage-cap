@@ -32,8 +32,8 @@ Run commands from the repository root:
 ```sh
 uv sync --locked
 make check          # numerical tests
-make                # render head-start-cap.pdf and HTML from saved figures
-make reproduce      # regenerate numerical results, note figures, PDF and HTML
+make                # render head-start-cap.pdf from saved figures
+make reproduce      # regenerate numerical results, note figures and PDF
 ```
 
 The full numerical sweeps take longer than rendering alone. Individual targets:
@@ -45,11 +45,13 @@ make start-spread   # shared starts and ancestry correlation
 make duration-spread # duration-distribution sensitivity
 make iid-tail       # independent normal-duration estimates
 make note-figures   # short-publication figures from results
-make paper          # render the longer draft
+make paper          # render the longer draft PDF
+make html           # optional HTML rendering of the short publication
 ```
 
-`make clean` removes rendered documents, including the checked-in PDF; rebuild
-with `make` before committing. HTML and downloaded reference papers are not tracked.
+`make clean` removes superseded renderings, optional HTML output and build caches,
+while preserving the current checked-in publication PDF. HTML and downloaded
+reference papers are not tracked.
 
 ## Repository guide
 
