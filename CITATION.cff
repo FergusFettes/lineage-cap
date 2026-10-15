@@ -5,7 +5,8 @@ title: "The head-start cap: an empty sky under a shared-onset lineage clock"
 authors:
   - family-names: Fettes
     given-names: Fergus
-date-released: 2026-10-15
+version: v1.0-note
+date-released: 2026-10-16
 license: MIT
 repository-code: "https://github.com/FergusFettes/lineage-cap"
 url: "https://github.com/FergusFettes/lineage-cap/blob/main/head-start-cap.pdf"

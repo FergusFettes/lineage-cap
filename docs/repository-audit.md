@@ -1,6 +1,7 @@
 # Repository audit before public release
 
-15 October 2026. Development history retained; no history rewrite performed.
+15 October 2026. Development history retained. On 16 October 2026 history was
+rewritten once to remove the personal paths and private links listed below.
 
 ## Scope
 
@@ -16,10 +17,10 @@ Ignored local files and external/private artifact contents are outside this scop
 
 - No matches for the credential patterns checked. The `api-key` text match was
   an unpopulated integration-setting example in Beads configuration.
-- Earlier README versions and the deleted `REVIEW.md` contain a personal wiki
-  path. README histories also contain private Claude artifact links. These
-  remain recoverable in Git history; current documentation no longer depends
-  on them.
+- Earlier README versions and the deleted `REVIEW.md` contained a personal wiki
+  path, and README histories contained private Claude artifact links. On 16
+  October 2026 these strings were replaced throughout history with
+  `git filter-repo --replace-text`; commit hashes before that date changed.
 - Author email addresses remain intentionally in publication and commit metadata.
   History also includes an agent author identity and development/review messages.
 - `.beads/issues.jsonl` contains project task descriptions and author metadata.
@@ -50,8 +51,8 @@ inputs or numerical results were changed for publication cleanup.
 - All 13 PDF pages visually reviewed; metadata contains the publication title
   and author, with no filesystem paths.
 
-The repository visibility and release/tag creation are separate publication
-steps. This cleanup preserves history and does not change GitHub visibility.
+The repository was made public on 16 October 2026 and the note tagged
+`v1.0-note`.
 
 ## Post-audit update (16 October 2026)
 
