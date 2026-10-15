@@ -45,6 +45,8 @@ inputs or numerical results were changed for publication cleanup.
 
 - `make baseline check`: baseline regenerated; 57 tests passed.
 - `make`: PDF and HTML rendered without unresolved-citation warnings.
+- Fresh local clone: locked dependencies installed, all 57 tests passed, and
+  `make note-figures note` regenerated every note figure plus PDF and HTML.
 - All 13 PDF pages visually reviewed; metadata contains the publication title
   and author, with no filesystem paths.
 
