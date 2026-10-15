@@ -1,0 +1,582 @@
+"""Note figures: clocks, light cone, planet ceiling, head-start cap,
+saturation, start window, first flush.
+
+Run from the repo root::
+
+    MPLCONFIGDIR=.mplconfig uv run python figures/make_note.py
+
+Outputs ``figures/note_fig{1..7}_*.{png,svg}``, numbered in the order
+they appear in note.qmd.
+
+Design rules (shared by every figure)
+-------------------------------------
+* Drawn at final print size (6.3 in = the A4 text width with 2.5 cm
+  margins) and included at ``width=100%``, so 8-9 pt here is 8-9 pt on
+  the page.  No in-figure titles: captions carry the message.
+* Ink for text, never series colour.  Hairline solid grids.
+* Colour is semantic and fixed across figures: blue = visibility (the
+  baseline condition) and the empty-sky-compatible wash; orange =
+  physical arrival; aqua = the looser mu = 1 line; neutral grey wash =
+  excluded by the sky.  Ordered quantities (Lambda, sigma_T) use a
+  one-hue blue ramp, light -> dark with magnitude.
+* Categorical slots validated with the dataviz skill's
+  validate_palette.js (all-pairs, light): CVD dE 9.2, normal dE 24.0.
+  Aqua is below 3:1 contrast on white, so every aqua mark is also
+  direct-labelled and dashed.
+
+Variable language
+-----------------
+``Lambda = q * N`` is the mean number of lineages per galaxy that turn
+loud.  ``N = 1e10`` zones per galaxy today (baseline config).  The lead
+``delta = t0 - f`` is called "lead" everywhere, matching the text.
+
+Data provenance (per figure)
+----------------------------
+Fig. 1  Schematic from closed-form Appendix-A counts: N(t) linear ramp
+        from s = 0.2 Gyr, planet clock m = N(t - T) at T = 4.6 Gyr,
+        inherited clock m = 1[t >= f] N(t) at f = s + T = t0.
+Fig. 2  Saved grid ``results/inference/head_start_bounds.csv``
+        (planet_linked, remote_visibility, zones_now=1e10, v=0.5c,
+        mu=-log 0.05); axes swapped to put duration on x.  Earth-age
+        crossing from ``results/inference/earth_origin_q_ceilings.csv``.
+Fig. 3  Same saved grid, inherited mode: visibility at mu=-log 0.05
+        and mu=1, arrival at mu=-log 0.05.
+Fig. 4  Closed-form deadlines t_vis(r) = t0 - D/v - r/c and
+        t_arr(r) = t0 - r/v; plateau radius and leads from the
+        saturated formula in Appendix A (agrees with the saved grid).
+Fig. 5  mu(delta) at fixed Lambda recomputed with
+        ``lineage_cap.expansion.expected_count`` and anchored to the
+        saved delta_max per q (asserted to return mu_ref there).
+Fig. 6  ``lineage_cap.start_spread.spread_bound`` on
+        ``configs/start_spread.json`` (q=1, visibility), as in
+        figures/make.py.
+Fig. 7  Normal-tail shares F(t0 + tau) = Phi(tau/sigma - z0), with z0
+        read from ``results/iid_tail/normal_tail_estimate.csv``.
+"""
+
+import csv
+import json
+import math
+from pathlib import Path
+from statistics import NormalDist
+import sys
+
+import matplotlib
+matplotlib.use("Agg")
+import matplotlib.pyplot as plt
+from matplotlib.lines import Line2D
+from matplotlib.ticker import FixedLocator, LogLocator, NullFormatter
+import numpy as np
+
+ROOT = Path(__file__).resolve().parent.parent
+sys.path.insert(0, str(ROOT))
+from lineage_cap.expansion import C_MPC_PER_GYR, Geometry, expected_count, galaxy_probability
+from lineage_cap.history import History
+from lineage_cap.start_spread import spread_bound
+
+OUT = ROOT / "figures"
+GRID = ROOT / "results/inference/head_start_bounds.csv"
+EARTH_CSV = ROOT / "results/inference/earth_origin_q_ceilings.csv"
+TAIL_CSV = ROOT / "results/iid_tail/normal_tail_estimate.csv"
+CONFIG = json.loads((ROOT / "configs/baseline.json").read_text())
+SPREAD_CONFIG = json.loads((ROOT / "configs/start_spread.json").read_text())
+
+N_ZONES = 1e10
+SPEED = 0.5
+MU_REF = CONFIG["inference"]["reference"]["mu_threshold"]   # -log(0.05)
+EARTH_AGE = CONFIG["time"]["earth_age_gyr"]                 # 4.6 Gyr
+RAMP_START = CONFIG["time"]["ramp_start_gyr"]               # 0.2 Gyr
+NOW = CONFIG["time"]["now_gyr"]                             # 13.8 Gyr
+N_G = CONFIG["abundance"]["galaxy_density_mpc3"]            # 0.01 / Mpc^3
+HOST_D = CONFIG["expansion"]["host_galaxy_diameter_kpc"] / 1000.0   # Mpc
+C_MYR = C_MPC_PER_GYR / 1e3                                 # Mpc / Myr
+
+# Tokens (dataviz reference palette, light surface).
+INK, INK2, MUTED = "#0b0b0b", "#52514e", "#898781"
+GRID_C, AXIS_C, WASH = "#e1e0d9", "#c3c2b7", "#efeeea"
+BLUE, ORANGE, AQUA = "#2a78d6", "#eb6834", "#1baf7a"
+RAMP = {250: "#86b6ef", 400: "#3987e5", 550: "#1c5cab", 700: "#0d366b"}
+
+WIDTH = 6.3   # in; A4 text width at 2.5 cm margins
+LAM_LABEL = "Loud yield  $\\Lambda = qN$  (mean loud lineages per galaxy)"
+WHITE_BOX = {"facecolor": "white", "edgecolor": "none", "pad": 1.2, "alpha": .92}
+
+
+def setup():
+    plt.rcParams.update({
+        "font.family": "Arial", "font.size": 8.5,
+        "mathtext.fontset": "custom", "mathtext.rm": "Arial",
+        "mathtext.it": "Arial:italic", "mathtext.bf": "Arial:bold",
+        "axes.spines.top": False, "axes.spines.right": False,
+        "axes.edgecolor": AXIS_C, "axes.linewidth": .8,
+        "axes.labelcolor": INK, "axes.labelsize": 9, "text.color": INK,
+        "xtick.color": AXIS_C, "ytick.color": AXIS_C,
+        "xtick.labelcolor": INK2, "ytick.labelcolor": INK2,
+        "xtick.labelsize": 8, "ytick.labelsize": 8,
+        "xtick.major.size": 3, "ytick.major.size": 3,
+        "xtick.minor.size": 1.6, "ytick.minor.size": 1.6,
+        "axes.grid": True, "grid.color": GRID_C, "grid.linewidth": .6,
+        "axes.axisbelow": True, "legend.frameon": False, "legend.fontsize": 8,
+        "lines.solid_capstyle": "round", "lines.solid_joinstyle": "round",
+        "svg.fonttype": "none",
+    })
+
+
+def save(fig, name):
+    for suffix in ("png", "svg"):
+        fig.savefig(OUT / f"{name}.{suffix}", dpi=300, facecolor="white",
+                    bbox_inches="tight", pad_inches=.04)
+    plt.close(fig)
+    print(f"wrote figures/{name}.png / .svg")
+
+
+def dot(ax, x, y, color, size=5.5, hollow=False, z=6):
+    """Marker with a 1.5 pt white ring so it reads where it crosses lines."""
+    ax.plot([x], [y], "o", color=color, markersize=size, zorder=z,
+            markerfacecolor="white" if hollow else color,
+            markeredgecolor=color if hollow else "white",
+            markeredgewidth=1.5 if hollow else 1.2)
+
+
+def leader(ax, text, xy, xytext, **kw):
+    kw.setdefault("fontsize", 8)
+    kw.setdefault("color", INK)
+    ax.annotate(text, xy=xy, xytext=xytext,
+                arrowprops={"arrowstyle": "-", "color": MUTED, "lw": .6,
+                            "shrinkA": 2, "shrinkB": 3}, **kw)
+
+
+def grid_rows(mode, kernel, mu):
+    """Saved head-start grid slice: (Lambda, min duration Gyr, lead Myr, constrained)."""
+    with GRID.open() as fh:
+        rows = [r for r in csv.DictReader(fh)
+                if r["clock_kind"] == "elapsed_time"
+                and r["lineage_mode"] == mode
+                and r["kernel"] == kernel
+                and float(r["zones_now"]) == N_ZONES
+                and float(r["speed_c"]) == SPEED
+                and math.isclose(float(r["mu_threshold"]), mu, rel_tol=1e-9)]
+    rows.sort(key=lambda r: float(r["q"]))
+    return (np.array([float(r["q"]) * N_ZONES for r in rows]),
+            np.array([max(float(r["earliest_duration_min_gyr"]), 0.0) for r in rows]),
+            np.array([float(r["head_start_max_gyr"]) * 1e3 for r in rows]),
+            np.array([r["constrained_within_history"] == "True" for r in rows]))
+
+
+def earth_crossing():
+    with EARTH_CSV.open() as fh:
+        for r in csv.DictReader(fh):
+            if (r["clock_kind"] == "elapsed_time" and r["kernel"] == "remote_visibility"
+                    and float(r["zones_now"]) == N_ZONES
+                    and float(r["speed_c"]) == SPEED
+                    and math.isclose(float(r["mu_threshold"]), MU_REF, rel_tol=1e-9)):
+                return float(r["q_max"]) * N_ZONES
+    raise LookupError("Earth-case ceiling row not found")
+
+
+def saturated_delta_max_myr(mu, kernel="remote_visibility"):
+    """Closed-form plateau (Appendix A); returns (delta_max Myr, radius Mpc)."""
+    delay = HOST_D / (SPEED * C_MPC_PER_GYR) if kernel == "remote_visibility" else 0.0
+    c_k = C_MPC_PER_GYR if kernel == "remote_visibility" else SPEED * C_MPC_PER_GYR
+    radius = (3 * mu / (4 * math.pi * N_G)) ** (1 / 3)
+    return (delay + radius / c_k) * 1e3, radius
+
+
+def sci(x):
+    """1.2e-12 -> 1.2x10^-12 in mathtext."""
+    mant, exp = f"{x:.1e}".split("e")
+    return f"{mant}$\\times$10$^{{{int(exp)}}}$"
+
+
+def zone_share(t):
+    """N(t)/N0 for the linear ramp from s to t0, held flat after t0."""
+    return np.clip((np.asarray(t) - RAMP_START) / (NOW - RAMP_START), 0, 1)
+
+
+# ---------------------------------------------------------------- fig 1
+def fig1_clocks():
+    t = np.linspace(0, 16, 1601)
+    zones = zone_share(t)
+    planet = zone_share(t - EARTH_AGE)
+    f = NOW                                   # inherited frontier f = s + T, delta = 0
+    inherited = np.where(t >= f, zones, 0.0)
+
+    fig, axes = plt.subplots(1, 2, figsize=(WIDTH, 2.55), sharey=True,
+                             layout="constrained")
+    for ax, emerged, name in ((axes[0], planet, "Planet clock,  $T$ = 4.6 Gyr"),
+                              (axes[1], inherited, "Inherited clock,  $f = s + T$")):
+        ax.set_xlim(0, 16)
+        ax.set_ylim(0, 1.08)
+        ax.set_xticks([0, 2, 4, 6, 8, 10, 12, 14, 16])
+        ax.set_yticks([0, .25, .5, .75, 1], labels=["0", "25%", "50%", "75%", "100%"])
+        ax.fill_between(t, zones, color=WASH, linewidth=0, zorder=1)
+        ax.plot(t, zones, color=INK2, linewidth=1.0, zorder=2)
+        ax.plot(t, emerged, color=BLUE, linewidth=2.0, zorder=4)
+        ax.axvline(NOW, color=INK2, linewidth=.7, zorder=3)
+        ax.text(NOW + .15, 1.02, "today", fontsize=7.5, color=INK2, va="bottom")
+        ax.set_title(name, loc="left", fontsize=9, fontweight="bold", pad=10)
+        ax.set_xlabel("Cosmic age (Gyr)")
+    axes[0].set_ylabel("Share of today's zones")
+
+    # Planet clock: two thirds emerged; first ones 9 Gyr before us.
+    share_now = float(zone_share(NOW - EARTH_AGE))
+    dot(axes[0], NOW, share_now, BLUE)
+    leader(axes[0], f"{share_now:.0%} emerged\nby today", (NOW, share_now), (9.6, .78),
+           ha="right")
+    first = RAMP_START + EARTH_AGE
+    axes[0].annotate("", xy=(first, .09), xytext=(NOW, .09),
+                     arrowprops={"arrowstyle": "<->", "color": INK2, "lw": .7,
+                                 "shrinkA": 0, "shrinkB": 0})
+    axes[0].text(11.0, .12, "first emergences\n9 Gyr before ours",
+                 ha="center", fontsize=7.5, color=INK2)
+    axes[0].text(1.0, .40, "zones existing", fontsize=7.5, color=INK2)
+    axes[0].text(12.0, .36, "emerged", fontsize=7.5, color=INK)
+
+    # Inherited clock: nobody before f, everybody at f.
+    dot(axes[1], NOW, 1.0, BLUE)
+    leader(axes[1], "every zone that exists\nemerges together at $f$", (NOW, .62),
+           (1.0, .86), ha="left", va="center")
+    leader(axes[1], "none emerged before $f$", (9.0, 0.0), (2.0, .2), va="center")
+    axes[1].text(14.2, .5, "later zones\nemerge on arrival", fontsize=7.5, color=INK2,
+                 rotation=90, va="center")
+    save(fig, "note_fig1_clocks")
+
+
+# ---------------------------------------------------------------- fig 4
+def fig4_lightcone():
+    delay = HOST_D / (SPEED * C_MPC_PER_GYR) * 1e3        # Myr
+    lead_v, radius = saturated_delta_max_myr(MU_REF)
+    lead_a, _ = saturated_delta_max_myr(MU_REF, "physical_arrival_diagnostic")
+    r = np.linspace(0, 7, 400)
+    vis = delay + r / C_MYR
+    arr = r / (SPEED * C_MYR)
+
+    fig, ax = plt.subplots(figsize=(WIDTH, 3.0), layout="constrained")
+    ax.set_xlim(0, 7)
+    ax.set_ylim(34, -1.5)                                 # past runs downward
+    ax.set_yticks([0, 5, 10, 15, 20, 25, 30])
+    ax.set_xlabel("Distance from us,  $r$  (Mpc)")
+    ax.set_ylabel("Time before today (Myr)")
+
+    # Galaxies loud at the frontier that we would already see / be reached by.
+    rr = np.linspace(0, radius, 200)
+    ax.fill_between(rr, delay + rr / C_MYR, lead_v, color=BLUE, alpha=.14,
+                    linewidth=0, zorder=1)
+    ax.fill_between(rr, rr / (SPEED * C_MYR), lead_a, color=ORANGE, alpha=.10,
+                    linewidth=0, zorder=1)
+    ax.plot(r, vis, color=BLUE, linewidth=2.0, zorder=4)
+    ax.plot(r, arr, color=ORANGE, linewidth=2.0, zorder=4)
+    for lead, color in ((lead_v, BLUE), (lead_a, ORANGE)):
+        ax.plot([0, radius], [lead, lead], color=color, linewidth=1.0, zorder=3)
+        ax.plot([radius, 7], [lead, lead], color=color, linewidth=.8, alpha=.5,
+                linestyle=(0, (3, 2)), zorder=3)
+    ax.plot([radius, radius], [-1.5, lead_a], color=INK2, linewidth=.7,
+            linestyle=(0, (2, 2)), zorder=2)
+    dot(ax, 0, 0, INK, size=6)
+
+    ax.text(.12, -.6, "us, today", fontsize=8, va="bottom")
+    ax.text(radius + .08, -.6, f"$R$ = {radius:.2f} Mpc: sphere holding "
+            f"$\\mu\\approx${MU_REF:.0f} galaxies at $n_g$ = 0.01 Mpc$^{{-3}}$",
+            fontsize=8, va="bottom")
+    ax.text(7.0, 17.0, "light reaching us:\n$D/v + r/c$", fontsize=8, ha="right",
+            va="bottom")
+    ax.text(5.45, 31.5, "front reaching us:  $r/v$,  $v$ = 0.5$c$",
+            fontsize=8, ha="left", va="center")
+    ax.text(4.3, lead_v - .4, f"frontier at visibility cap,  $\\delta$ = {lead_v:.1f} Myr",
+            fontsize=8, va="bottom")
+    ax.text(4.3, lead_a - .4, f"frontier at arrival cap,  $\\delta$ = {lead_a:.1f} Myr",
+            fontsize=8, va="bottom")
+    ax.text(1.05, 11.2, "seen", fontsize=8, color=INK, ha="center")
+    ax.text(1.4, 22.5, "arrived", fontsize=8, color=INK, ha="center")
+    save(fig, "note_fig4_lightcone")
+    print(f"  fig4: R={radius:.3f} Mpc, vis lead={lead_v:.2f}, arr lead={lead_a:.2f}")
+
+
+# ---------------------------------------------------------------- fig 2
+def fig2_planetary():
+    lam, duration, _, constrained = grid_rows("planet_linked", "remote_visibility", MU_REF)
+    crossing = earth_crossing()
+    keep = constrained & (duration > 0)
+    lam, duration = lam[keep], duration[keep]
+    # Below the smallest binding Lambda even a zero-duration process stays
+    # invisible, so in (T, Lambda) space the boundary runs flat to T = 0.
+    lam = np.insert(lam, 0, lam[0])
+    duration = np.insert(duration, 0, 0.0)
+    i = np.searchsorted(lam, crossing)
+    lam = np.insert(lam, i, crossing)
+    duration = np.insert(duration, i, EARTH_AGE)
+    t_at_one = float(np.interp(0.0, np.log10(lam), duration))
+
+    fig, ax = plt.subplots(figsize=(WIDTH, 3.15), layout="constrained")
+    ax.set_yscale("log")
+    ax.set_xlim(0, 14)
+    ax.set_ylim(1e-10, 1e2)
+    ax.yaxis.set_major_locator(FixedLocator([10.0 ** k for k in range(-10, 3, 2)]))
+    ax.yaxis.set_minor_locator(LogLocator(base=10, subs=(1.0,), numticks=30))
+    ax.yaxis.set_minor_formatter(NullFormatter())
+    ax.set_xticks(range(0, 15, 2))
+
+    ax.fill_between(duration, lam, 1e-10, color=BLUE, alpha=.10, linewidth=0, zorder=1)
+    ax.fill_between(duration, lam, 1e2, color=WASH, linewidth=0, zorder=0)
+    ax.plot(duration, lam, color=BLUE, linewidth=2.0, zorder=4)
+
+    ax.axhline(1.0, color=INK2, linewidth=.7, zorder=2)
+    dot(ax, t_at_one, 1.0, BLUE)
+    leader(ax, f"$\\Lambda$ = 1 needs $T \\gtrsim$ {t_at_one:.1f} Gyr:\n"
+               "nearly all of cosmic history", (t_at_one, 1.0), (12.6, 1.5e-2),
+           ha="right", va="center")
+
+    ax.axvline(EARTH_AGE, color=INK2, linewidth=.8, linestyle=(0, (4, 3)), zorder=3)
+    ax.plot([EARTH_AGE], [crossing], marker="*", color=INK, markersize=11,
+            markeredgecolor="white", markeredgewidth=.8, zorder=6)
+    leader(ax, f"Earth's age, 4.6 Gyr:  $\\Lambda \\lesssim$ 2.1$\\times$10$^{{-8}}$,\n"
+               "under one loud lineage per 50 million galaxies",
+           (EARTH_AGE, crossing), (1.0, 2e-5), va="center",
+           bbox={"facecolor": WASH, "edgecolor": "none", "pad": 1.5})
+    ax.text(EARTH_AGE - .15, 20, "fits in Earth's history", ha="right", va="center",
+            fontsize=7.5, color=INK2)
+    ax.text(EARTH_AGE + .15, 20, "longer than Earth's history", ha="left", va="center",
+            fontsize=7.5, color=INK2)
+
+    ax.text(.3, 1e-2, "excluded: earlier lineages\nwould be visible", fontsize=8,
+            color=INK2, va="center")
+    ax.text(13.6, 3e-10, "compatible with the empty sky", fontsize=8, color=INK2,
+            ha="right", va="center")
+
+    ax.set_xlabel("Duration every planet needs,  $T$  (Gyr from the planet's birth)")
+    ax.set_ylabel("Largest loud yield  $\\Lambda = qN$")
+    top = ax.secondary_xaxis("top", functions=(lambda x: RAMP_START + x,
+                                               lambda x: x - RAMP_START))
+    top.set_xticks([2, 4, 6, 8, 10, 12])
+    top.set_xlabel("First emergences at cosmic age (Gyr)", fontsize=8, color=INK2)
+    top.spines["top"].set_visible(True)
+    top.spines["top"].set_color(AXIS_C)
+    save(fig, "note_fig2_planetary")
+    print(f"  fig2: Earth crossing Lambda={crossing:.3e}; T(Lambda=1)={t_at_one:.3f} Gyr")
+
+
+# ---------------------------------------------------------------- fig 3
+def fig3_headstart():
+    series = [
+        (*grid_rows("inherited", "physical_arrival_diagnostic", MU_REF),
+         ORANGE, "-", 1.6, "Arrival, $P$(empty) = 5%",
+         saturated_delta_max_myr(MU_REF, "physical_arrival_diagnostic")[0]),
+        (*grid_rows("inherited", "remote_visibility", 1.0),
+         AQUA, (0, (5, 2.5)), 1.6, "Visibility, $\\mu$ = 1",
+         saturated_delta_max_myr(1.0)[0]),
+        (*grid_rows("inherited", "remote_visibility", MU_REF),
+         BLUE, "-", 2.2, "Visibility, $P$(empty) = 5%  (reference)",
+         saturated_delta_max_myr(MU_REF)[0]),
+    ]
+    _, radius = saturated_delta_max_myr(MU_REF)
+
+    fig, ax = plt.subplots(figsize=(WIDTH, 3.25), layout="constrained")
+    ax.set_xscale("log")
+    ax.set_yscale("log")
+    ax.set_xlim(1e-9, 1e10)
+    ax.set_ylim(7, 2e4)
+    ax.xaxis.set_major_locator(FixedLocator([10.0 ** k for k in range(-8, 11, 2)]))
+    ax.xaxis.set_minor_locator(FixedLocator([10.0 ** k for k in range(-9, 11, 2)]))
+    ax.xaxis.set_minor_formatter(NullFormatter())
+    ax.set_yticks([10, 30, 100, 300, 1000, 3000, 10000],
+                  labels=["10", "30", "100", "300", "1,000", "3,000", "10,000"])
+    ax.yaxis.set_minor_formatter(NullFormatter())
+
+    ax.axvspan(10, 1e10, color=WASH, linewidth=0, zorder=0)
+    ax.axvline(10, color=INK2, linewidth=.6, zorder=1)
+    ax.text(14, 1.3e4, "saturated, $\\Lambda \\gtrsim$ 10: every galaxy in reach is loud,\n"
+            f"so only the reachable volume counts (radius {radius:.1f} Mpc, ~3 galaxies)",
+            fontsize=7.8, color=INK2, va="top")
+
+    handles = []
+    for lam, _, lead, con, color, ls, lw, label, plateau in series:
+        y = np.where(con, lead, np.nan)
+        ax.plot(lam, y, color=color, linestyle=ls, linewidth=lw, zorder=4)
+        ax.text(1.4e10, plateau, (f"{plateau:.1f}" if plateau < 20 else f"{plateau:.0f}") + " Myr",
+                fontsize=8, color=INK, va="center", ha="left")
+        handles.append(Line2D([], [], color=color, linestyle=ls, linewidth=lw, label=label))
+        first = int(np.flatnonzero(con)[0])
+        if color == BLUE:
+            lam_v, lead_v = lam, lead
+            ax.plot([lam[first]], [lead[first]], marker="|", color=INK2, markersize=7,
+                    zorder=5)
+            leader(ax, "no bound to the left\nwithin 13.6 Gyr of history",
+                   (lam[first], lead[first]), (2e-6, 1.25e4), va="center", fontsize=7.5,
+                   color=INK2)
+
+    for target, xytext, ha in ((0.01, (0.4, 180), "left"), (1.0, (40, 19.5), "left")):
+        j = int(np.argmin(np.abs(np.log10(lam_v / target))))
+        dot(ax, lam_v[j], lead_v[j], BLUE, hollow=True)
+        leader(ax, f"$\\Lambda$ = {target:g}:  {lead_v[j]:.0f} Myr", (lam_v[j], lead_v[j]),
+               xytext, ha=ha, va="center")
+
+    ax.legend(handles=handles[::-1], loc="upper left", bbox_to_anchor=(0.43, 0.8),
+              handlelength=2.6)
+    ax.set_xlabel(LAM_LABEL)
+    ax.set_ylabel("Largest lead of the frontier,  $\\delta_{\\max}$  (Myr)")
+    save(fig, "note_fig3_headstart")
+
+
+# ---------------------------------------------------------------- fig 5
+def fig5_saturation():
+    history = History.from_config(CONFIG)
+    geometry = Geometry.from_config(CONFIG)
+    lam_grid, _, head_grid, con_grid = grid_rows("inherited", "remote_visibility", MU_REF)
+    delay_myr = geometry.delay(SPEED, "remote_visibility") * 1e3
+    deltas = np.linspace(0, 80, 321)
+    mu_sat = (4 * math.pi / 3) * N_G * (
+        C_MYR * np.maximum(deltas - delay_myr, 0)) ** 3
+
+    fig, ax = plt.subplots(figsize=(WIDTH, 3.0), layout="constrained")
+    ax.set_xlim(0, 80)
+    ax.set_ylim(0, 6)
+    ax.set_xticks(range(0, 81, 10))
+    ax.axhspan(MU_REF, 6, color=WASH, linewidth=0, zorder=0)
+    ax.axhline(MU_REF, color=INK2, linewidth=.8, zorder=2)
+    ax.text(79, MU_REF - .1, "$\\mu$ = 3,  $P$(empty) = 5%", ha="right", va="top",
+            fontsize=8, color=INK2)
+    ax.text(79, MU_REF + .1, "excluded", ha="right", va="bottom", fontsize=8, color=INK2)
+
+    panels = [(0.01, RAMP[250]), (1.0, RAMP[400]), (100.0, RAMP[550]), (1e4, RAMP[700])]
+    handles = []
+    for lam, color in panels:
+        q = lam / N_ZONES
+        mu = np.asarray(expected_count(history, geometry, deltas / 1e3, q, SPEED,
+                                       "inherited", "elapsed_time", "remote_visibility"),
+                        dtype=float)
+        j = int(np.argmin(np.abs(np.log10(lam_grid / lam))))
+        assert con_grid[j] and math.isclose(lam_grid[j], lam, rel_tol=1e-9)
+        delta_saved = head_grid[j]
+        mu_at = float(np.interp(delta_saved, deltas, mu))
+        assert abs(mu_at - MU_REF) < .02, (lam, mu_at)
+        p_g = float(galaxy_probability(N_ZONES, q))
+        print(f"  fig5: Lambda={lam:<7g} delta_max={delta_saved:.2f} Myr, "
+              f"mu there={mu_at:.4f}, p_g={p_g:.4g}")
+        ax.plot(deltas, mu, color=color, linewidth=2.0, zorder=4)
+        dot(ax, delta_saved, MU_REF, color, z=7)
+        lam_txt = "10$^4$" if lam == 1e4 else f"{lam:g}"
+        handles.append(Line2D([], [], color=color, linewidth=2.0,
+                              label=f"$\\Lambda$ = {lam_txt}   ({p_g:.0%} of galaxies loud)"))
+        if lam == 0.01:
+            leader(ax, f"$\\Lambda$ = 0.01:  $\\delta_{{\\max}}$ = {delta_saved:.0f} Myr",
+                   (delta_saved, MU_REF), (66, 1.4), ha="center", va="center")
+        if lam == 1.0:
+            leader(ax, f"$\\Lambda$ = 1:  {delta_saved:.0f} Myr", (delta_saved, MU_REF),
+                   (22, 2.2), ha="left", va="center")
+        if lam == 1e4:
+            leader(ax, f"$\\Lambda$ = 100, 10$^4$:\n{delta_saved:.1f} Myr", (delta_saved, MU_REF),
+                   (1.0, 4.7), ha="left", va="center")
+
+    ax.plot(deltas, mu_sat, color=INK, linewidth=1.0, linestyle=(0, (3, 2.5)), zorder=6)
+    handles.append(Line2D([], [], color=INK, linewidth=1.0, linestyle=(0, (3, 2.5)),
+                          label="saturated limit: every galaxy loud"))
+    ax.legend(handles=handles, loc="upper left", bbox_to_anchor=(.28, .995),
+              handlelength=2.6, fontsize=7.6, labelspacing=.35)
+    # Keep legend clear of the curves by placing it in the excluded band's middle.
+    ax.set_xlabel("Lead of the frontier over us,  $\\delta$  (Myr)")
+    ax.set_ylabel("Expected visible loud galaxies,  $\\mu$")
+    save(fig, "note_fig5_saturation")
+
+
+# ---------------------------------------------------------------- fig 6
+def fig6_window():
+    h = History.from_config(SPREAD_CONFIG)
+    g = Geometry.from_config(SPREAD_CONFIG)
+    marks = [.1, .2, .5, 1, 5]
+    spans = np.unique(np.concatenate((np.geomspace(.01, 5, 100), marks)))
+    bounds = [spread_bound(h, g, 1, .5, "remote_visibility", float(w), 1, MU_REF)
+              for w in spans]
+    frac = np.array([float(b.percentile_max) for b in bounds])
+
+    fig, ax = plt.subplots(figsize=(WIDTH, 2.9), layout="constrained")
+    ax.set_xscale("log")
+    ax.set_yscale("log")
+    ax.set_xlim(10, 5000)
+    ax.set_ylim(.01, 1.3)
+    ax.set_xticks([10, 30, 100, 200, 500, 1000, 5000],
+                  labels=["10", "30", "100", "200", "500", "1,000", "5,000"])
+    ax.set_yticks([.01, .02, .05, .1, .2, .5, 1],
+                  labels=["1%", "2%", "5%", "10%", "20%", "50%", "100%"])
+    ax.minorticks_off()
+    ax.axvspan(100, 200, color=WASH, linewidth=0, zorder=0)
+    ax.text(141, .0125, "first-star\nwindow?", ha="center", va="bottom", fontsize=7.5,
+            color=INK2)
+    ax.fill_between(spans * 1e3, frac, .01, color=BLUE, alpha=.10, linewidth=0, zorder=1)
+    ax.plot(spans * 1e3, frac, color=BLUE, linewidth=2.0, zorder=4)
+    for w in marks:
+        f = frac[np.flatnonzero(spans == w)[0]]
+        dot(ax, w * 1e3, f, BLUE)
+        txt = f"{f:.1%}".replace(".0%", "%") if f < .1 else f"{f:.0%}"
+        ax.annotate(txt, xy=(w * 1e3, f), xytext=(6, 5), textcoords="offset points",
+                    fontsize=8, ha="left", va="bottom", color=INK)
+    ax.text(11, 1.08, "short windows: any position allowed", fontsize=7.5, color=INK2)
+    ax.text(600, .45, "later starts excluded", fontsize=8, color=INK2, ha="left")
+    ax.text(14, .05, "our start must lie\nin this front share", fontsize=8, color=INK2)
+    ax.set_xlabel("Width of the start window,  $W$  (Myr)")
+    ax.set_ylabel("Latest permitted position\nof our start in the window")
+    save(fig, "note_fig6_window")
+    print("  fig6:", {w: round(float(frac[np.flatnonzero(spans == w)[0]]), 4) for w in marks})
+
+
+# ---------------------------------------------------------------- fig 7
+def fig7_flush():
+    with TAIL_CSV.open() as fh:
+        rows = {round(float(r["sigma_T_myr"])): r for r in csv.DictReader(fh)}
+    norm = NormalDist()
+    tau = np.linspace(-400, 3600, 2001)          # Myr after today
+
+    fig, ax = plt.subplots(figsize=(WIDTH, 3.1), layout="constrained")
+    ax.set_yscale("log")
+    ax.set_xlim(-400, 3600)
+    ax.set_ylim(1e-16, 3)
+    ax.yaxis.set_major_locator(FixedLocator([10.0 ** k for k in range(-16, 1, 2)]))
+    ax.yaxis.set_minor_locator(FixedLocator([10.0 ** k for k in range(-15, 1, 2)]))
+    ax.yaxis.set_minor_formatter(NullFormatter())
+    ax.set_xticks(range(0, 3601, 500), labels=["today", "+0.5", "+1", "+1.5", "+2",
+                                              "+2.5", "+3", "+3.5"])
+
+    one_zone = 1 / N_ZONES
+    ax.axhline(one_zone, color=INK2, linewidth=.7, zorder=2)
+    ax.text(3550, one_zone * 2.2, "one zone per galaxy ($10^{-10}$)", fontsize=7.8,
+            color=INK2, ha="right", va="bottom")
+    ax.axvline(0, color=INK2, linewidth=.7, zorder=2)
+    ax.axhline(.5, color=GRID_C, linewidth=.6, zorder=1)
+    ax.text(3550, .4, "half emerged", fontsize=7.5, color=INK2, ha="right", va="top")
+
+    cases = [(30, RAMP[250]), (136, RAMP[400]), (408, RAMP[700])]
+    handles = []
+    for sigma, color in cases:
+        r = rows[sigma]
+        z0 = float(r["z0"])
+        share = np.array([norm.cdf(x / sigma - z0) for x in tau])
+        share = np.where(share > 0, share, np.nan)
+        ax.plot(tau, share, color=color, linewidth=2.0, zorder=4)
+        f_now = float(r["F_t0"])
+        mean_after = float(r["mean_completion_after_t0_myr"])
+        dot(ax, 0, f_now, color, z=7)
+        dot(ax, mean_after, .5, color, z=7)
+        mw = float(r["expected_mw_finishers_by_t0"])
+        pct = "1%" if sigma == 136 else ("3%" if sigma == 408 else "0.2%")
+        handles.append(Line2D([], [], color=color, linewidth=2.0,
+                              label=f"$\\sigma_T$ = {sigma} Myr ({pct}):  $F(t_0)$ = {sci(f_now)},"
+                                    f"  {mw:.2g} loud ahead in the Milky Way"))
+    leader(ax, "today: among the first\n$10^{-10}$ to $10^{-13}$ of zones", (0, 6e-12),
+           (150, 2e-15), va="center")
+    leader(ax, "mean emergence still to come\n(dots on the 50% line)", (921, .5),
+           (1700, 1e-7), va="center")
+    ax.legend(handles=handles, loc="lower right", bbox_to_anchor=(1.0, 0.0),
+              fontsize=7.4, handlelength=2.2, labelspacing=.3)
+    ax.set_xlabel("Time from today (Gyr)")
+    ax.set_ylabel("Share of zones emerged,  $F$")
+    save(fig, "note_fig7_flush")
+
+
+if __name__ == "__main__":
+    setup()
+    fig1_clocks()
+    fig2_planetary()
+    fig3_headstart()
+    fig4_lightcone()
+    fig5_saturation()
+    fig6_window()
+    fig7_flush()
