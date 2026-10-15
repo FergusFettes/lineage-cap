@@ -240,56 +240,6 @@ def fig1_clocks():
     save(fig, "note_fig1_clocks")
 
 
-# ---------------------------------------------------------------- fig 4
-def fig4_lightcone():
-    delay = HOST_D / (SPEED * C_MPC_PER_GYR) * 1e3        # Myr
-    lead_v, radius = saturated_delta_max_myr(MU_REF)
-    lead_a, _ = saturated_delta_max_myr(MU_REF, "physical_arrival_diagnostic")
-    r = np.linspace(0, 7, 400)
-    vis = delay + r / C_MYR
-    arr = r / (SPEED * C_MYR)
-
-    fig, ax = plt.subplots(figsize=(WIDTH, 3.0), layout="constrained")
-    ax.set_xlim(0, 7)
-    ax.set_ylim(34, -1.5)                                 # past runs downward
-    ax.set_yticks([0, 5, 10, 15, 20, 25, 30])
-    ax.set_xlabel("Distance from us,  $r$  (Mpc)")
-    ax.set_ylabel("Time before today (Myr)")
-
-    # Galaxies loud at the frontier that we would already see / be reached by.
-    rr = np.linspace(0, radius, 200)
-    ax.fill_between(rr, delay + rr / C_MYR, lead_v, color=BLUE, alpha=.14,
-                    linewidth=0, zorder=1)
-    ax.fill_between(rr, rr / (SPEED * C_MYR), lead_a, color=ORANGE, alpha=.10,
-                    linewidth=0, zorder=1)
-    ax.plot(r, vis, color=BLUE, linewidth=2.0, zorder=4)
-    ax.plot(r, arr, color=ORANGE, linewidth=2.0, zorder=4)
-    for lead, color in ((lead_v, BLUE), (lead_a, ORANGE)):
-        ax.plot([0, radius], [lead, lead], color=color, linewidth=1.0, zorder=3)
-        ax.plot([radius, 7], [lead, lead], color=color, linewidth=.8, alpha=.5,
-                linestyle=(0, (3, 2)), zorder=3)
-    ax.plot([radius, radius], [-1.5, lead_a], color=INK2, linewidth=.7,
-            linestyle=(0, (2, 2)), zorder=2)
-    dot(ax, 0, 0, INK, size=6)
-
-    ax.text(.12, -.6, "us, today", fontsize=8, va="bottom")
-    ax.text(radius + .08, -.6, f"$R$ = {radius:.2f} Mpc: sphere holding "
-            f"$\\mu\\approx${MU_REF:.0f} galaxies at $n_g$ = 0.01 Mpc$^{{-3}}$",
-            fontsize=8, va="bottom")
-    ax.text(7.0, 17.0, "light reaching us:\n$D/v + r/c$", fontsize=8, ha="right",
-            va="bottom")
-    ax.text(5.45, 31.5, "front reaching us:  $r/v$,  $v$ = 0.5$c$",
-            fontsize=8, ha="left", va="center")
-    ax.text(4.3, lead_v - .4, f"frontier at visibility cap,  $\\delta$ = {lead_v:.1f} Myr",
-            fontsize=8, va="bottom")
-    ax.text(4.3, lead_a - .4, f"frontier at arrival cap,  $\\delta$ = {lead_a:.1f} Myr",
-            fontsize=8, va="bottom")
-    ax.text(1.05, 11.2, "seen", fontsize=8, color=INK, ha="center")
-    ax.text(1.4, 22.5, "arrived", fontsize=8, color=INK, ha="center")
-    save(fig, "note_fig4_lightcone")
-    print(f"  fig4: R={radius:.3f} Mpc, vis lead={lead_v:.2f}, arr lead={lead_a:.2f}")
-
-
 # ---------------------------------------------------------------- fig 2
 def fig2_planetary():
     lam, duration, _, constrained = grid_rows("planet_linked", "remote_visibility", MU_REF)
@@ -582,7 +532,6 @@ if __name__ == "__main__":
     fig1_clocks()
     fig2_planetary()
     fig3_headstart()
-    fig4_lightcone()
     fig5_saturation()
     fig6_window()
     fig7_flush()
