@@ -154,6 +154,8 @@ To summarise the account: planet-bound clocks, with each planet running its own 
 
 Configurations, saved outputs and verification files sit in the accompanying repository. `make baseline`, `make inference` and `make start-spread` regenerate the sweep numbers; `uv run python -m lineage_cap.iid_tail` regenerates the normal-tail and first-arrival table at `results/iid_tail/normal_tail_estimate.csv`; `MPLCONFIGDIR=.mplconfig uv run python figures/make_note.py` regenerates the figures. `make check` runs the tests.
 
+This note, its figures and data are licensed under CC BY 4.0; the code is MIT licensed. An interactive version of the calculation is at <https://www.fergusfettes.com/lineage-cap/>.
+
 ## References
 
 ::: {#refs}

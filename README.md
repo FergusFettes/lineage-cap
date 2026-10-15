@@ -85,9 +85,17 @@ The current source and saved results show the implemented calculation.
 ## Citation and licence
 
 For attribution, cite Fergus Fettes, *The head-start cap: an empty sky under a
-shared-onset lineage clock* (2026), and identify the repository commit used.
+shared-onset lineage clock* (2026), and identify the release used
+(the first is `v1.0-note`).
 Machine-readable citation metadata is in [CITATION.cff](CITATION.cff).
 
-Original code, text and figures in this repository are available under the
-[MIT licence](LICENSE). Cited third-party works retain their own rights;
-bibliographic references do not license those works.
+Licensing is split by kind of material:
+
+- **Code** (`lineage_cap/`, `tests/`, `figures/*.py`, `site/`, `Makefile`) is under the
+  [MIT licence](LICENSE).
+- **Text, figures and data** (the note and its PDF, `paper.qmd`, `docs/`, `notes/`,
+  `configs/`, `results/` and the figure images) are under
+  [CC BY 4.0](LICENSE-CC-BY-4.0).
+
+Cited third-party works retain their own rights; bibliographic references do not
+license those works.

@@ -1,0 +1,36 @@
+{
+  "upload_type": "publication",
+  "publication_type": "preprint",
+  "title": "The head-start cap: an empty sky under a shared-onset lineage clock",
+  "creators": [
+    {
+      "name": "Fettes, Fergus",
+      "affiliation": "Independent Researcher, Glasgow, UK"
+    }
+  ],
+  "description": "We are close to being able to expand beyond our own planet, and we see nobody else doing it. The hard-steps model explains the silence by making civilisations rare: a chain of improbable transitions on each planet, with earlier expanders closing off territory for everyone else. Mills et al. (2025) have argued that Earth's own record gives poor support for improbable steps, since the candidate transitions may simply have waited for conditions to change. Take that seriously and a problem appears. If lineages usually get there in the end, the older ones had a large head start, and some of those should now be visible. We work out how large that head start is allowed to be. Using flat-space geometry and perfect detection of expanded galaxies, we find that a clock tied to each planet's birth needs the mean number of loud lineages per galaxy, Λ = qN, held below ~2.1 × 10⁻⁸. A clock that starts from a shared cosmic event and carries progress between planets faces a looser constraint. With a single shared emergence date and Λ large enough that most galaxies contain a loud lineage, the permitted lead is about 14 million years. Spreading the start times over a window forces our own start toward the front of that window. Independent, normally distributed lineage durations tighten the constraint further: with a standard deviation of 1% of 13.6 Gyr and q = 1, about 6 × 10⁻¹² of zones have emerged by today, and we sit in the first flush of arrivals inside our own galaxy as well as outside it.",
+  "license": "cc-by-4.0",
+  "access_right": "open",
+  "keywords": [
+    "Fermi paradox",
+    "hard steps",
+    "grabby civilisations",
+    "astrobiology",
+    "SETI",
+    "great filter"
+  ],
+  "language": "eng",
+  "related_identifiers": [
+    {
+      "identifier": "https://github.com/FergusFettes/lineage-cap",
+      "relation": "isSupplementedBy",
+      "resource_type": "software"
+    },
+    {
+      "identifier": "https://www.fergusfettes.com/lineage-cap/",
+      "relation": "isSupplementedBy",
+      "resource_type": "other"
+    }
+  ],
+  "notes": "Code in the archived repository is MIT licensed; text, figures and data are CC BY 4.0."
+}

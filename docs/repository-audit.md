@@ -35,7 +35,8 @@ Ignored local files and external/private artifact contents are outside this scop
 The short publication is now `head-start-cap.qmd` / `head-start-cap.pdf` and is the
 default build. The longer `paper.qmd` remains a draft. Publication briefs live in
 `docs/`; numerical provenance stays in `notes/` and `results/`. Original repository
-material is MIT licensed. Third-party cited works are not relicensed.
+material was MIT licensed; from `v1.0-note` code is MIT and text, figures and data
+are CC BY 4.0. Third-party cited works are not relicensed.
 
 The baseline rerun reproduced its numerical tables and values. Its saved config
 copy was older than the current input config (sweep settings and implementation
