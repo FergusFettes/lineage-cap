@@ -1,4 +1,9 @@
-# paper figure captions and provenance
+# Long-paper draft figure captions and provenance
+
+Status: these captions belong to the three legacy figures used by
+`paper.qmd`. They are not captions for the short publication; current note
+figure provenance is in the docstring of `figures/make_note.py`, and the
+rendered captions live in `head-start-cap.qmd`.
 
 ## figure 1 — planetary starts
 

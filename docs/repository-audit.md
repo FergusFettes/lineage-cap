@@ -52,3 +52,13 @@ inputs or numerical results were changed for publication cleanup.
 
 The repository visibility and release/tag creation are separate publication
 steps. This cleanup preserves history and does not change GitHub visibility.
+
+## Post-audit update (16 October 2026)
+
+Since the audit verification above, the default build was made PDF-only,
+the light-cone figure was dropped from the short note (six figures remain),
+an interactive companion site was added, and the model wording was clarified
+to effective retained-progress trajectories / growing arena requirements.
+Those later changes did not alter the baseline numerical inputs or saved
+sweep results. Read the verification block as the state at audit time, not
+as a description of today's Makefile defaults.

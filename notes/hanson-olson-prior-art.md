@@ -2,6 +2,11 @@
 
 Research note, 12 October 2026. The paper itself was not changed for this search.
 
+Status: dated research record. Its main recommendations were later
+incorporated into the short note (Olson geometry credit, precise novelty
+positioning, no posterior/anthropic promotion). A full observer-conditioned
+comparison remains future work in `docs/full-paper-plan.md`.
+
 ## Assessment
 
 There is substantial prior discussion of the ingredients: pre-Earth ancestry,

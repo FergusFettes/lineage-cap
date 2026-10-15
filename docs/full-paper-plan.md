@@ -154,23 +154,23 @@ the next arena up is off-planet.
   equivalent capacity and connected-arena capacity separately (SPEC.md
   units discipline).
 - **Catastrophes — progress saved, timing perturbed**: complexity sits
-- **Where the gating sits: late.** Low-complexity regimes fit in tiny oases and
-  may be near-synchronous; high-complexity regimes need planetary-scale arenas
-  (Ponfilenok concedes this for large predators — this spec turns the
-  concession into the main effect). Predicted variance budget: step
-  stochasticity early, arena waiting late; dispersion *grows* along the
-  trajectory rather than concentrating all the way.
-  retention) pauses the clock without erasing it. Model catastrophes as
-  marked shocks to arena state — not automatic full resets, and not
-  ignorable noise. A few large shocks/waits dominate σ over millions of
-  easy steps: CLT works against synchrony here, which is another reason
-  the note accepts the early-tail branch instead of claiming tight synchrony.
-- **Where the gating sits: late.** Early stages fit in tiny oases and
-  may be near-synchronous; late stages need planetary-scale arenas
-  (Ponfilenok concedes this for large predators — this spec turns the
-  concession into the main effect). Predicted variance budget: step
-  stochasticity early, arena waiting late; dispersion *grows* along the
-  trajectory rather than concentrating all the way.
+  at clade level with many near-equivalent carriers, so one survivor
+  through an impact can preserve the frontier (Chicxulub arguably released
+  mammals after ~150 Myr of dinosaur suppression). Timing still moves: a
+  handful of shocks shifting the leading edge by ~Myr contributes
+  σ ~ Myr, and a shock that fragments an arena below its origination
+  threshold (but above retention) pauses the clock without erasing it.
+  Model catastrophes as marked shocks to arena state — not automatic full
+  resets, and not ignorable noise. A few large shocks/waits can dominate
+  σ over millions of easy increments, which is another reason the note
+  accepts the early-tail branch instead of claiming tight synchrony.
+- **Where the gating sits: late.** Low-complexity regimes fit in tiny
+  oases and may be near-synchronous; high-complexity regimes need
+  planetary-scale arenas (Ponfilenok concedes this for large predators —
+  this spec turns the concession into the main effect). Predicted
+  variance budget: step stochasticity early, arena waiting late;
+  dispersion *grows* along the trajectory rather than concentrating all
+  the way.
 - **Empirical anchors (hypothesis-generating, not proof; verify before
   citing)**: home-range and minimum-viable-population scaling with body
   mass/trophic level; Holocene stability and independent origins of
@@ -200,10 +200,10 @@ the next arena up is off-planet.
   there) — could become its own experimental paper.
 - **Parked/speculative**: Martyushev2025EMT (MEPP, entropic measure of
   time; intrinsic time ∝ log extrinsic time). Interesting because a
-  logarithmic intrinsic clock stretches equal complexity steps
+  logarithmic intrinsic clock stretches equal complexity increments
   exponentially in Newtonian time — superficially Sharov-like. Not to be
+  cited as support anywhere until someone derives a testable consequence
   for duration structure from it. Keep in parking lot.
-  for stage durations from it. Keep in parking lot.
 
 ## Distinguishing predictions (required section)
 

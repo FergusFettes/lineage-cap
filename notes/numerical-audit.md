@@ -2,6 +2,11 @@
 
 8 October 2026. SPEC.md is the model authority; REVIEW.md was not used. No baseline assumption, code or figure changed. Independently reran the numerical entry points and matched saved rows; exact row references and inputs are in `verified-paper-numbers.csv`. `make check`: 44 passed.
 
+Status: dated audit record. It predates the independent-tail estimate,
+publication cleanup and the current 57-test suite. Retain its findings as
+provenance for the baseline sweeps; use `docs/repository-audit.md`, `SPEC.md`
+and `lineage_cap/iid_tail.py` for later additions.
+
 ## exact paper numbers and corrections
 
 Reference inputs: now=13.8 Gyr; ramp start=0.2 Gyr; Earth age=4.6 Gyr; N_now=1e10; alpha=beta=1; density=.01 Mpc^-3; host diameter=.03 Mpc; launch delay=0; v=.5c; quadrature order=96; mu=-log(.05)=2.995732273553991. Configs: `configs/baseline.json`, `configs/start_spread.json`.

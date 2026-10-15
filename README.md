@@ -78,9 +78,9 @@ Earth-equivalent capacity and physical volume are distinct quantities.
 Source checks and numerical provenance are recorded in the
 [numerical audit](notes/numerical-audit.md),
 [verified values](notes/verified-paper-numbers.csv), and
-[evidence pack](notes/evidence-pack.md). Publication plans record development
-intent and may describe earlier drafts; the current source and saved results
-show the implemented calculation.
+[evidence pack](notes/evidence-pack.md). The short-note plan is a completed
+development/as-built record; the full-paper plan is the live research plan.
+The current source and saved results show the implemented calculation.
 
 ## Citation and licence
 
