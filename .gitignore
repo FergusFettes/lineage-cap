@@ -1,8 +1,12 @@
 paper.pdf
 paper.html
 paper_files/
+note.pdf
+note.html
+note_files/
 .quarto/
 .venv/
 __pycache__/
 .pytest_cache/
 .mplconfig/
+papers/
