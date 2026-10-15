@@ -531,7 +531,7 @@ def fig7_flush():
     norm = NormalDist()
     tau = np.linspace(-400, 3600, 2001)          # Myr after today
 
-    fig, ax = plt.subplots(figsize=(WIDTH, 3.1), layout="constrained")
+    fig, ax = plt.subplots(figsize=(WIDTH, 3.7), layout="constrained")
     ax.set_yscale("log")
     ax.set_xlim(-400, 3600)
     ax.set_ylim(1e-16, 3)
@@ -547,7 +547,7 @@ def fig7_flush():
             color=INK2, ha="right", va="bottom")
     ax.axvline(0, color=INK2, linewidth=.7, zorder=2)
     ax.axhline(.5, color=INK2, linewidth=.8, linestyle=(0, (3, 2)), zorder=2)
-    ax.text(2500, .58, "half emerged", fontsize=7.5, color=INK2, ha="center", va="bottom")
+    ax.text(3550, .4, "half emerged", fontsize=7.5, color=INK2, ha="right", va="top")
 
     cases = [(30, RAMP[250]), (136, RAMP[400]), (408, RAMP[700])]
     handles = []
@@ -567,11 +567,11 @@ def fig7_flush():
                               label=f"$\\sigma_T$ = {sigma} Myr ({pct}):  $F(t_0)$ = {sci(f_now)},"
                                     f"  {mw:.2g} loud ahead in the Milky Way"))
     leader(ax, "today: among the first\n$10^{-10}$ to $10^{-13}$ of trajectories", (0, 6e-12),
-           (150, 2e-15), va="center")
-    leader(ax, "mean emergence still to come\n(dots on the 50% line)", (921, .5),
-           (1700, 1e-7), va="center")
-    ax.legend(handles=handles, loc="lower right", bbox_to_anchor=(1.0, 0.0),
-              fontsize=7.4, handlelength=2.2, labelspacing=.3)
+           (500, 2e-14), va="center")
+    leader(ax, "mean emergence still to come\n(dots on the 50% line)", (2940, .5),
+           (2940, 1e-6), va="center", ha="center")
+    fig.legend(handles=handles, loc="outside lower center",
+               fontsize=7.4, handlelength=2.2, labelspacing=.3)
     ax.set_xlabel("Time from today (Gyr)")
     ax.set_ylabel("Share of trajectories emerged,  $F$")
     save(fig, "note_fig7_flush")
