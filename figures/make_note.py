@@ -6,7 +6,7 @@ Run from the repo root::
     MPLCONFIGDIR=.mplconfig uv run python figures/make_note.py
 
 Outputs ``figures/note_fig{1..7}_*.{png,svg}``, numbered in the order
-they appear in note.qmd.
+they appear in head-start-cap.qmd.
 
 Design rules (shared by every figure)
 -------------------------------------

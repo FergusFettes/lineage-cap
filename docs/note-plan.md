@@ -1,8 +1,11 @@
 # SPEC — Paper 1: the note (geometry of the head-start cap)
 
-13 October 2026. Companion to `SPEC.md` (numerical model authority) and
-`SPEC-paper-full.md` (mechanism paper). Source draft: `paper.qmd` (full-paper
-draft; do not cannibalise it). Output: new file `note.qmd` wired to
+Development brief, 13 October 2026. Some outline and figure targets below predate
+the current note; see `head-start-cap.qmd` for the implemented publication.
+
+Companion to `SPEC.md` (numerical model authority) and
+`docs/full-paper-plan.md` (mechanism paper). Source draft: `paper.qmd` (full-paper
+draft; do not cannibalise it). Output: new file `head-start-cap.qmd` wired to
 `references.bib`.
 
 ## Purpose and venue discipline
@@ -161,7 +164,7 @@ must be defined in text.
 
 ## Acceptance
 
-- `note.qmd` renders (pdf+html) using `references.bib`; all citations resolve.
+- `head-start-cap.qmd` renders (pdf+html) using `references.bib`; all citations resolve.
 - Every quoted number spot-checked against CSV; `make check` still passes.
 - Main text ≤3,000 words (appendix excluded).
 - Fergus has read Mills2025 + Ponfilenok2026 + Olson2018Envelope before
@@ -171,6 +174,6 @@ must be defined in text.
 
 1. Download/verify section-B bib entries (other agent; lc-qs9).
 2. Fergus reviews priority PDFs.
-3. Trim pass: paper.qmd → note.qmd per outline above.
+3. Trim pass: paper.qmd → head-start-cap.qmd per outline above.
 4. Analytic runner paragraph checked against a throwaway numeric integral.
 5. Render, word count, number audit, arXiv.

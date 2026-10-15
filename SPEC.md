@@ -1,7 +1,7 @@
 # Lineage cap: numerical project spec
 
 8 October 2026. Numerical project specification.
-Background: a private note.
+The numerical model supports the short publication and the longer mechanism-paper draft.
 
 ## Question and inference
 
@@ -47,7 +47,7 @@ Use `N_stars = 1e11`, benchmark `f_appropriate = 0.1`, and sweep
 to refine with planet demographics, not a measured 10% result.
 
 Let `s` be the beginning of the ramp, provisionally 0.2 Gyr after the big bang
-(200 **million** years; Fergus's “200ky” is awaiting clarification). Put
+(200 **million** years; an explicit benchmark assumption). Put
 `L = t_now - s` and `x = clip((t-s)/L, 0, 1)`.
 
 \[

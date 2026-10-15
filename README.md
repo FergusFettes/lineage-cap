@@ -1,56 +1,90 @@
-# lineage-cap
+# The head-start cap
 
-A paper on inherited complexification clocks: an empty sky constrains earlier completions;
-a proposed first-carbon onset then implies a lineage roughly as old as the universe. Written to send to
-Robin Hanson, as a response to the grabby-aliens model.
+**An empty sky under a shared-onset lineage clock** — Fergus Fettes
 
-- `paper.qmd`: the source. `make` renders `paper.pdf` and `paper.html` (Quarto).
-- Drafted in a Claude doc first:
-  (private link removed)
-  This repo is now the source of truth. Edit here, not there.
-- Background and the longer position: a private note.
+[Read the publication (PDF)](head-start-cap.pdf) · [Source](head-start-cap.qmd) · [Model specification](SPEC.md)
 
-## Numerical baseline
+If technological lineages share an early cosmic start and inherit progress between
+environments, how much earlier than us could they have emerged without leaving
+visible predecessors? This short research note compares planet-linked and inherited
+clocks. Under flat-space geometry and ideal detection of expanded galaxies, a
+saturated shared-onset model permits a lead of about 14 million years. Start-time
+and development-duration variation change the timing constraints.
 
-The agreed numerical model is in [SPEC.md](SPEC.md). The initial review is
-retained as history, with its superseded framing marked.
+These are conditional bounds under explicit benchmark assumptions, not evidence
+that an inherited biological clock exists. The model does not derive a transport
+mechanism or the relationship between productive opportunity and complexity.
+Remote visibility and physical arrival are calculated separately; the baseline
+is not calibrated to an astronomical survey.
 
-```bash
-make baseline  # configure environment, calculate histories, export CSV and PNG/SVG
-make inference # infer permitted head starts; sweep expansion probability and speed
-make start-spread # inherited start windows, leading ranks and ancestry correlation
-make check     # budget quadrature and cohort-conservation checks
+## Read and reproduce
+
+The checked-in [PDF](head-start-cap.pdf) is the current short publication.
+The longer [paper draft](paper.qmd) remains work in progress in the same repository;
+its proposed mechanism and research programme are described in the
+[full-paper plan](docs/full-paper-plan.md).
+
+Requirements: Python 3.12 or later, [uv](https://docs.astral.sh/uv/),
+[Quarto](https://quarto.org/), and a LaTeX installation for PDF rendering
+(`quarto install tinytex` installs one). Python dependencies are locked in `uv.lock`.
+Run commands from the repository root:
+
+```sh
+uv sync --locked
+make check          # numerical tests
+make                # render head-start-cap.pdf and HTML from saved figures
+make reproduce      # regenerate numerical results, note figures, PDF and HTML
 ```
 
-Edit [configs/baseline.json](configs/baseline.json) to change the Fermi inputs.
-The default is 100 billion stars, an assumed 10% appropriate-zone fraction,
-and linear ramps of zone count and per-zone capacity from cosmic age 0.2 Gyr.
-Capacity is in Earth-equivalent units, normalized to one per zone today.
+The full numerical sweeps take longer than rendering alone. Individual targets:
 
-Results are in [results/baseline](results/baseline), including a copied input
-configuration, CSV histories, a summary and three figures. The baseline
-estimates opportunity and per-path exposure.
+```sh
+make baseline       # opportunity histories and baseline figures
+make inference      # visibility/arrival bounds and inference figures
+make start-spread   # shared starts and ancestry correlation
+make duration-spread # duration-distribution sensitivity
+make iid-tail       # independent normal-duration estimates
+make note-figures   # short-publication figures from results
+make paper          # render the longer draft
+```
 
-The conditional head-start calculation is in [results/inference](results/inference).
-It compares planetary and inherited starts for elapsed and capacity-weighted
-clocks, and varies abundance, expansion probability and speed. Remote visibility
-and physical arrival have distinct kernels and are not combined as independent
-evidence. The first implementation is a flat-space, ideal-loud scenario; it is
-not calibrated to a particular survey.
+`make clean` removes rendered documents, including the checked-in PDF; rebuild
+with `make` before committing. HTML and downloaded reference papers are not tracked.
 
-The [start-spread results](results/start_spread/README.md) vary shared inherited
-starts across galaxies and progenitor groups. They report conditional leading
-percentiles, distinguish full window spans from standard deviations, and check
-local synchronizers and dependence on the seed epoch. Edit
-[configs/start_spread.json](configs/start_spread.json) for these scenarios.
+## Repository guide
 
-## Paper revision support
+| Path | Contents |
+| --- | --- |
+| `head-start-cap.qmd`, `head-start-cap.pdf` | Current short publication and rendered PDF |
+| `paper.qmd` | Longer paper draft; not the current publication |
+| `references.bib` | Shared bibliography |
+| `lineage_cap/`, `tests/` | Numerical model and checks |
+| `configs/` | Scenario inputs, units and source/assumption notes |
+| `results/` | Saved grids, configurations, verification reports and plots |
+| `figures/` | Publication figure generators and PNG/SVG outputs |
+| `SPEC.md` | Agreed numerical model and interpretation |
+| `docs/` | Publication plans and repository audit |
+| `notes/` | Research support, numerical audits and source provenance |
+| `site/` | Earlier interactive illustration; predates the current note |
 
-The paper distinguishes the zero-spread frontier benchmark from finite start windows and
-observer-conditioned inference. Appendix A documents the implemented calculation.
-`make figures` rebuilds its three figures; `make` renders PDF and HTML.
-Numerical checks and source provenance are recorded in
-[notes/numerical-audit.md](notes/numerical-audit.md),
-[notes/verified-paper-numbers.csv](notes/verified-paper-numbers.csv),
-[notes/evidence-pack.md](notes/evidence-pack.md), and
-[notes/figure-captions.md](notes/figure-captions.md).
+The legacy term “zone” in numerical outputs means an effective retained-progress
+trajectory in Earth-equivalent units, except in the planet-linked comparison.
+See [the interpretation](notes/model-interpretation.md). Elapsed time,
+Earth-equivalent capacity and physical volume are distinct quantities.
+
+Source checks and numerical provenance are recorded in the
+[numerical audit](notes/numerical-audit.md),
+[verified values](notes/verified-paper-numbers.csv), and
+[evidence pack](notes/evidence-pack.md). Publication plans record development
+intent and may describe earlier drafts; the current source and saved results
+show the implemented calculation.
+
+## Citation and licence
+
+For attribution, cite Fergus Fettes, *The head-start cap: an empty sky under a
+shared-onset lineage clock* (2026), and identify the repository commit used.
+Machine-readable citation metadata is in [CITATION.cff](CITATION.cff).
+
+Original code, text and figures in this repository are available under the
+[MIT licence](LICENSE). Cited third-party works retain their own rights;
+bibliographic references do not license those works.

@@ -1,4 +1,4 @@
-"""Normal iid-duration tail estimate used in note.qmd Section 5.
+"""Normal iid-duration tail estimate used in head-start-cap.qmd Section 5.
 
 One shared start for all galaxies; lineage durations are independent
 normal draws.  For each duration spread sigma_T, this solves for the

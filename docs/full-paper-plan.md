@@ -1,7 +1,7 @@
 # SPEC — Paper 2: the full paper (mechanism and full inference)
 
 13 October 2026. Companion to `SPEC.md` (numerical model authority) and
-`SPEC-paper-note.md` (the geometry note). Source draft: `paper.qmd` remains
+`docs/note-plan.md` (the geometry note). Source draft: `paper.qmd` remains
 the full-paper draft. Not blocking, and not blocked by, the note; split is by
 claim to avoid salami duplication: note = geometry bounds, full = physical
 mechanism + observer-conditioned inference.

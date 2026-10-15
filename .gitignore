@@ -10,3 +10,6 @@ __pycache__/
 .pytest_cache/
 .mplconfig/
 papers/
+
+head-start-cap.html
+head-start-cap_files/

@@ -1,6 +1,6 @@
 {
   "scope": "opportunity baseline; no completion or expansion inference yet",
-  "config_sha256": "84a93dcaa114b50c34f236a2b6da6fb632624c8acf43aaca0be551554d00b98d",
+  "config_sha256": "3739d784a57a97743a2a8098f134142ae60d67c4933265cc15d57647b7cf2b7b",
   "assumed_history": {
     "now": 13.8,
     "start": 0.2,
