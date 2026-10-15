@@ -1,4 +1,10 @@
-"""Analytic opportunity histories, with time in Gyr and capacity in EE units."""
+"""Analytic opportunity histories, with time in Gyr and capacity in EE units.
+
+Legacy ``zones`` names in this module denote effective retained-progress
+trajectories measured in Earth-equivalent units, not literal planets.  See
+``notes/model-interpretation.md`` (2026-10-15).  The count ramp is a Fermi
+history of effective Goldilocks capacity, shrinking toward zero at the start.
+"""
 
 from dataclasses import dataclass
 import math

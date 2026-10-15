@@ -74,6 +74,25 @@ total-capacity ramp. Never integrate a quantity that already includes lifetime.
 The early history describes the galaxy's progenitors, not an already assembled
 modern Milky Way at 0.2 Gyr.
 
+### Interpretation amendment (2026-10-15)
+
+See `notes/model-interpretation.md` for the full statement. In short: the
+legacy word "zone" in code, configs and saved tables means one **effective
+retained-progress trajectory** in Earth-equivalent units, not necessarily a
+planet. A zone is any run of suitable spacetime in which evolution can
+proceed and retain gains. Suitability is relative to the process's current
+complexity: the instantaneous arena required grows as complexification
+proceeds, so tiny wet bodies qualify early and only planet-scale arenas
+qualify eventually. The `N(t)` ramp is a Fermi proxy for effective
+Goldilocks capacity / trajectories in play, shrinking toward near-zero at
+the ramp start; it is not a planet birth rate and requires no rocky planets
+at 0.2 Gyr. The planet-linked branch temporarily identifies a trajectory
+with one planet as a counterfactual. Numerical inputs and saved results are
+unchanged by this reinterpretation; config files are left byte-identical so
+their hashes still match the saved outputs. Modelling dropout when a site
+is outgrown, transfer between arenas, and any derivation of pace from
+accumulated Goldilocks spacetime remains full-paper work.
+
 ## Turn opportunity into completion times
 
 Generate zone birth cohorts from `dN/dt`; retain their histories rather than

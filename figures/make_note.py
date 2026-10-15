@@ -216,7 +216,7 @@ def fig1_clocks():
         ax.text(NOW + .15, 1.02, "today", fontsize=7.5, color=INK2, va="bottom")
         ax.set_title(name, loc="left", fontsize=9, fontweight="bold", pad=10)
         ax.set_xlabel("Cosmic age (Gyr)")
-    axes[0].set_ylabel("Share of today's zones")
+    axes[0].set_ylabel("Share of today's trajectories")
 
     # Planet clock: two thirds emerged; first ones 9 Gyr before us.
     share_now = float(zone_share(NOW - EARTH_AGE))
@@ -229,16 +229,14 @@ def fig1_clocks():
                                  "shrinkA": 0, "shrinkB": 0})
     axes[0].text(11.0, .12, "first emergences\n9 Gyr before ours",
                  ha="center", fontsize=7.5, color=INK2)
-    axes[0].text(1.0, .40, "zones existing", fontsize=7.5, color=INK2)
+    axes[0].text(1.0, .40, "in play", fontsize=7.5, color=INK2)
     axes[0].text(12.0, .36, "emerged", fontsize=7.5, color=INK)
 
     # Inherited clock: nobody before f, everybody at f.
     dot(axes[1], NOW, 1.0, BLUE)
-    leader(axes[1], "every zone that exists\nemerges together at $f$", (NOW, .62),
+    leader(axes[1], "every trajectory in play\nemerges together at $f$", (NOW, .62),
            (1.0, .86), ha="left", va="center")
     leader(axes[1], "none emerged before $f$", (9.0, 0.0), (2.0, .2), va="center")
-    axes[1].text(14.2, .5, "later zones\nemerge on arrival", fontsize=7.5, color=INK2,
-                 rotation=90, va="center")
     save(fig, "note_fig1_clocks")
 
 
@@ -370,11 +368,11 @@ def fig3_headstart():
     ]
     _, radius = saturated_delta_max_myr(MU_REF)
 
-    fig, ax = plt.subplots(figsize=(WIDTH, 3.25), layout="constrained")
+    fig, ax = plt.subplots(figsize=(WIDTH, 3.6), layout="constrained")
     ax.set_xscale("log")
     ax.set_yscale("log")
     ax.set_xlim(1e-9, 1e10)
-    ax.set_ylim(7, 2e4)
+    ax.set_ylim(6, 2e4)
     ax.xaxis.set_major_locator(FixedLocator([10.0 ** k for k in range(-8, 11, 2)]))
     ax.xaxis.set_minor_locator(FixedLocator([10.0 ** k for k in range(-9, 11, 2)]))
     ax.xaxis.set_minor_formatter(NullFormatter())
@@ -384,16 +382,18 @@ def fig3_headstart():
 
     ax.axvspan(10, 1e10, color=WASH, linewidth=0, zorder=0)
     ax.axvline(10, color=INK2, linewidth=.6, zorder=1)
-    ax.text(14, 1.3e4, "saturated, $\\Lambda \\gtrsim$ 10: every galaxy in reach is loud,\n"
-            f"so only the reachable volume counts (radius {radius:.1f} Mpc, ~3 galaxies)",
+    ax.text(16, 1.3e4, "saturated, $\\Lambda \\gtrsim$ 10:\nevery galaxy in reach is loud,\n"
+            f"so only reachable volume counts\n(radius {radius:.1f} Mpc, ~3 galaxies)",
             fontsize=7.8, color=INK2, va="top")
 
     handles = []
     for lam, _, lead, con, color, ls, lw, label, plateau in series:
         y = np.where(con, lead, np.nan)
         ax.plot(lam, y, color=color, linestyle=ls, linewidth=lw, zorder=4)
-        ax.text(1.4e10, plateau, (f"{plateau:.1f}" if plateau < 20 else f"{plateau:.0f}") + " Myr",
-                fontsize=8, color=INK, va="center", ha="left")
+        # nudge the close 13.7 / 9.6 plateau labels apart
+        y_lab = plateau * {AQUA: .9, BLUE: 1.1}.get(color, 1.0)
+        ax.text(1.4e10, y_lab, (f"{plateau:.1f}" if plateau < 20 else f"{plateau:.0f}") + " Myr",
+                fontsize=8, color=color, va="center", ha="left", fontweight="bold")
         handles.append(Line2D([], [], color=color, linestyle=ls, linewidth=lw, label=label))
         first = int(np.flatnonzero(con)[0])
         if color == BLUE:
@@ -404,14 +404,15 @@ def fig3_headstart():
                    (lam[first], lead[first]), (2e-6, 1.25e4), va="center", fontsize=7.5,
                    color=INK2)
 
-    for target, xytext, ha in ((0.01, (0.4, 180), "left"), (1.0, (40, 19.5), "left")):
+    for target, xytext, ha in ((0.01, (1.5e-4, 22), "right"), (1.0, (0.04, 8.5), "right")):
         j = int(np.argmin(np.abs(np.log10(lam_v / target))))
         dot(ax, lam_v[j], lead_v[j], BLUE, hollow=True)
         leader(ax, f"$\\Lambda$ = {target:g}:  {lead_v[j]:.0f} Myr", (lam_v[j], lead_v[j]),
                xytext, ha=ha, va="center")
 
-    ax.legend(handles=handles[::-1], loc="upper left", bbox_to_anchor=(0.43, 0.8),
-              handlelength=2.6)
+    ax.legend(handles=handles[::-1], loc="center", bbox_to_anchor=(0.75, 0.42),
+              handlelength=2.6, facecolor=WASH, framealpha=1, frameon=True,
+              edgecolor="none")
     ax.set_xlabel(LAM_LABEL)
     ax.set_ylabel("Largest lead of the frontier,  $\\delta_{\\max}$  (Myr)")
     save(fig, "note_fig3_headstart")
@@ -507,13 +508,18 @@ def fig6_window():
         f = frac[np.flatnonzero(spans == w)[0]]
         dot(ax, w * 1e3, f, BLUE)
         txt = f"{f:.1%}".replace(".0%", "%") if f < .1 else f"{f:.0%}"
-        ax.annotate(txt, xy=(w * 1e3, f), xytext=(6, 5), textcoords="offset points",
-                    fontsize=8, ha="left", va="bottom", color=INK)
+        if w == max(marks):
+            ax.annotate(txt, xy=(w * 1e3, f), xytext=(-3, -11), textcoords="offset points",
+                        fontsize=8, ha="right", va="top", color=INK,
+                        bbox={"facecolor": "white", "alpha": .75, "edgecolor": "none", "pad": 1.0})
+        else:
+            ax.annotate(txt, xy=(w * 1e3, f), xytext=(6, 5), textcoords="offset points",
+                        fontsize=8, ha="left", va="bottom", color=INK)
     ax.text(11, 1.08, "short windows: any position allowed", fontsize=7.5, color=INK2)
     ax.text(600, .45, "later starts excluded", fontsize=8, color=INK2, ha="left")
     ax.text(14, .05, "our start must lie\nin this front share", fontsize=8, color=INK2)
-    ax.set_xlabel("Width of the start window,  $W$  (Myr)")
-    ax.set_ylabel("Latest permitted position\nof our start in the window")
+    ax.set_xlabel("Width of the start window,  $W$  (Myr, log)")
+    ax.set_ylabel("Latest permitted position\nof our start in the window (log)")
     save(fig, "note_fig6_window")
     print("  fig6:", {w: round(float(frac[np.flatnonzero(spans == w)[0]]), 4) for w in marks})
 
@@ -537,11 +543,11 @@ def fig7_flush():
 
     one_zone = 1 / N_ZONES
     ax.axhline(one_zone, color=INK2, linewidth=.7, zorder=2)
-    ax.text(3550, one_zone * 2.2, "one zone per galaxy ($10^{-10}$)", fontsize=7.8,
+    ax.text(3550, one_zone * 2.2, "one trajectory per galaxy ($10^{-10}$)", fontsize=7.8,
             color=INK2, ha="right", va="bottom")
     ax.axvline(0, color=INK2, linewidth=.7, zorder=2)
-    ax.axhline(.5, color=GRID_C, linewidth=.6, zorder=1)
-    ax.text(3550, .4, "half emerged", fontsize=7.5, color=INK2, ha="right", va="top")
+    ax.axhline(.5, color=INK2, linewidth=.8, linestyle=(0, (3, 2)), zorder=2)
+    ax.text(2500, .58, "half emerged", fontsize=7.5, color=INK2, ha="center", va="bottom")
 
     cases = [(30, RAMP[250]), (136, RAMP[400]), (408, RAMP[700])]
     handles = []
@@ -560,14 +566,14 @@ def fig7_flush():
         handles.append(Line2D([], [], color=color, linewidth=2.0,
                               label=f"$\\sigma_T$ = {sigma} Myr ({pct}):  $F(t_0)$ = {sci(f_now)},"
                                     f"  {mw:.2g} loud ahead in the Milky Way"))
-    leader(ax, "today: among the first\n$10^{-10}$ to $10^{-13}$ of zones", (0, 6e-12),
+    leader(ax, "today: among the first\n$10^{-10}$ to $10^{-13}$ of trajectories", (0, 6e-12),
            (150, 2e-15), va="center")
     leader(ax, "mean emergence still to come\n(dots on the 50% line)", (921, .5),
            (1700, 1e-7), va="center")
     ax.legend(handles=handles, loc="lower right", bbox_to_anchor=(1.0, 0.0),
               fontsize=7.4, handlelength=2.2, labelspacing=.3)
     ax.set_xlabel("Time from today (Gyr)")
-    ax.set_ylabel("Share of zones emerged,  $F$")
+    ax.set_ylabel("Share of trajectories emerged,  $F$")
     save(fig, "note_fig7_flush")
 
 
