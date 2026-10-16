@@ -1,0 +1,154 @@
+{
+  "scope": "independent review; same ideal q=1, v=0.5c, flat Poisson scenario",
+  "python": "3.14.8",
+  "numpy": "2.5.3",
+  "config_sha256": "3739d784a57a97743a2a8098f134142ae60d67c4933265cc15d57647b7cf2b7b",
+  "normal_tail": [
+    {
+      "sigma_myr": 30.0,
+      "z": 6.0831602166376975,
+      "production_z": 6.083160216827846,
+      "F_today": 5.891824461852161e-10,
+      "home_mean": 5.891824461852161,
+      "home_none_probability": 0.0027619330558499183,
+      "mean_completion_after_today_myr": 182.4948064991309,
+      "arrival_intensity_today": 0.3877348143705008,
+      "median_given_no_arrival_myr": 6.475078371837026,
+      "median_given_empty_sky_and_no_arrival_myr": 14.337518389442797,
+      "visible_256_to_512_relative_error": 6.661338147750939e-15,
+      "conditional_256_to_512_relative_error": 4.440892098500626e-16,
+      "external_empty_and_home_none_probability": 0.0001380966527924959
+    },
+    {
+      "sigma_myr": 136.0,
+      "z": 6.775276279436332,
+      "production_z": 6.775276280159709,
+      "F_today": 6.20843732487155e-12,
+      "home_mean": 0.062084373248715505,
+      "home_none_probability": 0.9398035891638645,
+      "mean_completion_after_today_myr": 921.4375740033412,
+      "arrival_intensity_today": 0.378418152571641,
+      "median_given_no_arrival_myr": 19.640038116119648,
+      "median_given_empty_sky_and_no_arrival_myr": 33.51295246858661,
+      "visible_256_to_512_relative_error": 3.1530333899354446e-14,
+      "conditional_256_to_512_relative_error": 1.1102230246251565e-16,
+      "external_empty_and_home_none_probability": 0.046990179458193226
+    },
+    {
+      "sigma_myr": 408.0,
+      "z": 7.214068871388237,
+      "production_z": 7.214068871905541,
+      "F_today": 2.7152133981798313e-13,
+      "home_mean": 0.0027152133981798313,
+      "home_none_probability": 0.9972884694597166,
+      "mean_completion_after_today_myr": 2943.3400995264005,
+      "arrival_intensity_today": 0.37586146156135647,
+      "median_given_no_arrival_myr": 55.48509880551859,
+      "median_given_empty_sky_and_no_arrival_myr": 93.90067812905606,
+      "visible_256_to_512_relative_error": 3.8413716652030416e-14,
+      "conditional_256_to_512_relative_error": 9.992007221626409e-16,
+      "external_empty_and_home_none_probability": 0.049864423472985836
+    },
+    {
+      "sigma_myr": 1360.0,
+      "z": 7.666277057146425,
+      "production_z": 7.666277057985377,
+      "F_today": 8.853025529670969e-15,
+      "home_mean": 8.853025529670968e-05,
+      "home_none_probability": 0.9999114736633907,
+      "mean_completion_after_today_myr": 10426.13679771914,
+      "arrival_intensity_today": 0.37491132544473194,
+      "median_given_no_arrival_myr": 173.9269121446565,
+      "median_given_empty_sky_and_no_arrival_myr": 294.0353624559212,
+      "visible_256_to_512_relative_error": 4.3298697960381105e-14,
+      "conditional_256_to_512_relative_error": 8.881784197001252e-16,
+      "external_empty_and_home_none_probability": 0.049995573683169536
+    }
+  ],
+  "later_mean_examples": [
+    {
+      "mean_shift_in_sigma": 0,
+      "external_empty_probability": 0.04999999999999914,
+      "median_given_empty_sky_and_no_arrival_myr": 33.51295246858661
+    },
+    {
+      "mean_shift_in_sigma": 1,
+      "external_empty_probability": 0.9987473636001108,
+      "median_given_empty_sky_and_no_arrival_myr": 147.33282636043327
+    },
+    {
+      "mean_shift_in_sigma": 2,
+      "external_empty_probability": 0.9999997972569116,
+      "median_given_empty_sky_and_no_arrival_myr": 283.2984060711575
+    },
+    {
+      "mean_shift_in_sigma": 5,
+      "external_empty_probability": 1.0,
+      "median_given_empty_sky_and_no_arrival_myr": 691.2984003638927
+    }
+  ],
+  "python312_cdf_emulation": [
+    {
+      "sigma_myr": 30.0,
+      "z_with_python312_cdf": 6.083158830208067,
+      "true_mu_at_that_z": 2.9957545091610327,
+      "relative_boundary_error": 7.422427978021062e-06
+    },
+    {
+      "sigma_myr": 136.0,
+      "z_with_python312_cdf": 6.775229903582437,
+      "true_mu_at_that_z": 2.9967446952510124,
+      "relative_boundary_error": 0.00033795466502772875
+    },
+    {
+      "sigma_myr": 408.0,
+      "z_with_python312_cdf": 7.213416701246375,
+      "true_mu_at_that_z": 3.01085617993189,
+      "relative_boundary_error": 0.00504848397549118
+    },
+    {
+      "sigma_myr": 1360.0,
+      "z_with_python312_cdf": 7.65734364652929,
+      "true_mu_at_that_z": 3.221747893235803,
+      "relative_boundary_error": 0.07544586733502667
+    }
+  ],
+  "planet_history_sensitivity": [
+    {
+      "history_start_gyr": 0.2,
+      "rare_limit_lambda_ceiling": 2.0575890954365438e-08
+    },
+    {
+      "history_start_gyr": 1,
+      "rare_limit_lambda_ceiling": 2.8102698518050826e-08
+    },
+    {
+      "history_start_gyr": 2,
+      "rare_limit_lambda_ceiling": 4.358642447708375e-08
+    },
+    {
+      "history_start_gyr": 4,
+      "rare_limit_lambda_ceiling": 1.3305465835647877e-07
+    }
+  ],
+  "saturated_start_windows": [
+    {
+      "width_myr": 100.0,
+      "lead_myr": 31.759400696007848
+    },
+    {
+      "width_myr": 200.0,
+      "lead_myr": 37.731478611554394
+    },
+    {
+      "width_myr": 500.0,
+      "lead_myr": 47.39444442457801
+    },
+    {
+      "width_myr": 5000,
+      "lead_myr": 84.12826019452321
+    }
+  ],
+  "saturated_visibility_lead_myr": 13.733989814018377,
+  "illustrative_m31_lead_myr_at_0_78_mpc": 2.7397135728206443
+}

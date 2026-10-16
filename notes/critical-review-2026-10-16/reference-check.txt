@@ -1,0 +1,66 @@
+ok         Adams2010                    doi
+ok         Adams2010                    arxiv
+ok   CITED AdamsNapier2022              doi
+ok   CITED Bromm2013                    doi
+ok   CITED Bromm2013                    arxiv
+ok   CITED Carter1983                   doi
+ok         Glavin2025                   doi
+ok   CITED Hanson2021                   doi
+ok   CITED Hanson2021                   arxiv
+ok         Kawaguchi2020                doi
+ok         MadauDickinson2014           doi
+ok         MaynardSmithSzathmary1995    search
+ok         Planck2016                   doi
+ok         RuizLara2020                 doi
+ok   CITED StacyBromm2014               doi
+ok         Thiel2014                    doi
+ok   CITED Watson2008                   doi
+ok   CITED Mills2025                    doi
+ok   CITED Mills2025                    arxiv
+ok   CITED SnyderBeattie2021            doi
+ok   CITED Hanson1998                   url
+ok   CITED Hanson2024NoHardSteps        url
+ok   CITED Hanson2010TwoFilters         url
+ok         Kipping2020                  doi
+ok   CITED Annis1999                    arxiv
+ok   CITED CirkovicVukotic2008          doi
+ok         Cirkovic2009                 doi
+ok         Olson2015Homogeneous         arxiv
+ok         Olson2015Estimates           arxiv
+ok         Olson2015VisibleSize         arxiv
+ok         Olson2016LongTerm            arxiv
+ok         Olson2017LifeHostile         arxiv
+ok   CITED Olson2018Envelope            arxiv
+ok   CITED Olson2018Envelope            url
+ok         Olson2020SIA                 arxiv
+ok   CITED OlsonOrd2021                 arxiv
+ok   CITED OlsonOrd2021                 url
+ok         Sandberg2018                 arxiv
+ok   CITED SharovGordon2013             arxiv
+ok   CITED SharovGordon2013             url
+ok   CITED Hair2011                     doi
+ok   CITED Ponfilenok2026               url
+ok   CITED Wright2014G                  doi
+ok   CITED Griffith2015G                doi
+ok   CITED Moody2024                    doi
+ok   CITED Lineweaver2004               doi
+ok         BehrooziPeeples2015          doi
+ok         BehrooziPeeples2015          arxiv
+ok   CITED Loeb2014                     doi
+ok   CITED Loeb2014                     arxiv
+ok         Marshall2021Assembly         doi
+ok         Sharma2023Assembly           doi
+ok         Martyushev2025EMT            doi
+ok         Kremer1993                   doi
+ok         Henrich2004                  doi
+ok         Vaesen2016                   doi
+ok         RichersonBoydBettinger2001   doi
+ok         Lineweaver2001               doi
+ok         Lineweaver2001               arxiv
+ok   CITED Gowanlock2011                doi
+ok   CITED Gowanlock2011                arxiv
+ok   CITED Belbruno2012                 arxiv
+ok   CITED Belbruno2012                 url
+ok   CITED Bostrom2002                  search
+
+52 entries, 0 problems
