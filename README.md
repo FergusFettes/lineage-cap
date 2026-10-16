@@ -50,6 +50,7 @@ make note-figures   # short-publication figures from results
 make paper          # render the longer draft PDF
 make html           # optional HTML rendering of the short publication
 make site-check     # check the site's JS model against the note (needs Node)
+make check-refs     # existence-check references.bib against Crossref/arXiv (network)
 ```
 
 `make clean` removes superseded renderings, optional HTML output and build caches,

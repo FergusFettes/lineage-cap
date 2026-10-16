@@ -6,6 +6,7 @@
   `.beads/issues.jsonl` before commits; do not commit the Dolt database.
 - Make small logical commits. Remote: GitHub repo `FergusFettes/lineage-cap` (`origin`, SSH).
 - Run the baseline with `make baseline` and checks with `make check`.
+- Run `make check-refs` after any bibliography change and before a release.
 - Keep source assumptions and units in the scenario configuration. Report
   Earth-equivalent capacity separately from elapsed time and physical volume.
 - Infer the gap to the frontier; do not calibrate it to zero.
