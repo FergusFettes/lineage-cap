@@ -47,13 +47,15 @@ def save(fig, output, name, title, caption, handles=None):
         ax.grid(alpha=.2)
         ax.set_axisbelow(True)
     for suffix in ("png", "svg"):
-        fig.savefig(output/f"{name}.{suffix}", dpi=160)
+        fig.savefig(output/f"{name}.{suffix}", dpi=160,
+                    metadata={"Date": None} if suffix == "svg" else None)
     plt.close(fig)
 
 
 def render_all(output):
     plt.rcParams.update({"font.size":11,"axes.titlesize":13,"axes.labelsize":11,
-                         "lines.linewidth":2,"figure.facecolor":"white"})
+                         "lines.linewidth":2,"figure.facecolor":"white",
+                         "svg.hashsalt":"lineage-cap"})
     bounds = load_rows(output/"start_bounds.csv")
     correlation = load_rows(output/"ancestry_groups.csv")
     ceilings = load_rows(output/"local_sync_q_ceilings.csv")

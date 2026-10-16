@@ -18,7 +18,8 @@ PURPLE = "#7758a6"
 
 def save(fig, output, name):
     for suffix in ("png", "svg"):
-        fig.savefig(Path(output) / f"{name}.{suffix}", dpi=180, facecolor="white")
+        fig.savefig(Path(output) / f"{name}.{suffix}", dpi=180, facecolor="white",
+                    metadata={"Date": None} if suffix == "svg" else None)
     plt.close(fig)
 
 
@@ -28,7 +29,7 @@ def setup():
         "axes.spines.top": False, "axes.spines.right": False,
         "axes.labelcolor": "#333333", "text.color": "#222222",
         "axes.edgecolor": "#aaaaaa", "grid.alpha": .2,
-        "svg.fonttype": "none",
+        "svg.fonttype": "none", "svg.hashsalt": "lineage-cap",
     })
 
 

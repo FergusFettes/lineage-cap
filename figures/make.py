@@ -55,6 +55,7 @@ def setup():
         "axes.labelcolor": INK, "text.color": INK,
         "xtick.color": MUTED, "ytick.color": MUTED,
         "axes.edgecolor": "#aaaaaa", "svg.fonttype": "none",
+        "svg.hashsalt": "lineage-cap",
     })
 
 
@@ -70,7 +71,8 @@ def qn_axis(ax):
 def save(fig, name):
     for suffix in ("png", "svg"):
         fig.savefig(OUT / f"{name}.{suffix}", dpi=200, facecolor="white",
-                    bbox_inches="tight")
+                    bbox_inches="tight",
+                    metadata={"Date": None} if suffix == "svg" else None)
         if suffix == "svg":
             path = OUT / f"{name}.svg"
             path.write_text("\n".join(line.rstrip() for line in path.read_text().splitlines()) + "\n")

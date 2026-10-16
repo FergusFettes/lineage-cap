@@ -118,14 +118,15 @@ def setup():
         "axes.grid": True, "grid.color": GRID_C, "grid.linewidth": .6,
         "axes.axisbelow": True, "legend.frameon": False, "legend.fontsize": 8,
         "lines.solid_capstyle": "round", "lines.solid_joinstyle": "round",
-        "svg.fonttype": "none",
+        "svg.fonttype": "none", "svg.hashsalt": "lineage-cap",
     })
 
 
 def save(fig, name):
     for suffix in ("png", "svg"):
         fig.savefig(OUT / f"{name}.{suffix}", dpi=300, facecolor="white",
-                    bbox_inches="tight", pad_inches=.04)
+                    bbox_inches="tight", pad_inches=.04,
+                    metadata={"Date": None} if suffix == "svg" else None)
     plt.close(fig)
     print(f"wrote figures/{name}.png / .svg")
 
