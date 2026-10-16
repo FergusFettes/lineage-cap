@@ -1,4 +1,4 @@
-.PHONY: all note pdf html paper paper-pdf paper-html clean figures note-figures baseline inference inference-figures start-spread start-spread-figures duration-spread iid-tail reproduce check site-check
+.PHONY: all note pdf html paper paper-pdf paper-html clean figures note-figures baseline inference inference-figures start-spread start-spread-figures duration-spread iid-tail reproduce check site-check check-refs
 
 # The short publication is the default; the longer paper remains a draft.
 all: note
@@ -27,3 +27,5 @@ duration-spread: ; uv run python -m lineage_cap.duration_spread
 check: ; uv run python -m pytest -q
 # The public site's JS port must keep matching the note's numbers.
 site-check: ; node site/check_model.js
+# Existence-check the bibliography (network; slow because arXiv is rate-limited).
+check-refs: ; uv run python -m lineage_cap.check_refs references.bib head-start-cap.qmd paper.qmd

@@ -2,6 +2,8 @@
 
 **An empty sky under a shared-onset lineage clock** — Fergus Fettes
 
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.23406424.svg)](https://doi.org/10.5281/zenodo.23406424)
+
 [Read the publication (PDF)](head-start-cap.pdf) · [Interactive page](https://www.fergusfettes.com/lineage-cap/) · [Source](head-start-cap.qmd) · [Model specification](SPEC.md)
 
 If technological lineages share an early cosmic start and inherit progress between
@@ -85,8 +87,13 @@ The current source and saved results show the implemented calculation.
 ## Citation and licence
 
 For attribution, cite Fergus Fettes, *The head-start cap: an empty sky under a
-shared-onset lineage clock* (2026), and identify the release used
-(the first is `v1.0-note`).
+shared-onset lineage clock* (2026), and identify the release used:
+
+> Fettes, F. (2026). *The head-start cap: an empty sky under a shared-onset lineage
+> clock* (v1.0-note). Zenodo. https://doi.org/10.5281/zenodo.23406425
+
+The concept DOI [10.5281/zenodo.23406424](https://doi.org/10.5281/zenodo.23406424)
+always resolves to the latest version.
 Machine-readable citation metadata is in [CITATION.cff](CITATION.cff).
 
 Licensing is split by kind of material:

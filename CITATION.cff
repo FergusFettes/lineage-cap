@@ -7,6 +7,14 @@ authors:
     given-names: Fergus
     affiliation: "Independent Researcher, Glasgow, UK"
 version: v1.0-note
+doi: 10.5281/zenodo.23406424
+identifiers:
+  - type: doi
+    value: 10.5281/zenodo.23406424
+    description: Concept DOI, always resolves to the latest version
+  - type: doi
+    value: 10.5281/zenodo.23406425
+    description: Version DOI for v1.0-note
 date-released: 2026-10-16
 license:
   - CC-BY-4.0
