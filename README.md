@@ -90,7 +90,7 @@ For attribution, cite Fergus Fettes, *The head-start cap: an empty sky under a
 shared-onset lineage clock* (2026), and identify the release used:
 
 > Fettes, F. (2026). *The head-start cap: an empty sky under a shared-onset lineage
-> clock* (v1.0-note). Zenodo. https://doi.org/10.5281/zenodo.23406425
+> clock* (v1.0.1). Zenodo. https://doi.org/10.5281/zenodo.23419159
 
 The concept DOI [10.5281/zenodo.23406424](https://doi.org/10.5281/zenodo.23406424)
 always resolves to the latest version.
