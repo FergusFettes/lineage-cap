@@ -1,0 +1,6 @@
+scenario,emergences_per_galaxy_per_gyr_at_t0,p_quiet_home,ratio_to_process_136myr
+"process clock, sigma_T=30 Myr, q=1",1.225435e+03,0.002762,1.140518e+00
+"process clock, sigma_T=136 Myr, q=1",3.157651e+00,0.939804,1.000000e+00
+"process clock, sigma_T=408 Myr, q=1",4.889920e-02,0.997288,1.643317e-02
+"planet clock, improbability before emergence",1.512933e-09,1.000000,5.098219e-10
+"planet clock, late filter at q ceiling",7.352941e+08,1.000000,2.477763e+08

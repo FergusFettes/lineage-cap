@@ -9,7 +9,7 @@ paper: paper-pdf
 paper-pdf: ; quarto render paper.qmd --to pdf
 paper-html: ; quarto render paper.qmd --to html
 note-figures: ; MPLCONFIGDIR=.mplconfig uv run python figures/make_note.py
-iid-tail: ; uv run python -m lineage_cap.iid_tail
+iid-tail: ; uv run python -m lineage_cap.iid_tail && uv run python -m lineage_cap.observer_rates
 # Recalculate the numerical inputs before rebuilding publication figures.
 reproduce:
 	$(MAKE) baseline inference start-spread duration-spread iid-tail
