@@ -13,6 +13,10 @@ Run from the repository root:
 
     uv run python -m lineage_cap.iid_tail
 
+The first-arrival medians condition on no front by t0, and then also on
+an empty visible sky at t0 (the joint condition, which removes nearby
+galaxies that would already show).
+
 Output: results/iid_tail/normal_tail_estimate.csv
 """
 
@@ -96,17 +100,69 @@ def expected_arrived(sigma_gyr: float, z0: float, delta_gyr: float, history: His
     return float(4 * math.pi * n_g * integral)
 
 
-def median_first_arrival_myr(sigma_gyr: float, z0: float, history: History) -> tuple[float, float]:
-    """Median wait for the first external front, given none by t0."""
+def galaxy_loud_by(offset_gyr: np.ndarray, sigma_gyr: float, z0: float, history: History) -> np.ndarray:
+    """Probability a galaxy has a loud lineage by t0 + offset (q = Q)."""
+    finished = np.array([NORM.cdf(x / sigma_gyr - z0) for x in np.ravel(offset_gyr)]).reshape(np.shape(offset_gyr))
+    zones = history.zones(history.now + np.asarray(offset_gyr))
+    return -np.expm1(zones * np.log1p(-Q * np.minimum(finished, 1.0 - 1e-15)))
+
+
+def expected_new_arrivals(
+    sigma_gyr: float, z0: float, delta_gyr: float, history: History, geometry: Geometry
+) -> float:
+    """Expected fronts reaching us in (t0, t0+delta] from galaxies neither visible nor arrived at t0.
+
+    Galaxies are a Poisson process marked by their first loud date, so
+    conditioning on an empty sky and no arrival today leaves a Poisson
+    process on the complement.  A galaxy at radius r arrives by t0+delta
+    if loud by delta - r/v, and is excluded if loud by
+    max(-D/v - r/c, -r/v): visible today or already arrived.
+    """
+    n_g = float(CONFIG["abundance"]["galaxy_density_mpc3"])
+    c = C_MPC_PER_GYR
+    v = SPEED_C * c
+    delay = geometry.delay(SPEED_C, "remote_visibility")
+    # Visibility excludes more than arrival out to the crossover radius.
+    crossover = delay / (1 / v - 1 / c)
+    r_max = (delta_gyr + delay) / (1 / v - 1 / c)
+    breaks = sorted({0.0, min(crossover, r_max), min(v * delta_gyr, r_max), r_max})
+    nodes, weights = np.polynomial.legendre.leggauss(256)
+    total = 0.0
+    for a, b in zip(breaks[:-1], breaks[1:]):
+        if b <= a:
+            continue
+        r = 0.5 * (b - a) * nodes + 0.5 * (a + b)
+        excluded = np.maximum(-delay - r / c, -r / v)
+        p = galaxy_loud_by(delta_gyr - r / v, sigma_gyr, z0, history) - galaxy_loud_by(
+            excluded, sigma_gyr, z0, history
+        )
+        total += 0.5 * (b - a) * float(np.sum(weights * r**2 * np.maximum(p, 0.0)))
+    return 4 * math.pi * n_g * total
+
+
+def median_first_arrival_myr(
+    sigma_gyr: float, z0: float, history: History, geometry: Geometry
+) -> tuple[float, float, float]:
+    """Expected arrivals by t0, and median wait for the first external front.
+
+    Returns the median given only no arrival by t0, and the median given
+    both no arrival and an empty visible sky at t0.
+    """
     base = expected_arrived(sigma_gyr, z0, 0.0, history)
-    lo, hi = 0.0, 2.0
-    for _ in range(50):
-        mid = 0.5 * (lo + hi)
-        if expected_arrived(sigma_gyr, z0, mid, history) - base < math.log(2):
-            lo = mid
-        else:
-            hi = mid
-    return base, 500.0 * (lo + hi)
+
+    def median(count) -> float:
+        lo, hi = 0.0, 3.0
+        for _ in range(50):
+            mid = 0.5 * (lo + hi)
+            if count(mid) < math.log(2):
+                lo = mid
+            else:
+                hi = mid
+        return 500.0 * (lo + hi)
+
+    arrival_only = median(lambda d: expected_arrived(sigma_gyr, z0, d, history) - base)
+    joint = median(lambda d: expected_new_arrivals(sigma_gyr, z0, d, history, geometry))
+    return base, arrival_only, joint
 
 
 def main() -> None:
@@ -129,13 +185,16 @@ def main() -> None:
                 "mu_check",
                 "expected_arrivals_by_t0",
                 "median_first_arrival_after_t0_myr_conditional",
+                "median_first_arrival_after_t0_myr_given_empty_sky",
             ]
         )
         for sigma in SIGMAS_GYR:
             z0 = solve_z(sigma, history, geometry)
             f_t0 = NORM.cdf(-z0)
             expected_mw = Q * zones_today * f_t0
-            arrived_by_t0, median_arrival_myr = median_first_arrival_myr(sigma, z0, history)
+            arrived_by_t0, median_arrival_myr, median_joint_myr = median_first_arrival_myr(
+                sigma, z0, history, geometry
+            )
             row = [
                 f"{sigma * 1000:.0f}",
                 f"{sigma / REFERENCE_DURATION_GYR:.4f}",
@@ -147,6 +206,7 @@ def main() -> None:
                 f"{expected_visible(sigma, z0, history, geometry):.6f}",
                 f"{arrived_by_t0:.6f}",
                 f"{median_arrival_myr:.1f}",
+                f"{median_joint_myr:.1f}",
             ]
             writer.writerow(row)
             print(",".join(row))

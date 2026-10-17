@@ -1,4 +1,4 @@
-sigma_T_myr,z0_boundary,z0_peak,peak_minus_boundary_myr,mu_vis_at_peak,F_t0_at_peak,N_F_t0_at_peak,mean_completion_after_t0_myr_at_peak,log_likelihood_gain
-30,6.0832,6.4339,10.5,0.3462,6.219054e-11,6.219054e-01,193.0,5.7244
-136,6.7753,6.9367,22.0,0.9114,2.006968e-12,2.006968e-02,943.4,1.0197
-408,7.2141,7.3634,60.9,0.9356,8.963355e-14,8.963355e-04,3004.3,0.9734
+sigma_T_myr,z0_boundary,z0_peak,peak_minus_boundary_myr,mu_vis_at_peak,F_t0_at_peak,N_F_t0_at_peak,mean_completion_after_t0_myr_at_peak,log_likelihood_gain,median_first_arrival_myr_given_empty_sky_at_peak
+30,6.0832,6.4339,10.5,0.3462,6.219054e-11,6.219054e-01,193.0,5.7244,16.3
+136,6.7753,6.9367,22.0,0.9114,2.006968e-12,2.006968e-02,943.4,1.0197,45.0
+408,7.2141,7.3634,60.9,0.9356,8.963355e-14,8.963355e-04,3004.3,0.9734,126.4

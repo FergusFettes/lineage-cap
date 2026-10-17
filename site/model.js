@@ -165,6 +165,26 @@
     return 4 * Math.PI * p.ng * integral * h;
   }
 
+  // iid_tail.expected_new_arrivals: fronts here by t0 + wait from galaxies neither
+  // visible nor arrived at t0 (a Poisson process thinned by today's empty sky).
+  const GL = legendre(128);
+  function iidNewArrivals(p, sigma, z0, wait) {
+    const c = C, v = p.v * C, delay = kernel(p, "visibility").delay;
+    const loudBy = x => -Math.expm1(zones(p, T0 + x) * Math.log1p(-p.q * Math.min(phi(x / sigma - z0), 1 - 1e-15)));
+    const cross = delay / (1 / v - 1 / c), rMax = (wait + delay) / (1 / v - 1 / c);
+    const breaks = [...new Set([0, Math.min(cross, rMax), Math.min(v * wait, rMax), rMax])].sort((a, b) => a - b);
+    let total = 0;
+    for (let k = 0; k + 1 < breaks.length; k++) {
+      const a = breaks[k], b = breaks[k + 1];
+      for (let i = 0; i < GL.x.length; i++) {
+        const r = 0.5 * (b - a) * GL.x[i] + 0.5 * (a + b);
+        const pr = loudBy(wait - r / v) - loudBy(Math.max(-delay - r / c, -r / v));
+        total += 0.5 * (b - a) * GL.w[i] * r * r * Math.max(pr, 0);
+      }
+    }
+    return 4 * Math.PI * p.ng * total;
+  }
+
   /* Independent normal durations with spread sigma (Gyr): fit the mean so the
    * external sky sits on the working line, then read off our position. */
   function durationSpread(p, sigma) {
@@ -174,12 +194,13 @@
     const F = phi(-z0);
     const home = p.q * p.N * F;
     const base = iidArrived(p, sigma, z0, 0);
-    let wait = NaN;
+    let wait = NaN, waitArrivalOnly = NaN;
     if (p.v > 0) {
       const hi = 2 + 20 * sigma / Math.max(p.v, 0.01);
-      wait = bisect(w => iidArrived(p, sigma, z0, w) - base < Math.LN2, 0, hi, 40);
+      waitArrivalOnly = bisect(w => iidArrived(p, sigma, z0, w) - base < Math.LN2, 0, hi, 40);
+      wait = bisect(w => iidNewArrivals(p, sigma, z0, w) < Math.LN2, 0, hi, 40);
     }
-    return { z0, F, home, pFirst: Math.exp(-home), meanAfter: z0 * sigma, wait };
+    return { z0, F, home, pFirst: Math.exp(-home), meanAfter: z0 * sigma, wait, waitArrivalOnly };
   }
 
   const api = { C, T0, S, HOST_MPC, BASELINE, zones, expected, planetCeiling, sharedLead,

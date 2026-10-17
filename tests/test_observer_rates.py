@@ -50,3 +50,15 @@ def test_fnc_peak_is_an_interior_maximum():
     peak = fnc_log_likelihood(0.136, z, n_now, history, geometry)
     for dz in (-0.05, 0.05):
         assert fnc_log_likelihood(0.136, z + dz, n_now, history, geometry) < peak
+
+
+def test_joint_arrival_median_exceeds_arrival_only_median():
+    history = History.from_config(iid_tail.CONFIG)
+    geometry = Geometry.from_config(iid_tail.CONFIG)
+    z0 = iid_tail.solve_z(0.136, history, geometry)
+    assert iid_tail.expected_new_arrivals(0.136, z0, 0.0, history, geometry) == 0.0
+    _, arrival_only, joint = iid_tail.median_first_arrival_myr(0.136, z0, history, geometry)
+    assert joint > arrival_only
+    median = joint / 1000
+    count = iid_tail.expected_new_arrivals(0.136, z0, median, history, geometry)
+    assert count == pytest.approx(math.log(2), rel=1e-6)

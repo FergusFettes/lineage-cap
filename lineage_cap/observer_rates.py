@@ -231,7 +231,8 @@ def main() -> None:
         writer = csv.writer(fh)
         writer.writerow(
             ["sigma_T_myr", "z0_boundary", "z0_peak", "peak_minus_boundary_myr", "mu_vis_at_peak",
-             "F_t0_at_peak", "N_F_t0_at_peak", "mean_completion_after_t0_myr_at_peak", "log_likelihood_gain"]
+             "F_t0_at_peak", "N_F_t0_at_peak", "mean_completion_after_t0_myr_at_peak", "log_likelihood_gain",
+             "median_first_arrival_myr_given_empty_sky_at_peak"]
         )
         for sigma in SWEEP_SIGMAS_GYR:
             zb = iid_tail.solve_z(sigma, history, geometry)
@@ -242,7 +243,8 @@ def main() -> None:
             )
             row = [f"{sigma * 1000:.0f}", f"{zb:.4f}", f"{zp:.4f}", f"{(zp - zb) * sigma * 1000:.1f}",
                    f"{iid_tail.expected_visible(sigma, zp, history, geometry):.4f}", f"{f:.6e}",
-                   f"{n_now * f:.6e}", f"{zp * sigma * 1000:.1f}", f"{gain:.4f}"]
+                   f"{n_now * f:.6e}", f"{zp * sigma * 1000:.1f}", f"{gain:.4f}",
+                   f"{iid_tail.median_first_arrival_myr(sigma, zp, history, geometry)[2]:.1f}"]
             writer.writerow(row)
             print(",".join(row))
 

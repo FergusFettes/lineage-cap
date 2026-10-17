@@ -15,12 +15,12 @@ near("lead at Lambda=1 (Myr)", 1000 * M.sharedLead({ ...B, q: 1e-10 }).delta, 16
 near("lead at Lambda=0.01 (Myr)", 1000 * M.sharedLead({ ...B, q: 1e-12 }).delta, 63, 0.04);
 for (const [W, d] of [[0.1, 32], [0.2, 38], [0.5, 47], [5, 84]])
   near(`window ${W * 1000} Myr lead (Myr)`, 1000 * M.sharedLead(B, "visibility", W).delta, d, 0.03);
-for (const [s, F, home, mean, wait] of [[0.03, 5.891824e-10, 5.891824, 182.5, 6.5],
-  [0.136, 6.208437e-12, 0.06208437, 921.4, 19.6], [0.408, 2.715213e-13, 0.002715213, 2943.3, 55.5]]) {
+for (const [s, F, home, mean, wait] of [[0.03, 5.891824e-10, 5.891824, 182.5, 14.3],
+  [0.136, 6.208437e-12, 0.06208437, 921.4, 33.5], [0.408, 2.715213e-13, 0.002715213, 2943.3, 93.9]]) {
   const r = M.durationSpread(B, s);
   near(`sigma ${s * 1000} Myr F(t0)`, r.F, F, 0.02);
   near(`sigma ${s * 1000} Myr MW ahead`, r.home, home, 0.02);
   near(`sigma ${s * 1000} Myr mean after (Myr)`, 1000 * r.meanAfter, mean, 0.01);
-  near(`sigma ${s * 1000} Myr median arrival (Myr)`, 1000 * r.wait, wait, 0.03);
+  near(`sigma ${s * 1000} Myr median arrival given empty sky (Myr)`, 1000 * r.wait, wait, 0.03);
 }
 process.exit(failed ? 1 : 0);
