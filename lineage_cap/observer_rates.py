@@ -12,10 +12,16 @@ Two tables for head-start-cap.qmd Section 5 and Appendix A.
    t0, with every scenario held at the same visibility boundary:
 
    - process clock, iid normal durations, q = 1:  N(t0) f(t0)
-   - planet clock with the improbability before emergence (hard-steps
-     proxy, loud on emergence): Lambda_max / L
+   - process clock with a late filter: q at its sky ceiling for a mean
+     completion placed z0 sigma after t0, N(t0) f(t0)
+   - planet clock with the improbability before emergence (loud on
+     emergence): Lambda_max / L
    - planet clock with the improbability after emergence (late filter,
      q at its ceiling): N0 / L
+   - hard-steps lottery, loud on emergence: each planet emerges at age a
+     with density n a^(n-1) / tau^n (rare-event limit), optionally only
+     inside a habitable window of length W.  The rate 1/tau^n is solved
+     for the sky boundary.
 
    Each rate is multiplied by the probability of no earlier loud lineage
    at home, exp(-expected), so the counted observers also see a quiet
@@ -36,6 +42,8 @@ from __future__ import annotations
 import csv
 import math
 
+import numpy as np
+
 from lineage_cap import iid_tail
 from lineage_cap.expansion import C_MPC_PER_GYR, Geometry
 from lineage_cap.history import History
@@ -43,6 +51,9 @@ from lineage_cap.history import History
 N_SCALES = (1e-4, 1e-3, 1e-2, 1e-1, 1.0, 10.0)
 SWEEP_SIGMAS_GYR = (0.03, 0.136, 0.408)
 PLANET_T_GYR = 4.6
+LATE_FILTER_Z0 = (3.0, 1.0, 0.0)
+HARD_STEPS_N = (3, 6, 9)
+HARD_STEPS_WINDOWS_GYR = (math.inf, 5.0)
 OUT_DIR = iid_tail.ROOT / "results/iid_tail"
 
 
@@ -64,6 +75,68 @@ def planetary_ceiling(history: History, geometry: Geometry) -> float:
     lead = span - PLANET_T_GYR - geometry.delay(iid_tail.SPEED_C, "remote_visibility")
     n_g = float(iid_tail.CONFIG["abundance"]["galaxy_density_mpc3"])
     return 3 * span * iid_tail.MU_STAR / (math.pi * n_g * C_MPC_PER_GYR**3 * lead**4)
+
+
+def q_ceiling(sigma_gyr: float, z0: float, history: History, geometry: Geometry) -> float:
+    """Largest q keeping the iid-tail sky on the boundary for fixed z0."""
+    lo, hi = -40.0, 0.0
+    for _ in range(80):
+        mid = 0.5 * (lo + hi)
+        if iid_tail.expected_visible(sigma_gyr, z0, history, geometry, q=10**mid) > iid_tail.MU_STAR:
+            hi = mid
+        else:
+            lo = mid
+    return 10**lo
+
+
+class HardSteps:
+    """Expected emergences per galaxy for an n-step lottery on the linear ramp.
+
+    Planets are born at N0/L per Gyr from s.  A planet of age a emerges at
+    rate k n a^(n-1) while a < window, with k = 1/tau^n.
+    """
+
+    def __init__(self, n: int, window_gyr: float, history: History):
+        self.n = n
+        self.window = window_gyr
+        self.start = history.start
+        self.birth_rate = float(history.zones(history.now)) / (history.now - history.start)
+
+    def rate(self, time: np.ndarray, k: float) -> np.ndarray:
+        age = np.clip(time - self.start, 0.0, self.window)
+        return self.birth_rate * k * age**self.n
+
+    def expected(self, time: np.ndarray, k: float) -> np.ndarray:
+        x = np.maximum(time - self.start, 0.0)
+        inside = np.minimum(x, self.window)
+        expired = 0.0 if math.isinf(self.window) else self.window**self.n * np.maximum(x - self.window, 0.0)
+        return self.birth_rate * k * (inside ** (self.n + 1) / (self.n + 1) + expired)
+
+
+def hard_steps_boundary(model: HardSteps, history: History, geometry: Geometry) -> float:
+    """k = 1/tau^n putting the visibility count on mu*."""
+    n_g = float(iid_tail.CONFIG["abundance"]["galaxy_density_mpc3"])
+    t_edge = history.now - geometry.delay(iid_tail.SPEED_C, "remote_visibility")
+    span = t_edge - history.start
+    breaks = sorted({0.0, span, min(max(span - model.window, 0.0), span)})
+    nodes, weights = np.polynomial.legendre.leggauss(400)
+
+    def mu(k: float) -> float:
+        total = 0.0
+        for a, b in zip(breaks[:-1], breaks[1:]):
+            u = 0.5 * (b - a) * nodes + 0.5 * (a + b)
+            p_gal = -np.expm1(-model.expected(t_edge - u, k))
+            total += 0.5 * (b - a) * float(np.sum(weights * u**2 * p_gal))
+        return 4 * math.pi * n_g * C_MPC_PER_GYR**3 * total
+
+    lo, hi = -80.0, 10.0
+    for _ in range(120):
+        mid = 0.5 * (lo + hi)
+        if mu(10**mid) > iid_tail.MU_STAR:
+            hi = mid
+        else:
+            lo = mid
+    return 10**lo
 
 
 def main() -> None:
@@ -93,6 +166,25 @@ def main() -> None:
         density = math.exp(-0.5 * z0 * z0) / math.sqrt(2 * math.pi) / sigma
         home = math.exp(-n_now * iid_tail.NORM.cdf(-z0))
         rates.append((f"process clock, sigma_T={sigma * 1000:.0f} Myr, q=1", n_now * density, home))
+    sigma = 0.136
+    for z0 in LATE_FILTER_Z0:
+        q = q_ceiling(sigma, z0, history, geometry)
+        f = iid_tail.NORM.cdf(-z0)
+        density = math.exp(-0.5 * z0 * z0) / math.sqrt(2 * math.pi) / sigma
+        rates.append(
+            (f"process clock, sigma_T=136 Myr, late filter q={q:.2e}, mean {z0:g} sigma after t0",
+             n_now * density, math.exp(-q * n_now * f))
+        )
+    t0 = np.array([history.now])
+    for window in HARD_STEPS_WINDOWS_GYR:
+        for n in HARD_STEPS_N:
+            model = HardSteps(n, window, history)
+            k = hard_steps_boundary(model, history, geometry)
+            label = "no window" if math.isinf(window) else f"{window:g} Gyr window"
+            rates.append(
+                (f"hard steps n={n}, {label}, loud on emergence",
+                 float(model.rate(t0, k)[0]), math.exp(-float(model.expected(t0, k)[0])))
+            )
     crossed = 1 - PLANET_T_GYR / span
     rates.append(("planet clock, improbability before emergence", ceiling / span, math.exp(-ceiling * crossed)))
     rates.append(("planet clock, late filter at q ceiling", n_now / span, math.exp(-ceiling * crossed)))

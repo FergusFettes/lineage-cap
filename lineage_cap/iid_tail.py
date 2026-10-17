@@ -40,7 +40,9 @@ Q = 1.0
 SIGMAS_GYR = (0.03, 0.136, 0.408, 1.36)
 REFERENCE_DURATION_GYR = 13.6
 
-def expected_visible(sigma_gyr: float, z0: float, history: History, geometry: Geometry) -> float:
+def expected_visible(
+    sigma_gyr: float, z0: float, history: History, geometry: Geometry, q: float = Q
+) -> float:
     """Visibility mu when Earth's duration sits z0 sigma below the mean.
 
     z0 = (mean completion date - t0) / sigma.  At lookback tau the
@@ -59,7 +61,7 @@ def expected_visible(sigma_gyr: float, z0: float, history: History, geometry: Ge
     finished = np.array([NORM.cdf(-z0 - x) for x in u])
     zones = history.zones(t0 - tau)
     # Stable 1 - (1 - qF)^N.
-    p_gal = -np.expm1(zones * np.log1p(-Q * finished))
+    p_gal = -np.expm1(zones * np.log1p(-q * finished))
     integrand = radius**2 * p_gal * C_MPC_PER_GYR * sigma_gyr
     integral = np.trapezoid(integrand, u)
     return float(4 * math.pi * n_g * integral)
