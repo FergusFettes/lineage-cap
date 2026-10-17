@@ -6,7 +6,7 @@ authors:
   - family-names: Fettes
     given-names: Fergus
     affiliation: "Independent Researcher, Glasgow, UK"
-version: v1.1.0
+version: v1.1.1
 doi: 10.5281/zenodo.23406424
 identifiers:
   - type: doi
