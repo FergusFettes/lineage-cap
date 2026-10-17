@@ -10,8 +10,11 @@ If technological lineages share an early cosmic start and inherit progress betwe
 environments, how much earlier than us could they have emerged without leaving
 visible predecessors? This short research note compares planet-linked and inherited
 clocks. Under flat-space geometry and ideal detection of expanded galaxies, a
-saturated shared-onset model permits a lead of about 14 million years. Start-time
-and development-duration variation change the timing constraints.
+saturated shared-onset model permits a lead of about 14 million years. With
+independent duration spreads the sky constrains our rank instead: we sit in a thin
+first flush of emergences arriving around now. Scored by full non-indexical
+conditioning, that clock produces observers like us 10⁷ to 10⁹ times as often as a
+hard-steps lottery if expansion is loud, and ties with it if expansion is filtered.
 
 These are conditional bounds under explicit benchmark assumptions, not evidence
 that an inherited biological clock exists. The model does not derive a transport

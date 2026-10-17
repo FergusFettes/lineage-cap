@@ -6,7 +6,7 @@ author:
     corresponding: true
     affiliations:
       - name: "Independent Researcher, Glasgow, UK"
-date: 2026-10-15
+date: 2026-10-17
 bibliography: references.bib
 format:
   pdf:

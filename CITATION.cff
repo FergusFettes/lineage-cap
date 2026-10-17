@@ -6,22 +6,19 @@ authors:
   - family-names: Fettes
     given-names: Fergus
     affiliation: "Independent Researcher, Glasgow, UK"
-version: v1.0.1
+version: v1.1.0
 doi: 10.5281/zenodo.23406424
 identifiers:
   - type: doi
     value: 10.5281/zenodo.23406424
     description: Concept DOI, always resolves to the latest version
-  - type: doi
-    value: 10.5281/zenodo.23419159
-    description: Version DOI for v1.0.1
-date-released: 2026-10-16
+date-released: 2026-10-17
 license:
   - CC-BY-4.0
   - MIT
 repository-code: "https://github.com/FergusFettes/lineage-cap"
 url: "https://github.com/FergusFettes/lineage-cap/blob/main/first-flush-likelihood.pdf"
-abstract: "If technological lineages share an early cosmic start and inherit progress between environments, how much earlier than us could they have emerged without leaving visible predecessors? Under flat-space geometry and ideal detection of expanded galaxies, a saturated shared-onset model permits a lead of about 14 million years."
+abstract: "We are close to being able to expand beyond our own planet, and we see nobody else doing it. The hard-steps model explains the silence by making civilisations rare, but Mills et al. (2025) argue that Earth's record gives poor support for improbable steps. If lineages usually get there in the end, the older ones had a large head start, and some should now be visible. We work out how large that head start may be, in flat space with perfect detection of expanded galaxies. A clock tied to each planet's birth must keep loud lineages extremely rare. A clock that starts from a shared cosmic event and carries progress between planets allows a lead of about 14 million years. Once lineage durations vary independently, the sky constrains our rank rather than the lead: we sit in a thin first flush of emergences arriving around now, in our galaxy and in others. Scored by full non-indexical conditioning, this clock produces observers like us 10⁷ to 10⁹ times as often as a hard-steps lottery if expansion is loud, and ties with it if expansion is filtered, which puts a price on the loudness premise."
 keywords:
   - Fermi paradox
   - hard steps
