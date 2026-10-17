@@ -17,6 +17,7 @@ import re
 import sys
 import time
 import unicodedata
+import urllib.error
 import urllib.parse
 import urllib.request
 import xml.etree.ElementTree as ET
@@ -88,8 +89,22 @@ def parse_bib(text):
     return entries
 
 
+def datacite_record(doi):
+    """A DataCite record (Zenodo, arXiv DOIs) in the shape of a Crossref one."""
+    data = json.loads(fetch("https://api.datacite.org/dois/" + urllib.parse.quote(doi)))["data"]["attributes"]
+    authors = [{"family": c.get("familyName") or c.get("name", ""), "given": c.get("givenName", "")}
+               for c in data.get("creators", [])]
+    return {"title": [t["title"] for t in data.get("titles", [])[:1]],
+            "issued": {"date-parts": [[data.get("publicationYear")]]}, "author": authors}
+
+
 def check_doi(entry):
-    record = json.loads(fetch("https://api.crossref.org/works/" + urllib.parse.quote(entry["doi"])))["message"]
+    try:
+        record = json.loads(fetch("https://api.crossref.org/works/" + urllib.parse.quote(entry["doi"])))["message"]
+    except urllib.error.HTTPError as error:
+        if error.code != 404:
+            raise
+        record = datacite_record(entry["doi"])
     title = (record.get("title") or [""])[0]
     problems = [] if title_matches(entry.get("title", ""), title) else [f"title is '{title}'"]
     year = (record.get("issued", {}).get("date-parts") or [[None]])[0][0]
