@@ -12,6 +12,9 @@ identifiers:
   - type: doi
     value: 10.5281/zenodo.23406424
     description: Concept DOI, always resolves to the latest version
+  - type: doi
+    value: 10.5281/zenodo.23436699
+    description: Version DOI for v1.1.0
 date-released: 2026-10-17
 license:
   - CC-BY-4.0
