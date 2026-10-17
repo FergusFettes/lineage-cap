@@ -1,10 +1,10 @@
-# The head-start cap
+# First-flush likelihood
 
-**An empty sky under a shared-onset lineage clock** — Fergus Fettes
+**Under a common-start, continuous evolutionary process** — Fergus Fettes
 
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.23406424.svg)](https://doi.org/10.5281/zenodo.23406424)
 
-[Read the publication (PDF)](head-start-cap.pdf) · [Interactive page](https://www.fergusfettes.com/lineage-cap/) · [Source](head-start-cap.qmd) · [Model specification](SPEC.md)
+[Read the publication (PDF)](first-flush-likelihood.pdf) · [Interactive page](https://www.fergusfettes.com/lineage-cap/) · [Source](first-flush-likelihood.qmd) · [Model specification](SPEC.md)
 
 If technological lineages share an early cosmic start and inherit progress between
 environments, how much earlier than us could they have emerged without leaving
@@ -21,7 +21,7 @@ is not calibrated to an astronomical survey.
 
 ## Read and reproduce
 
-The checked-in [PDF](head-start-cap.pdf) is the current short publication.
+The checked-in [PDF](first-flush-likelihood.pdf) is the current short publication.
 The longer [paper draft](paper.qmd) remains work in progress in the same repository;
 its proposed mechanism and research programme are described in the
 [full-paper plan](docs/full-paper-plan.md).
@@ -34,7 +34,7 @@ Run commands from the repository root:
 ```sh
 uv sync --locked
 make check          # numerical tests
-make                # render head-start-cap.pdf from saved figures
+make                # render first-flush-likelihood.pdf from saved figures
 make reproduce      # regenerate numerical results, note figures and PDF
 ```
 
@@ -61,7 +61,7 @@ reference papers are not tracked.
 
 | Path | Contents |
 | --- | --- |
-| `head-start-cap.qmd`, `head-start-cap.pdf` | Current short publication and rendered PDF |
+| `first-flush-likelihood.qmd`, `first-flush-likelihood.pdf` | Current short publication and rendered PDF |
 | `paper.qmd` | Longer paper draft; not the current publication |
 | `references.bib` | Shared bibliography |
 | `lineage_cap/`, `tests/` | Numerical model and checks |
@@ -87,8 +87,9 @@ The current source and saved results show the implemented calculation.
 
 ## Citation and licence
 
-For attribution, cite Fergus Fettes, *The head-start cap: an empty sky under a
-shared-onset lineage clock* (2026), and identify the release used:
+For attribution, cite Fergus Fettes, *First-flush likelihood under a common-start,
+continuous evolutionary process* (2026), and identify the release used. v1.0.1
+appeared under its earlier title:
 
 > Fettes, F. (2026). *The head-start cap: an empty sky under a shared-onset lineage
 > clock* (v1.0.1). Zenodo. https://doi.org/10.5281/zenodo.23419159

@@ -2,7 +2,7 @@
 
 16 October 2026. Reviewed by Codex at Fergus's request.
 
-Primary manuscript: `head-start-cap.qmd`, the 13-page published note. Also read
+Primary manuscript: `first-flush-likelihood.qmd`, the 13-page published note. Also read
 `paper.qmd`, `SPEC.md`, the publication plans, previous audits, numerical modules,
 tests, figure-generation code, saved outputs, and selected primary literature.
 The manuscript at the start of the review was at commit `1e53812`. Concurrent

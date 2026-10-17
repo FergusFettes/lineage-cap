@@ -1,7 +1,7 @@
 cff-version: 1.2.0
 message: "Please cite the note and identify the release used."
 type: article
-title: "The head-start cap: an empty sky under a shared-onset lineage clock"
+title: "First-flush likelihood under a common-start, continuous evolutionary process"
 authors:
   - family-names: Fettes
     given-names: Fergus
@@ -20,7 +20,7 @@ license:
   - CC-BY-4.0
   - MIT
 repository-code: "https://github.com/FergusFettes/lineage-cap"
-url: "https://github.com/FergusFettes/lineage-cap/blob/main/head-start-cap.pdf"
+url: "https://github.com/FergusFettes/lineage-cap/blob/main/first-flush-likelihood.pdf"
 abstract: "If technological lineages share an early cosmic start and inherit progress between environments, how much earlier than us could they have emerged without leaving visible predecessors? Under flat-space geometry and ideal detection of expanded galaxies, a saturated shared-onset model permits a lead of about 14 million years."
 keywords:
   - Fermi paradox

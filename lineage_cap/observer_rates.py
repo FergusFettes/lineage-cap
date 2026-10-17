@@ -1,6 +1,6 @@
 """N sweep of the normal iid tail, and observer rates under full non-indexical conditioning.
 
-Two tables for head-start-cap.qmd Section 5 and Appendix A.
+Two tables for first-flush-likelihood.qmd Section 5 and Appendix A.
 
 1. N sweep.  Rescale the trajectory history by a constant factor and
    re-solve the iid_tail visibility boundary.  Reports F(t0), the home

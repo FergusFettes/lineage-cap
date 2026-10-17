@@ -2,7 +2,7 @@
 
 8 October 2026; interpretation amended 15 October 2026. Numerical project
 specification and current implementation record. It supports the short
-publication (`head-start-cap.qmd`) and the longer mechanism-paper draft
+publication (`first-flush-likelihood.qmd`) and the longer mechanism-paper draft
 (`paper.qmd`).
 
 ## Question and inference

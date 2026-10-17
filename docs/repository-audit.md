@@ -32,7 +32,7 @@ Ignored local files and external/private artifact contents are outside this scop
 
 ## Publication cleanup
 
-The short publication is now `head-start-cap.qmd` / `head-start-cap.pdf` and is the
+The short publication is now `first-flush-likelihood.qmd` / `first-flush-likelihood.pdf` and is the
 default build. The longer `paper.qmd` remains a draft. Publication briefs live in
 `docs/`; numerical provenance stays in `notes/` and `results/`. Original repository
 material was MIT licensed; from `v1.0-note` code is MIT and text, figures and data

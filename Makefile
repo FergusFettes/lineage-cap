@@ -3,8 +3,8 @@
 # The short publication is the default; the longer paper remains a draft.
 all: note
 note: pdf
-pdf: ; quarto render head-start-cap.qmd --to pdf
-html: ; quarto render head-start-cap.qmd --to html
+pdf: ; quarto render first-flush-likelihood.qmd --to pdf
+html: ; quarto render first-flush-likelihood.qmd --to html
 paper: paper-pdf
 paper-pdf: ; quarto render paper.qmd --to pdf
 paper-html: ; quarto render paper.qmd --to html
@@ -16,7 +16,7 @@ reproduce:
 	$(MAKE) note-figures
 	$(MAKE) note
 clean:
-	rm -rf head-start-cap.html head-start-cap_files paper.pdf paper.html paper_files note.pdf note.html note_files .quarto .pytest_cache .mplconfig lineage_cap/__pycache__ tests/__pycache__
+	rm -rf first-flush-likelihood.html first-flush-likelihood_files paper.pdf paper.html paper_files note.pdf note.html note_files .quarto .pytest_cache .mplconfig lineage_cap/__pycache__ tests/__pycache__
 baseline: ; MPLCONFIGDIR=.mplconfig uv run python -m lineage_cap.baseline
 inference: ; MPLCONFIGDIR=.mplconfig uv run python -u -m lineage_cap.sweep
 figures: ; MPLCONFIGDIR=.mplconfig uv run python figures/make.py
@@ -28,4 +28,4 @@ check: ; uv run python -m pytest -q
 # The public site's JS port must keep matching the note's numbers.
 site-check: ; node site/check_model.js
 # Existence-check the bibliography (network; slow because arXiv is rate-limited).
-check-refs: ; uv run python -m lineage_cap.check_refs references.bib head-start-cap.qmd paper.qmd
+check-refs: ; uv run python -m lineage_cap.check_refs references.bib first-flush-likelihood.qmd paper.qmd

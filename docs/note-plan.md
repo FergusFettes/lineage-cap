@@ -4,7 +4,7 @@ Development brief, 13 October 2026; as-built status updated 16 October 2026.
 
 ## Status: implemented; historical targets below
 
-The current publication is `head-start-cap.qmd` (13-page PDF) with six figures.
+The current publication is `first-flush-likelihood.qmd` (13-page PDF) with six figures.
 It departs from the original brief in four recorded ways: it is longer and has
 more figures than the 2,000–3,000-word / 2–3-figure target; the independent
 normal-duration tail and first-arrival estimate were implemented in the note
@@ -18,7 +18,7 @@ red pen) are not represented as completed here.
 Companion to `SPEC.md` (numerical model authority) and
 `docs/full-paper-plan.md` (mechanism paper). Source draft: `paper.qmd`
 (full-paper draft; do not cannibalise it). Current short-publication source:
-`head-start-cap.qmd`, wired to `references.bib`.
+`first-flush-likelihood.qmd`, wired to `references.bib`.
 
 ## Purpose and venue discipline
 
@@ -184,7 +184,7 @@ must be defined in text.
 
 ## Acceptance and outcome
 
-- `head-start-cap.qmd` renders to PDF (default) and optional HTML using
+- `first-flush-likelihood.qmd` renders to PDF (default) and optional HTML using
   `references.bib`; citations resolve.
 - Quoted sweep and tail numbers trace to saved outputs; `make check` passes.
 - The original main-text and figure-count targets were deliberately exceeded;
@@ -196,7 +196,7 @@ must be defined in text.
 1. Downloads and bibliography verification: done for the cited set; broader
    review remains in lc-qs9.
 2. Fergus reviews priority PDFs: author-side step, not closed by this plan.
-3. Trim/rewrite into `head-start-cap.qmd`: done.
+3. Trim/rewrite into `first-flush-likelihood.qmd`: done.
 4. Runner estimate checked by numeric integration and implemented in
    `lineage_cap/iid_tail.py`: done.
 5. Render and number audit: done. External deposit/submission: not recorded

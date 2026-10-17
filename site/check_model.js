@@ -1,4 +1,4 @@
-// Check site/model.js against numbers quoted in head-start-cap.qmd.  Run: node site/check_model.js
+// Check site/model.js against numbers quoted in first-flush-likelihood.qmd.  Run: node site/check_model.js
 const M = require("./model.js");
 const B = M.BASELINE;
 let failed = 0;

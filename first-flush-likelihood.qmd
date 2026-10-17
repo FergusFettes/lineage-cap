@@ -1,5 +1,5 @@
 ---
-title: "The head-start cap: an empty sky under a shared-onset lineage clock"
+title: "First-flush likelihood under a common-start, continuous evolutionary process"
 author:
   - name: "Fergus Fettes"
     email: "fergusfettes@gmail.com"

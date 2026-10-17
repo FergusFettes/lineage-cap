@@ -3,7 +3,7 @@
 Status: these captions belong to the three legacy figures used by
 `paper.qmd`. They are not captions for the short publication; current note
 figure provenance is in the docstring of `figures/make_note.py`, and the
-rendered captions live in `head-start-cap.qmd`.
+rendered captions live in `first-flush-likelihood.qmd`.
 
 ## figure 1 — planetary starts
 

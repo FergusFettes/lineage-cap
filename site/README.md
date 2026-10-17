@@ -7,7 +7,7 @@ ceiling on Λ = qN, the shared-start lead and start window, and the independent
 normal-duration first flush. Defaults are the note's baseline (`configs/baseline.json`).
 
 `make site-check` (`node site/check_model.js`) checks the port against every number
-quoted in `head-start-cap.qmd`. `.github/workflows/pages.yml` runs that check and
+quoted in `first-flush-likelihood.qmd`. `.github/workflows/pages.yml` runs that check and
 deploys `index.html`, `model.js` and the PDF to GitHub Pages on pushes to `main`.
 
 Preview locally by opening `site/index.html` in a browser.
