@@ -94,7 +94,7 @@ For attribution, cite Fergus Fettes, *First-flush likelihood under a common-star
 continuous evolutionary process* (2026), and identify the release used:
 
 > Fettes, F. (2026). *First-flush likelihood under a common-start, continuous
-> evolutionary process* (v1.1.0). Zenodo. https://doi.org/10.5281/zenodo.23436699
+> evolutionary process* (v1.1.1). Zenodo. https://doi.org/10.5281/zenodo.23437191
 
 Releases up to v1.0.1 appeared as *The head-start cap: an empty sky under a
 shared-onset lineage clock*.
