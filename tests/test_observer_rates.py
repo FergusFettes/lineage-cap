@@ -8,7 +8,7 @@ import pytest
 from lineage_cap import iid_tail
 from lineage_cap.expansion import C_MPC_PER_GYR, Geometry
 from lineage_cap.history import History
-from lineage_cap.observer_rates import HardSteps, hard_steps_boundary, q_ceiling
+from lineage_cap.observer_rates import HardSteps, fnc_log_likelihood, fnc_peak, hard_steps_boundary, q_ceiling
 
 
 @pytest.mark.parametrize("n", [3, 6, 9])
@@ -40,3 +40,13 @@ def test_q_ceiling_at_q_one_recovers_iid_boundary():
     geometry = Geometry.from_config(iid_tail.CONFIG)
     z0 = iid_tail.solve_z(0.136, history, geometry)
     assert q_ceiling(0.136, z0, history, geometry) == pytest.approx(1.0, rel=1e-6)
+
+
+def test_fnc_peak_is_an_interior_maximum():
+    history = History.from_config(iid_tail.CONFIG)
+    geometry = Geometry.from_config(iid_tail.CONFIG)
+    n_now = float(history.zones(history.now))
+    z = fnc_peak(0.136, n_now, history, geometry)
+    peak = fnc_log_likelihood(0.136, z, n_now, history, geometry)
+    for dz in (-0.05, 0.05):
+        assert fnc_log_likelihood(0.136, z + dz, n_now, history, geometry) < peak

@@ -34,7 +34,13 @@ Run from the repository root:
 
     uv run python -m lineage_cap.observer_rates
 
-Outputs: results/iid_tail/n_sweep.csv, results/iid_tail/observer_rates.csv
+3. FNC peak.  At fixed sigma_T and q = 1, the FNC log-likelihood of the
+   mean placement z0 is log f(t0) - mu_vis(z0) - N F(t0): observer rate,
+   empty external sky, quiet home.  Unlike the empty sky alone it has an
+   interior maximum.  Reports the maximising z0 next to the 5% boundary.
+
+Outputs: results/iid_tail/n_sweep.csv, results/iid_tail/observer_rates.csv,
+results/iid_tail/fnc_peak.csv
 """
 
 from __future__ import annotations
@@ -139,6 +145,26 @@ def hard_steps_boundary(model: HardSteps, history: History, geometry: Geometry) 
     return 10**lo
 
 
+def fnc_log_likelihood(sigma_gyr: float, z0: float, n_now: float, history: History, geometry: Geometry) -> float:
+    mu = iid_tail.expected_visible(sigma_gyr, z0, history, geometry)
+    return -0.5 * z0 * z0 - math.log(sigma_gyr) - mu - n_now * iid_tail.NORM.cdf(-z0)
+
+
+def fnc_peak(sigma_gyr: float, n_now: float, history: History, geometry: Geometry) -> float:
+    """Golden-section maximum of the FNC log-likelihood over z0."""
+    lo, hi = 3.0, 10.0
+    ratio = (math.sqrt(5) - 1) / 2
+    for _ in range(80):
+        a, b = hi - ratio * (hi - lo), lo + ratio * (hi - lo)
+        if fnc_log_likelihood(sigma_gyr, a, n_now, history, geometry) > fnc_log_likelihood(
+            sigma_gyr, b, n_now, history, geometry
+        ):
+            hi = b
+        else:
+            lo = a
+    return 0.5 * (lo + hi)
+
+
 def main() -> None:
     history = History.from_config(iid_tail.CONFIG)
     geometry = Geometry.from_config(iid_tail.CONFIG)
@@ -200,6 +226,25 @@ def main() -> None:
             writer.writerow(row)
             print(",".join(row))
     print(f"planetary ceiling Lambda_max = {ceiling:.6e}")
+
+    with (OUT_DIR / "fnc_peak.csv").open("w", newline="") as fh:
+        writer = csv.writer(fh)
+        writer.writerow(
+            ["sigma_T_myr", "z0_boundary", "z0_peak", "peak_minus_boundary_myr", "mu_vis_at_peak",
+             "F_t0_at_peak", "N_F_t0_at_peak", "mean_completion_after_t0_myr_at_peak", "log_likelihood_gain"]
+        )
+        for sigma in SWEEP_SIGMAS_GYR:
+            zb = iid_tail.solve_z(sigma, history, geometry)
+            zp = fnc_peak(sigma, n_now, history, geometry)
+            f = iid_tail.NORM.cdf(-zp)
+            gain = fnc_log_likelihood(sigma, zp, n_now, history, geometry) - fnc_log_likelihood(
+                sigma, zb, n_now, history, geometry
+            )
+            row = [f"{sigma * 1000:.0f}", f"{zb:.4f}", f"{zp:.4f}", f"{(zp - zb) * sigma * 1000:.1f}",
+                   f"{iid_tail.expected_visible(sigma, zp, history, geometry):.4f}", f"{f:.6e}",
+                   f"{n_now * f:.6e}", f"{zp * sigma * 1000:.1f}", f"{gain:.4f}"]
+            writer.writerow(row)
+            print(",".join(row))
 
 
 if __name__ == "__main__":
