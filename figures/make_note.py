@@ -52,6 +52,12 @@ Fig. 6  ``lineage_cap.start_spread.spread_bound`` on
         figures/make.py.
 Fig. 7  Normal-tail shares F(t0 + tau) = Phi(tau/sigma - z0), with z0
         read from ``results/iid_tail/normal_tail_estimate.csv``.
+Fig. 8  ``results/iid_tail/n_sweep.csv`` (F(t0) and N F(t0) against N).
+Fig. 9  ``results/iid_tail/observer_rates.csv`` (FNC 2x2; the lottery's
+        late-filter cell is the planet birth-rate bound).
+
+Fig. 5 now sits in the note's appendix; file numbers no longer follow
+page order exactly.
 """
 
 import csv
@@ -78,6 +84,9 @@ OUT = ROOT / "figures"
 GRID = ROOT / "results/inference/head_start_bounds.csv"
 EARTH_CSV = ROOT / "results/inference/earth_origin_q_ceilings.csv"
 TAIL_CSV = ROOT / "results/iid_tail/normal_tail_estimate.csv"
+NSWEEP_CSV = ROOT / "results/iid_tail/n_sweep.csv"
+RATES_CSV = ROOT / "results/iid_tail/observer_rates.csv"
+PEAK_CSV = ROOT / "results/iid_tail/fnc_peak.csv"
 CONFIG = json.loads((ROOT / "configs/baseline.json").read_text())
 SPREAD_CONFIG = json.loads((ROOT / "configs/start_spread.json").read_text())
 
@@ -183,6 +192,13 @@ def saturated_delta_max_myr(mu, kernel="remote_visibility"):
     return (delay + radius / c_k) * 1e3, radius
 
 
+def rare_ceiling(duration, start):
+    """Rare-expander planetary ceiling 3 L mu / (pi n_g c^3 (L - T - D/v)^4)."""
+    span = NOW - start
+    lead = span - np.asarray(duration) - HOST_D / (SPEED * C_MPC_PER_GYR)
+    return 3 * span * MU_REF / (math.pi * N_G * C_MPC_PER_GYR**3 * lead**4)
+
+
 def sci(x):
     """1.2e-12 -> 1.2x10^-12 in mathtext."""
     mant, exp = f"{x:.1e}".split("e")
@@ -247,10 +263,11 @@ def fig2_planetary():
     crossing = earth_crossing()
     keep = constrained & (duration > 0)
     lam, duration = lam[keep], duration[keep]
-    # Below the smallest binding Lambda even a zero-duration process stays
-    # invisible, so in (T, Lambda) space the boundary runs flat to T = 0.
-    lam = np.insert(lam, 0, lam[0])
-    duration = np.insert(duration, 0, 0.0)
+    # The saved grid stops at its smallest Lambda (T ~ 1.2 Gyr).  Below that
+    # the rare-expander closed form (Appendix A) continues the curve to T = 0.
+    short = np.linspace(0.0, duration[0], 40, endpoint=False)
+    lam = np.concatenate((rare_ceiling(short, RAMP_START), lam))
+    duration = np.concatenate((short, duration))
     i = np.searchsorted(lam, crossing)
     lam = np.insert(lam, i, crossing)
     duration = np.insert(duration, i, EARTH_AGE)
@@ -268,6 +285,16 @@ def fig2_planetary():
     ax.fill_between(duration, lam, 1e-10, color=BLUE, alpha=.10, linewidth=0, zorder=1)
     ax.fill_between(duration, lam, 1e2, color=WASH, linewidth=0, zorder=0)
     ax.plot(duration, lam, color=BLUE, linewidth=2.0, zorder=4)
+
+    # Later ramp starts with today's count fixed: shorter head starts, looser
+    # ceilings.  Rare limit only, so drawn up to Lambda = 1e-2.
+    for start, color in ((2.0, RAMP[400]), (4.0, RAMP[250])):
+        t = np.linspace(0.0, NOW - start - 1.0, 400)
+        ceiling = rare_ceiling(t, start)
+        ax.plot(t, ceiling, color=color, linewidth=1.3, linestyle=(0, (4, 2.5)), zorder=3)
+        ax.annotate(f"ramp from\n{start:g} Gyr", xy=(t[-1], ceiling[-1]), xytext=(3, 0),
+                    textcoords="offset points", fontsize=7.2, color=INK2,
+                    ha="left", va="center", linespacing=.95)
 
     ax.axhline(1.0, color=INK2, linewidth=.7, zorder=2)
     dot(ax, t_at_one, 1.0, BLUE)
@@ -494,7 +521,7 @@ def fig7_flush():
 
     one_zone = 1 / N_ZONES
     ax.axhline(one_zone, color=INK2, linewidth=.7, zorder=2)
-    ax.text(3550, one_zone * 2.2, "one trajectory per galaxy ($10^{-10}$)", fontsize=7.8,
+    ax.text(3550, one_zone * 2.2, "one zone per galaxy at $N = 10^{10}$", fontsize=7.8,
             color=INK2, ha="right", va="bottom")
     ax.axvline(0, color=INK2, linewidth=.7, zorder=2)
     ax.axhline(.5, color=INK2, linewidth=.8, linestyle=(0, (3, 2)), zorder=2)
@@ -514,18 +541,113 @@ def fig7_flush():
         dot(ax, mean_after, .5, color, z=7)
         mw = float(r["expected_mw_finishers_by_t0"])
         pct = "1%" if sigma == 136 else ("3%" if sigma == 408 else "0.2%")
+        home = "  (home check fails)" if float(r["p_first_in_mw"]) < .05 else ""
         handles.append(Line2D([], [], color=color, linewidth=2.0,
-                              label=f"$\\sigma_T$ = {sigma} Myr ({pct}):  $F(t_0)$ = {sci(f_now)},"
-                                    f"  {mw:.2g} loud ahead in the Milky Way"))
-    leader(ax, "today: among the first\n$10^{-10}$ to $10^{-13}$ of trajectories", (0, 6e-12),
+                              label=f"$\\sigma_T$ = {sigma} Myr ({pct}):  at most {mw:.2g} loud ahead"
+                                    f" in the Milky Way,  $F(t_0)$ = {sci(f_now)}{home}"))
+    leader(ax, "today: the sky caps the count ahead of us;\n"
+               "the share $F(t_0)$ scales nearly as $1/N$", (0, 6e-12),
            (500, 2e-14), va="center")
     leader(ax, "mean emergence still to come\n(dots on the 50% line)", (2940, .5),
            (2940, 1e-6), va="center", ha="center")
     fig.legend(handles=handles, loc="outside lower center",
                fontsize=7.4, handlelength=2.2, labelspacing=.3)
     ax.set_xlabel("Time from today (Gyr)")
-    ax.set_ylabel("Share of trajectories emerged,  $F$")
+    ax.set_ylabel("Share of zones emerged,  $F$")
     save(fig, "note_fig7_flush")
+
+
+# ---------------------------------------------------------------- fig 8
+def fig8_nsweep():
+    with NSWEEP_CSV.open() as fh:
+        rows = list(csv.DictReader(fh))
+    cases = [(30, RAMP[250]), (136, RAMP[400]), (408, RAMP[700])]
+    fig, (left, right) = plt.subplots(1, 2, figsize=(WIDTH, 2.6), layout="constrained")
+    for ax in (left, right):
+        ax.set_xscale("log")
+        ax.set_yscale("log")
+        ax.set_xlim(5e5, 2e11)
+        ax.xaxis.set_major_locator(FixedLocator([1e6, 1e7, 1e8, 1e9, 1e10, 1e11]))
+        ax.xaxis.set_minor_formatter(NullFormatter())
+        ax.axvline(N_ZONES, color=INK2, linewidth=.7, linestyle=(0, (4, 3)), zorder=2)
+        ax.set_xlabel("Zones per galaxy today,  $N$")
+    left.set_ylim(1e-14, 1e-5)
+    left.yaxis.set_major_locator(FixedLocator([10.0 ** k for k in range(-14, -4, 2)]))
+    right.set_ylim(1e-3, 30)
+    right.yaxis.set_major_locator(FixedLocator([1e-3, 1e-2, 1e-1, 1, 10]))
+    right.yaxis.set_major_formatter(matplotlib.ticker.FuncFormatter(lambda v, _: f"{v:g}"))
+    for ax in (left, right):
+        ax.yaxis.set_minor_formatter(NullFormatter())
+    for sigma, color in cases:
+        sub = [r for r in rows if round(float(r["sigma_T_myr"])) == sigma]
+        n = np.array([float(r["N_t0"]) for r in sub])
+        f = np.array([float(r["F_t0"]) for r in sub])
+        nf = np.array([float(r["N_F_t0"]) for r in sub])
+        left.plot(n, f, color=color, linewidth=2.0, marker="o", markersize=3.5,
+                  markeredgecolor="white", markeredgewidth=.8, zorder=4)
+        right.plot(n, nf, color=color, linewidth=2.0, marker="o", markersize=3.5,
+                   markeredgecolor="white", markeredgewidth=.8, zorder=4)
+        right.annotate(f"{sigma} Myr", xy=(n[-1], nf[-1]), xytext=(4, 0),
+                       textcoords="offset points", fontsize=7.5, color=INK2, va="center")
+        if sigma == 136:
+            k = float(sub[0]["exponent_vs_N"])
+            left.text(1.5e6, 3e-13, f"$F(t_0) \\propto N^{{-{k:.2f}}}$ at 136 Myr",
+                      fontsize=8, color=INK)
+    left.set_ylabel("Most emerged by today,  $F(t_0)$")
+    right.set_ylabel("Loud ahead in the Milky Way,  $NF(t_0)$")
+    right.text(1.2e6, 18, "home check fails above 1", fontsize=7.5, color=INK2, va="center")
+    right.axhline(1.0, color=INK2, linewidth=.7, zorder=2)
+    handles = [Line2D([], [], color=c, linewidth=2.0, label=f"$\\sigma_T$ = {s} Myr")
+               for s, c in cases]
+    fig.legend(handles=handles, loc="outside lower center", ncols=3, fontsize=7.6)
+    save(fig, "note_fig8_nsweep")
+
+
+# ---------------------------------------------------------------- fig 9
+def fig9_fnc():
+    with RATES_CSV.open() as fh:
+        rows = {r["scenario"]: float(r["ratio_to_process_136myr"]) for r in csv.DictReader(fh)}
+    hard = [v for k, v in rows.items() if k.startswith("hard steps")]
+    process_late = [v for k, v in rows.items() if "late filter q=" in k]
+    planet_late = rows["planet clock, late filter at q ceiling"]
+    cells = [  # (row, loud low, loud high, late low, late high, late is a bound)
+        ("Hard-steps lottery,\n$n$ = 3-9", min(hard), max(hard), planet_late, planet_late, True),
+        ("Planet clock,\n$T$ = 4.6 Gyr", rows["planet clock, improbability before emergence"],
+         rows["planet clock, improbability before emergence"], planet_late, planet_late, False),
+        ("Process clock,\n$\\sigma_T$ = 136 Myr", 1.0, 1.0, min(process_late), max(process_late), False),
+    ]
+    loud_c, late_c = RAMP[700], RAMP[250]
+    fig, ax = plt.subplots(figsize=(WIDTH, 2.5), layout="constrained")
+    ax.set_xscale("log")
+    ax.set_xlim(1e-11, 1e11)
+    ax.xaxis.set_major_locator(FixedLocator([10.0 ** k for k in range(-10, 11, 2)]))
+    ax.xaxis.set_minor_locator(FixedLocator([10.0 ** k for k in range(-11, 12, 2)]))
+    ax.xaxis.set_minor_formatter(NullFormatter())
+    ax.set_ylim(-.6, 2.6)
+    ax.set_yticks(range(3), labels=[c[0] for c in cells])
+    ax.tick_params(axis="y", length=0, labelcolor=INK)
+    ax.grid(axis="y", visible=False)
+    ax.axvline(1.0, color=INK2, linewidth=.7, zorder=2)
+    for y, (_, lo, hi, late_lo, late_hi, bound) in enumerate(cells):
+        for a, b, color, hollow in ((lo, hi, loud_c, False), (late_lo, late_hi, late_c, True)):
+            if b > a:
+                ax.plot([a, b], [y, y], color=color, linewidth=5, solid_capstyle="round", zorder=3)
+            else:
+                dot(ax, a, y, color, size=7, hollow=hollow, z=5)
+        if bound:
+            ax.annotate("", xy=(late_lo / 30, y), xytext=(late_lo / 1.4, y),
+                        arrowprops={"arrowstyle": "-|>", "color": late_c, "lw": 1.4})
+            ax.text(late_lo, y + .28, "at most", fontsize=7.2, color=INK2, ha="center")
+    ax.annotate("", xy=(1.0, 1.72), xytext=(max(hard), 1.72),
+                arrowprops={"arrowstyle": "<->", "color": MUTED, "lw": .7})
+    ax.text(math.sqrt(max(hard)), 1.82, "$10^7$-$10^9$ if expansion is loud", fontsize=7.5,
+            color=INK, ha="center", va="bottom")
+    ax.set_xlabel("Observers like us per galaxy at $t_0$, relative to the process clock at $q$ = 1")
+    handles = [Line2D([], [], color=loud_c, linewidth=5, label="loud expansion ($q$ = 1, improbability before emergence)"),
+               Line2D([], [], color=late_c, marker="o", markerfacecolor="white", linestyle="none",
+                      markersize=6, label="late filter ($q$ at its sky ceiling)")]
+    fig.legend(handles=handles, loc="outside lower center", ncols=2, fontsize=7.4)
+    save(fig, "note_fig9_fnc")
 
 
 if __name__ == "__main__":
@@ -536,3 +658,5 @@ if __name__ == "__main__":
     fig5_saturation()
     fig6_window()
     fig7_flush()
+    fig8_nsweep()
+    fig9_fnc()
