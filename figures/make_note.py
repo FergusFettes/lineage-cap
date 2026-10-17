@@ -606,15 +606,17 @@ def fig8_nsweep():
 # ---------------------------------------------------------------- fig 9
 def fig9_fnc():
     with RATES_CSV.open() as fh:
-        rows = {r["scenario"]: float(r["ratio_to_process_136myr"]) for r in csv.DictReader(fh)}
+        rows = {r["scenario"]: float(r["emergences_per_galaxy_per_gyr_at_t0"]) * float(r["p_quiet_home"])
+                for r in csv.DictReader(fh)}
     hard = [v for k, v in rows.items() if k.startswith("hard steps")]
     process_late = [v for k, v in rows.items() if "late filter q=" in k]
     planet_late = rows["planet clock, late filter at q ceiling"]
+    process = rows["process clock, sigma_T=136 Myr, q=1"]
     cells = [  # (row, loud low, loud high, late low, late high, late is a bound)
         ("Hard-steps lottery,\n$n$ = 3-9", min(hard), max(hard), planet_late, planet_late, True),
         ("Planet clock,\n$T$ = 4.6 Gyr", rows["planet clock, improbability before emergence"],
          rows["planet clock, improbability before emergence"], planet_late, planet_late, False),
-        ("Process clock,\n$\\sigma_T$ = 136 Myr", 1.0, 1.0, min(process_late), max(process_late), False),
+        ("Process clock,\n$\\sigma_T$ = 136 Myr", process, process, min(process_late), max(process_late), False),
     ]
     loud_c, late_c = RAMP[700], RAMP[250]
     fig, ax = plt.subplots(figsize=(WIDTH, 2.5), layout="constrained")
@@ -627,7 +629,6 @@ def fig9_fnc():
     ax.set_yticks(range(3), labels=[c[0] for c in cells])
     ax.tick_params(axis="y", length=0, labelcolor=INK)
     ax.grid(axis="y", visible=False)
-    ax.axvline(1.0, color=INK2, linewidth=.7, zorder=2)
     for y, (_, lo, hi, late_lo, late_hi, bound) in enumerate(cells):
         for a, b, color, hollow in ((lo, hi, loud_c, False), (late_lo, late_hi, late_c, True)):
             if b > a:
@@ -638,11 +639,11 @@ def fig9_fnc():
             ax.annotate("", xy=(late_lo / 30, y), xytext=(late_lo / 1.4, y),
                         arrowprops={"arrowstyle": "-|>", "color": late_c, "lw": 1.4})
             ax.text(late_lo, y + .28, "at most", fontsize=7.2, color=INK2, ha="center")
-    ax.annotate("", xy=(1.0, 1.72), xytext=(max(hard), 1.72),
+    ax.annotate("", xy=(process, 1.72), xytext=(max(hard), 1.72),
                 arrowprops={"arrowstyle": "<->", "color": MUTED, "lw": .7})
-    ax.text(math.sqrt(max(hard)), 1.82, "$10^7$-$10^9$ if expansion is loud", fontsize=7.5,
+    ax.text(math.sqrt(process * max(hard)), 1.82, "$10^7$-$10^9$ if expansion is loud", fontsize=7.5,
             color=INK, ha="center", va="bottom")
-    ax.set_xlabel("Observers like us per galaxy at $t_0$, relative to the process clock at $q$ = 1")
+    ax.set_xlabel("Observers like us per galaxy per Gyr at $t_0$, with home still quiet")
     handles = [Line2D([], [], color=loud_c, linewidth=5, label="loud expansion ($q$ = 1, improbability before emergence)"),
                Line2D([], [], color=late_c, marker="o", markerfacecolor="white", linestyle="none",
                       markersize=6, label="late filter ($q$ at its sky ceiling)")]
