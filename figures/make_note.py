@@ -367,18 +367,22 @@ def fig3_headstart():
     history_myr = (CONFIG["time"]["now_gyr"] - CONFIG["time"]["ramp_start_gyr"]) * 1e3
     handles, first_lams = [], []
     for lam, _, lead, con, color, ls, lw, label, plateau in series:
-        y = np.where(con, lead, np.nan)
         first = int(np.flatnonzero(con)[0])
-        if first > 0:  # join the curve to the history cap at the last unbounded grid point
-            y[first - 1] = history_myr
-            first -= 1
-        ax.plot(lam, y, color=color, linestyle=ls, linewidth=lw, zorder=4)
+        x, y = lam[first:], lead[first:]
+        if first > 0:
+            # Join the history cap where the first bounded segment, extended in log-log,
+            # reaches it, kept inside the grid step where the bound switches on.
+            slope = math.log(y[1] / y[0]) / math.log(x[1] / x[0])
+            x_cap = x[0] * (history_myr / y[0]) ** (1 / slope)
+            x = np.concatenate([[min(max(x_cap, lam[first - 1]), x[0])], x])
+            y = np.concatenate([[history_myr], y])
+        ax.plot(x, y, color=color, linestyle=ls, linewidth=lw, zorder=4)
         # nudge the close 13.7 / 9.6 plateau labels apart
         y_lab = plateau * {AQUA: .9, BLUE: 1.1}.get(color, 1.0)
         ax.text(1.4e10, y_lab, (f"{plateau:.1f}" if plateau < 20 else f"{plateau:.0f}") + " Myr",
                 fontsize=8, color=color, va="center", ha="left", fontweight="bold")
         handles.append(Line2D([], [], color=color, linestyle=ls, linewidth=lw, label=label))
-        first_lams.append(lam[first])
+        first_lams.append(x[0])
         if color == BLUE:
             lam_v, lead_v = lam, lead
 
