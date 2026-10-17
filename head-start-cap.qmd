@@ -52,7 +52,7 @@ Count one lineage per effective trajectory. Two clocks (@fig-clocks):
 
 ![Two clocks, same trajectories. Grey: share of today's effective trajectories in play at each cosmic age (a linear ramp from 0.2 Gyr). Blue: share that has crossed the loud threshold. Left, the planet clock at $T=4.6$ Gyr: crossing trails a planet's birth by $T$, so two thirds of trajectories have crossed by today, the first 9 Gyr before us. Right, the inherited clock: nothing crosses before the shared date $f=s+T$, when every trajectory in play by then crosses at once in this one-clock bookkeeping. Drawn with $f=t_0$, so $\delta=0$.](figures/note_fig1_clocks.png){#fig-clocks width=100%}
 
-A lineage that has crossed turns loud (spreads through its galaxy and keeps spreading) with probability $q$. Loud expansion is taken from @Hanson2021 and @OlsonOrd2021: a front at $0.5c$ that visibly alters every galaxy it crosses. Whether anyone expands like that is itself an assumption, and Section 5 puts a price on it. It becomes visible to us later still, after the front has crossed its galaxy and the light has travelled. The front moves at $v=0.5c$. We mostly need one combination:
+A lineage that has crossed turns loud (spreads through its galaxy and keeps spreading) with probability $q$. Loud expansion is taken from @Hanson2021 and @OlsonOrd2021, as a front at $0.5c$ that visibly alters every galaxy it crosses. Whether anyone expands like that is itself an assumption, and Section 5 puts a price on it. It becomes visible to us later still, after the front has crossed its galaxy and the light has travelled. The front moves at $v=0.5c$. We mostly need one combination:
 
 $$
 \Lambda = qN,
