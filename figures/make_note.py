@@ -350,7 +350,7 @@ def fig3_headstart():
     ax.set_xscale("log")
     ax.set_yscale("log")
     ax.set_xlim(1e-9, 1e10)
-    ax.set_ylim(6, 2e4)
+    ax.set_ylim(6, 2.4e4)
     ax.xaxis.set_major_locator(FixedLocator([10.0 ** k for k in range(-8, 11, 2)]))
     ax.xaxis.set_minor_locator(FixedLocator([10.0 ** k for k in range(-9, 11, 2)]))
     ax.xaxis.set_minor_formatter(NullFormatter())
@@ -364,23 +364,29 @@ def fig3_headstart():
             f"so only reachable volume counts\n(radius {radius:.1f} Mpc, ~3 galaxies)",
             fontsize=7.8, color=INK2, va="top")
 
-    handles = []
+    history_myr = (CONFIG["time"]["now_gyr"] - CONFIG["time"]["ramp_start_gyr"]) * 1e3
+    handles, first_lams = [], []
     for lam, _, lead, con, color, ls, lw, label, plateau in series:
         y = np.where(con, lead, np.nan)
+        first = int(np.flatnonzero(con)[0])
+        if first > 0:  # join the curve to the history cap at the last unbounded grid point
+            y[first - 1] = history_myr
+            first -= 1
         ax.plot(lam, y, color=color, linestyle=ls, linewidth=lw, zorder=4)
         # nudge the close 13.7 / 9.6 plateau labels apart
         y_lab = plateau * {AQUA: .9, BLUE: 1.1}.get(color, 1.0)
         ax.text(1.4e10, y_lab, (f"{plateau:.1f}" if plateau < 20 else f"{plateau:.0f}") + " Myr",
                 fontsize=8, color=color, va="center", ha="left", fontweight="bold")
         handles.append(Line2D([], [], color=color, linestyle=ls, linewidth=lw, label=label))
-        first = int(np.flatnonzero(con)[0])
+        first_lams.append(lam[first])
         if color == BLUE:
             lam_v, lead_v = lam, lead
-            ax.plot([lam[first]], [lead[first]], marker="|", color=INK2, markersize=7,
-                    zorder=5)
-            leader(ax, "no bound to the left\nwithin 13.6 Gyr of history",
-                   (lam[first], lead[first]), (2e-6, 1.25e4), va="center", fontsize=7.5,
-                   color=INK2)
+
+    # Below these yields no lead within the history is excluded: the cap is the history itself.
+    ax.plot([1e-9, max(first_lams)], [history_myr, history_myr], color=INK2, linestyle=":",
+            linewidth=1.2, zorder=3)
+    ax.text(1.3e-9, history_myr * 1.12, "whole history, 13.6 Gyr: no bound at smaller $\\Lambda$",
+            fontsize=7.5, color=INK2, va="bottom")
 
     for target, xytext, ha in ((0.01, (1.5e-4, 22), "right"), (1.0, (0.04, 8.5), "right")):
         j = int(np.argmin(np.abs(np.log10(lam_v / target))))
@@ -625,7 +631,7 @@ def fig9_fnc():
     ax.xaxis.set_major_locator(FixedLocator([10.0 ** k for k in range(-10, 11, 2)]))
     ax.xaxis.set_minor_locator(FixedLocator([10.0 ** k for k in range(-11, 12, 2)]))
     ax.xaxis.set_minor_formatter(NullFormatter())
-    ax.set_ylim(-.6, 2.6)
+    ax.set_ylim(-.6, 3.1)
     ax.set_yticks(range(3), labels=[c[0] for c in cells])
     ax.tick_params(axis="y", length=0, labelcolor=INK)
     ax.grid(axis="y", visible=False)
@@ -639,10 +645,15 @@ def fig9_fnc():
             ax.annotate("", xy=(late_lo / 30, y), xytext=(late_lo / 1.4, y),
                         arrowprops={"arrowstyle": "-|>", "color": late_c, "lw": 1.4})
             ax.text(late_lo, y + .28, "at most", fontsize=7.2, color=INK2, ha="center")
-    ax.annotate("", xy=(process, 1.72), xytext=(max(hard), 1.72),
-                arrowprops={"arrowstyle": "<->", "color": MUTED, "lw": .7})
-    ax.text(math.sqrt(process * max(hard)), 1.82, "$10^7$-$10^9$ if expansion is loud", fontsize=7.5,
-            color=INK, ha="center", va="bottom")
+    # Gap from the lottery's best loud case (its near edge) to the process clock.
+    top = 2.62
+    for x, y0 in ((max(hard), 0.0), (process, 2.0)):
+        ax.plot([x, x], [y0 + .12, top], color=MUTED, linestyle=":", linewidth=.9, zorder=2)
+    ax.annotate("", xy=(process, top), xytext=(max(hard), top),
+                arrowprops={"arrowstyle": "<->", "color": MUTED, "lw": .8, "shrinkA": 0, "shrinkB": 0})
+    ax.text(math.sqrt(process * max(hard)), top + .08,
+            f"loud expansion: process clock ahead by at least {process / max(hard):.0e}".replace("e+0", "$\\times10^{") + "}$",
+            fontsize=7.5, color=INK, ha="center", va="bottom")
     ax.set_xlabel("Observers like us per galaxy per Gyr at $t_0$, with home still quiet")
     handles = [Line2D([], [], color=loud_c, linewidth=5, label="loud expansion ($q$ = 1, improbability before emergence)"),
                Line2D([], [], color=late_c, marker="o", markerfacecolor="white", linestyle="none",
