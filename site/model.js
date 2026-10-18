@@ -187,10 +187,13 @@
 
   /* Independent normal durations with spread sigma (Gyr): fit the mean so the
    * external sky sits on the working line, then read off our position. */
+  // Mean placement z0 (in sigma after today) that puts the external sky on the working line.
+  const solveZ = (p, sigma) => bisect(z => iidVisible(p, sigma, z) > muStar(p), 0, 20, 50);
+
   function durationSpread(p, sigma) {
     const target = muStar(p);
     if (iidVisible(p, sigma, 0) < target) return null; // sky empty even with the mean at today
-    const z0 = bisect(z => iidVisible(p, sigma, z) > target, 0, 20, 50);
+    const z0 = solveZ(p, sigma);
     const F = phi(-z0);
     const home = p.q * p.N * F;
     const base = iidArrived(p, sigma, z0, 0);
@@ -203,8 +206,65 @@
     return { z0, F, home, pFirst: Math.exp(-home), meanAfter: z0 * sigma, wait, waitArrivalOnly };
   }
 
+  /* observer_rates.py: observers like us under full non-indexical conditioning, as
+   * emergences per galaxy per Gyr at t0 times the chance home is still quiet.  Every
+   * branch sits on the same external sky boundary, so the sky factor cancels. */
+  const npdf = z => Math.exp(-0.5 * z * z) / Math.sqrt(2 * Math.PI);
+  const GL400 = legendre(400);
+
+  // Largest q keeping the iid-tail sky on the boundary for a fixed mean placement z0.
+  const qCeiling = (p, sigma, z0) =>
+    10 ** bisect(l => iidVisible({ ...p, q: 10 ** l }, sigma, z0) <= muStar(p), -40, 0, 80);
+
+  /* Hard-steps lottery on the linear ramp, loud on emergence: a planet of age a < W emerges
+   * at rate k n a^(n-1).  Solves k for the sky; returns the galaxy's emergence rate and
+   * expected emergences at t0. */
+  function hardSteps(p, n, W) {
+    const Wd = W || Infinity, birth = p.N / (T0 - S);
+    const expectedAt = (t, k) => {
+      const x = Math.max(t - S, 0), inside = Math.min(x, Wd);
+      return birth * k * (inside ** (n + 1) / (n + 1) + (isFinite(Wd) ? Wd ** n * Math.max(x - Wd, 0) : 0));
+    };
+    const tEdge = T0 - HOST_MPC / (p.v * C), span = tEdge - S;
+    const breaks = [...new Set([0, span, Math.min(Math.max(span - Wd, 0), span)])].sort((a, b) => a - b);
+    const mu = k => {
+      let total = 0;
+      for (let j = 0; j + 1 < breaks.length; j++) {
+        const a = breaks[j], b = breaks[j + 1];
+        for (let i = 0; i < GL400.x.length; i++) {
+          const u = 0.5 * (b - a) * GL400.x[i] + 0.5 * (a + b);
+          total += 0.5 * (b - a) * GL400.w[i] * u * u * -Math.expm1(-expectedAt(tEdge - u, k));
+        }
+      }
+      return 4 * Math.PI * p.ng * C ** 3 * total;
+    };
+    const k = 10 ** bisect(l => mu(10 ** l) <= muStar(p), -80, 10, 120);
+    return { k, rate: birth * k * Math.min(T0 - S, Wd) ** n, emerged: expectedAt(T0, k) };
+  }
+
+  /* Each row: { rate, home, obs = rate * home }.  share is the emerged share of zones at t0
+   * (our rank) where the branch has one.  Late filters put q at its sky ceiling. */
+  function observerRates(p, sigma, opts) {
+    const o = { n: 6, W: Infinity, z0s: [3, 1, 0], T: 4.6, ...opts };
+    const row = (rate, home, extra) => ({ rate, home, obs: rate * home, ...extra });
+    const L = T0 - S, N = p.N, p1 = { ...p, q: 1 };
+    const z0 = solveZ(p1, sigma), F = phi(-z0);
+    const processLoud = row(N * npdf(z0) / sigma, Math.exp(-N * F), { z0, share: F });
+    const processFilter = o.z0s.map(z => {
+      const q = qCeiling(p1, sigma, z);
+      return row(N * npdf(z) / sigma, Math.exp(-q * N * phi(-z)), { z0: z, q });
+    });
+    const ceil = planetCeiling(p1, o.T), crossed = 1 - o.T / L, quiet = Math.exp(-ceil * crossed);
+    const hs = hardSteps(p1, o.n, o.W);
+    return {
+      process: { loud: processLoud, filter: processFilter },
+      planet: { loud: row(ceil / L, quiet), filter: row(N / L, quiet) },
+      lottery: { loud: row(hs.rate, Math.exp(-hs.emerged), { share: hs.emerged / N }), filter: row(N / L, 1) },
+    };
+  }
+
   const api = { C, T0, S, HOST_MPC, BASELINE, zones, expected, planetCeiling, sharedLead,
-    durationSpread, phi, muStar };
+    durationSpread, phi, muStar, solveZ, qCeiling, hardSteps, observerRates };
   if (typeof module !== "undefined" && module.exports) module.exports = api;
   else root.LineageCap = api;
 })(this);

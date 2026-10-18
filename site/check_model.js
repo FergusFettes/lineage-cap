@@ -23,4 +23,14 @@ for (const [s, F, home, mean, wait] of [[0.03, 5.891824e-10, 5.891824, 182.5, 14
   near(`sigma ${s * 1000} Myr mean after (Myr)`, 1000 * r.meanAfter, mean, 0.01);
   near(`sigma ${s * 1000} Myr median arrival given empty sky (Myr)`, 1000 * r.wait, wait, 0.03);
 }
+// results/iid_tail/observer_rates.csv
+const R = M.observerRates(B, 0.136);
+near("FNC process loud, sigma 136 (rate)", R.process.loud.rate, 3.157651, 0.01);
+near("FNC process loud, sigma 136 (home)", R.process.loud.home, 0.939804, 0.01);
+near("FNC process late filter, mean 3 sigma after", R.process.filter[0].obs, 3.258712e8 * 0.991273, 0.05);
+near("FNC process late filter, mean at today", R.process.filter[2].obs, 2.933399e10 * 0.999371, 0.05);
+near("FNC planet loud", R.planet.loud.obs, 1.512933e-9, 0.05);
+near("FNC planet late filter", R.planet.filter.obs, 7.352941e8, 0.01);
+for (const [n, W, rate] of [[3, Infinity, 1.015566e-8], [9, Infinity, 2.074835e-7], [3, 5, 9.933589e-10], [9, 5, 1.425313e-9]])
+  near(`FNC hard steps n=${n} W=${W}`, M.hardSteps(B, n, W).rate, rate, 0.02);
 process.exit(failed ? 1 : 0);
