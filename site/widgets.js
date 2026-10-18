@@ -48,6 +48,7 @@ export function slider(spec) {
   const show = () => { input.value = from(value); out.innerHTML = supHTML(spec.fmt(value)); };
   Object.defineProperty(wrap, "value", { get: () => value, set: v => { value = v; show(); } });
   input.addEventListener("input", ev => { ev.stopPropagation(); value = to(+input.value); show(); wrap.dispatchEvent(new Event("input", { bubbles: true })); });
+  input.addEventListener("change", ev => { ev.stopPropagation(); wrap.dispatchEvent(new Event("change", { bubbles: true })); });
   show();
   return wrap;
 }
@@ -61,7 +62,10 @@ export function toggle(spec) {
   const buttons = spec.options.map(([label, v]) => {
     const b = h("button", "", label);
     b.type = "button";
-    b.addEventListener("click", () => { value = v; show(); wrap.dispatchEvent(new Event("input", { bubbles: true })); });
+    b.addEventListener("click", () => {
+      value = v; show();
+      for (const type of ["input", "change"]) wrap.dispatchEvent(new Event(type, { bubbles: true }));
+    });
     seg.appendChild(b);
     return [b, v];
   });

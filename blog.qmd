@@ -142,7 +142,7 @@ In this example, the typical lineage is still [about a billion years from emergi
 [Figure 3 · Durations that vary: the first flush]{.lc-figure-title}
 
 ```{ojs}
-flush = LC.durationSpread(p, p.sigma)
+flush = LC.durationSpread({N, q, v, ng, pEmpty}, sigma)
 ```
 
 ```{ojs}
@@ -183,13 +183,15 @@ Changing the number of competitors changes our luckiness and the number of conte
 [Figure 4 · The sky fixes the count, not the share]{.lc-figure-title}
 
 ```{ojs}
+countSweep = d3.range(2, 11.01, 0.25).map(l => {
+  const z0 = LC.solveZ({...sky, N: 10 ** l}, sky.sigma), F = LC.phi(-z0);
+  return {x: 10 ** l, F, NF: 10 ** l * F};
+})
+```
+
+```{ojs}
 {
-  const sky = ({...p, q: 1});
-  const data = d3.range(2, 11.01, 0.25).map(l => {
-    const z0 = LC.solveZ({...sky, N: 10 ** l}, p.sigma), F = LC.phi(-z0);
-    return {x: 10 ** l, F, NF: 10 ** l * F};
-  });
-  const z0 = LC.solveZ({...sky}, p.sigma), F = LC.phi(-z0);
+  const data = countSweep, F = LC.phi(-LC.solveZ({N, q: 1, v, ng, pEmpty}, sigma));
   const xticks = [1e2, 1e4, 1e6, 1e8, 1e10];
   const share = chart({
     data: data.map(d => ({x: d.x, y: d.F})), xlog: true, ylog: true, xdom: [1e2, 1e11], ydom: [1e-13, 1e-2],
@@ -209,7 +211,7 @@ Changing the number of competitors changes our luckiness and the number of conte
 
 ```{ojs}
 {
-  const z0 = LC.solveZ({...p, q: 1}, p.sigma), F = LC.phi(-z0);
+  const F = LC.phi(-LC.solveZ({N, q: 1, v, ng, pEmpty}, sigma));
   return caption(`Rerun Figure 3 for every <i>N</i>, every lineage loud. Left: our rank, the share of lineages emerged by today. Right: the expected loud lineages ahead of us at home. At <i>N</i> = ${sci(p.N)} we are 1 in ${sci(1 / F)}, with ${sci(p.N * F)} ahead of us. Across nine decades of <i>N</i> the rank moves almost as 1/<i>N</i> while the count ahead barely moves. The sky fixes how many came before us, not what fraction we lead, so a small <i>N</i> means we needed less luck, without changing the picture.`);
 }
 ```
@@ -235,7 +237,7 @@ The second is the one that matters for choosing between theories: how often does
 [Figure 5 · Two ways to count luck]{.lc-figure-title}
 
 ```{ojs}
-R = LC.observerRates(p, p.sigma, {n: nSteps, W: lotteryWindow, T: 4.6})
+R = LC.observerRates({N, q, v, ng, pEmpty}, sigma, {n: nSteps, W: lotteryWindow, T: 4.6})
 ```
 
 ```{ojs}
@@ -286,9 +288,8 @@ But one more thing is worth mentioning. I said earlier that our luck really trac
 
 ```{ojs}
 doomSweep = {
-  const sky = {N: 1, q: 1, v, ng, pEmpty, T, W, sigma};
   return d3.range(1, 11.01, 0.5).map(l => {
-    const r = LC.observerRates({...sky, N: 10 ** l}, sigma, {n: nSteps, W: lotteryWindow, z0s: [3, 0]});
+    const r = LC.observerRates({...sky, N: 10 ** l}, sky.sigma, {n: settledN, W: settledHw, z0s: [3, 0]});
     return {x: 10 ** l, lo: r.process.filter[0].obs / r.process.loud.obs, hi: r.process.filter[1].obs / r.process.loud.obs,
             lottery: r.lottery.filter.obs / r.lottery.loud.obs};
   });
@@ -381,6 +382,20 @@ sigma = Generators.input(views.sigma)
 nSteps = Generators.input(views.n)
 lotteryWindow = Generators.input(views.hw)
 p = ({N, q, v, ng, pEmpty, T, W, sigma})
+// Heavy sweeps follow a slider only when it is released, so dragging stays smooth.
+settled = view => Generators.observe(notify => {
+  const f = () => notify(view.value);
+  notify(view.value);
+  view.addEventListener("change", f);
+  return () => view.removeEventListener("change", f);
+})
+sky = ({v: settledV, ng: settledNg, pEmpty: settledPEmpty, sigma: settledSigma, q: 1, N: 1})
+settledV = settled(views.v)
+settledNg = settled(views.ng)
+settledPEmpty = settled(views.pEmpty)
+settledSigma = settled(views.sigma)
+settledN = settled(views.n)
+settledHw = settled(views.hw)
 panel = paramPanel(views, numbers, ["v", "ng", "pEmpty"])
 numbers = resultRows([
   {title: "If every planet starts its own clock", items: [["first", "First emergences, before ours"], ["lambda", "Loud lineages per galaxy (qN), at most"], ["qn", "Your qN"]]},
@@ -390,7 +405,7 @@ numbers = resultRows([
 ])
 {
   const lead = LC.T0 - LC.S - p.T, ceil = LC.planetCeiling(p, p.T), shared = LC.sharedLead(p, "visibility", p.W);
-  const r = LC.durationSpread(p, p.sigma);
+  const r = flush;
   const tax = R.process.filter.map(f => f.obs / R.process.loud.obs);
   numbers.set({
     first: lead > 0.0005 ? dur(lead) : "none",
