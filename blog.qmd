@@ -27,7 +27,7 @@ execute:
 
 I've been playing around recently with a less appreciated explanation of the Fermi Paradox. It comes up every now and then as a throwaway line in a paper or blog post, but you rarely see anyone give it much airtime. I have some ideas about why that might be, and why the epistemic ground is shifting.
 
-The Fermi Paradox (FP), also known as the Great Silence, asks why, given the fact that life can evolve and apparently alters its environment in highly conspicuous ways, do we see no evidence of it elsewhere in the galaxy.
+The Fermi Paradox (FP), also known as the Great Silence, asks why, given the fact that life can evolve and apparently alters its environment in highly conspicuous ways, do we see no evidence of it elsewhere in the galaxy. [It gets harder and harder to understand as we detect more planets in habitable zones.]{.lc-param data-param="N"}
 
 Back in the 60s when Frank Drake famously made a start on related calculations, he thought about detecting life as hearing their radio signals. Some contemporaries were already expecting life to make more noise than that, most famously [Freeman Dyson](https://en.wikipedia.org/wiki/Dyson_sphere). This view didn't become central to the field until the 70s, but nowadays people who work on FP expect life to [move beyond its starting planet and dim its star]{.lc-param data-param="q"}, and spread to neighboring stars and do the same. Whether we have any right to expect this, from where we are sitting today, is a good question and one of the first objections often raised against this kind of work. One of the results that fell out of my calculations, completely unexpectedly, was a way to put a numerical value on this objection-- and the objection is strong. I will give that objection its own section, alongside all other objections of the form 'how would we know, what would we see, what would make us confident in an observation'.
 
@@ -47,44 +47,46 @@ My preferred answer is that it simply didn't. The lineage didn't start on Earth,
 
 How does this help with the Fermi Paradox? Surely the fact that life's precursors were around before Earth and are presumably relatively common in the universe should mean we would see more life, everywhere, not less of it? That is true, and is one of the testable differences between the long lineage and the hard steps model. But more on that later.
 
-The main problem the hard steps model solves is that, if life evolved on one planet from a standing start, it could have done so on earlier planets. 75% of the planets in the galaxy are older than ours, many by billions of years. Anything expanding from one of those planets would have had enough time by now to take over and transform the entire galaxy. The hard steps model solves this by making life on any given planet exceedingly unlikely. Indeed, it has to be so unlikely that there would only be [one surviving lineage every *million galaxies*]{.lc-param data-param="lambda"}.
+The main problem the hard steps model solves is that, if life evolved on one planet from a standing start, it could have done so on earlier planets. 75% of the planets in the galaxy are older than ours, many by billions of years. Anything expanding from one of those planets would have had enough time by now to take over and transform the entire galaxy. The hard steps model solves this by making life on any given planet exceedingly unlikely. Indeed, it has to be so unlikely that there would only be [one surviving lineage every *million galaxies*]{.lc-param data-param="lambda"}. 
+
+It's worth dwelling for a moment on this value, $\lambda = qN$. It combines the number of lineages in the galaxy with their probability of expansion. In the left, there are sliders for q and N, but under the default settings they are incompatible-- hence we also show $\lambda$, the combined number that is forced by the empty sky.
 
 ::: {.lc-figure}
 [Figure 1 · How long did the lineage take?]{.lc-figure-title}
 
 ```{ojs}
 {
-  const lam = p.q * p.N, ceil = LC.planetCeiling(p, p.T), lead = LC.T0 - LC.S - p.T;
-  const muP = LC.expected(p, lead, "planet", "visibility");
+  const lam = p.q * p.N;
   const Ts = d3.range(0.5, 13.55, 0.25).map(t => { const c = LC.planetCeiling(p, t); return {x: t, y: isFinite(c) ? Math.min(c, 1e12) : NaN}; });
   const yMin = 10 ** Math.floor(Math.log10(Math.min(...Ts.map(d => d.y).filter(isFinite), lam, 1e-12))), yMax = 1e12;
-  return row(
-    card({cls: "planet plain",
-      big: isFinite(ceil) ? `Λ ≤ ${sci(ceil)}` : "No limit",
-      bigSub: isFinite(ceil)
-        ? (ceil < 1 ? `loud lineages per galaxy, at most: about one galaxy in ${sci(1 / ceil)} may ever produce one` : "loud lineages per galaxy, at most")
-        : "even with every lineage loud the sky stays empty",
-      verdict: verdict(muP, p.pEmpty),
-      stats: [["First emergences", lead > 0.0005 ? `${dur(lead)} before us` : "with us"],
-              ["Planets whose lineage has emerged by today", pct(lead / (LC.T0 - LC.S))],
-              ["Loud lineages per galaxy if all emerge, Λ = qN", sci(lam)],
-              ["Loud galaxies we should see", muP < 1e-3 ? "≈ 0" : sci(muP)]]}),
-    html`<div class="lc-chart">${chart({
-      data: Ts, ylog: true, xdom: [0.5, 13.5], ydom: [yMin, yMax],
-      xticks: [1, 4.6, 8, 12], yticks: decTicks(yMin, yMax, Math.log10(yMax / yMin) > 16 ? 6 : 4),
-      yfmt: t => pow10(Math.log10(t)), xtitle: "time to emerge T (Gyr)", ytitle: "largest Λ",
-      color: "var(--planet)", forbid: "above", markers: [{x: p.T, y: lam, label: "Λ now", left: p.T > 9}],
-      tip: d => `T ${d.x.toFixed(2)} Gyr · Λ ≤ ${sci(d.y)}`
-    })}</div>`);
+  return chart({
+    width: 680, data: Ts, ylog: true, xdom: [0.5, 13.5], ydom: [yMin, yMax],
+    xticks: [1, 4.6, 8, 12], yticks: decTicks(yMin, yMax, Math.log10(yMax / yMin) > 16 ? 6 : 4),
+    yfmt: t => pow10(Math.log10(t)), xtitle: "time to emerge T (Gyr)", ytitle: "largest qN an empty sky allows",
+    color: "var(--planet)", forbid: "above", markers: [{x: p.T, y: lam, label: "your qN", left: p.T > 9}],
+    tip: d => `T ${d.x.toFixed(2)} Gyr · qN ≤ ${sci(d.y)}`
+  });
 }
 ```
 
-[Each planet starts the lineage at its own birth and needs time *T* to emerge. Planets have been forming since 0.2 Gyr, so a short *T* means early emergences, billions of years before ours. The curve is the most loud lineages per galaxy an empty sky allows. At Earth's 4.6 Gyr it is about 2 × 10⁻⁸; push *T* towards the age of the universe and it lifts.]{.lc-note}
+```{ojs}
+{
+  const lam = p.q * p.N, ceil = LC.planetCeiling(p, p.T), lead = LC.T0 - LC.S - p.T;
+  const head = `Each planet starts the lineage at its own birth and needs time <i>T</i> to emerge. Planets have been forming since 0.2 Gyr, so at <i>T</i> = ${p.T.toFixed(1)} Gyr the first emergences came ${dur(lead)} before ours. The curve is the most loud lineages per galaxy, Λ = <i>qN</i>, that leave the sky empty`;
+  if (!isFinite(ceil)) return html`<p class="lc-note">${head}; at this <i>T</i> nothing is ruled out, even with every lineage loud.</p>`;
+  const fits = lam <= ceil;
+  const tension = fits
+    ? `Your sliders give <i>qN</i> = ${sci(lam)}, under the curve, so the sky stays empty.`
+    : `Your sliders give <i>qN</i> = ${sci(lam)}, ${sci(lam / ceil)} times too many: the sky would be full of loud galaxies. <i>q</i> and <i>N</i> cannot both stand. Keep <i>N</i> = ${sci(p.N)} lineages per galaxy and almost none may expand, <i>q</i> ≤ ${sci(ceil / p.N)}. Keep every lineage loud and lineages must be rare: one per ${sci(1 / ceil)} galaxies.`;
+  return html`<p class="lc-note">${head}: at this <i>T</i>, Λ ≤ ${sci(ceil)}. ${tension} Push <i>T</i> towards the age of the universe and the ceiling lifts.</p>`;
+}
+```
+
 :::
 
 By contrast, if it simply takes life much longer than the lifetime of the planet to get started, the fact that we are emerging now is not so remarkable. In this view, we are emerging now and apparently alone because we are essentially synchronized with all other lineages.
 
-Here the other bound comes in, the lifetime of the universe. If you work through the geometric calculation, as Hanson does in the grabby aliens model, you realize that we must be synchronized not only within our galaxy, but also between galaxies. If there is such a thing as a galaxy-transforming civilization, [the light from its distant now-transformed galaxy would have reached us by now]{.lc-param data-param="v ng pEmpty lead"}.
+Here the other bound comes in, the lifetime of the universe. If you work through the geometric calculation, as Hanson does in the grabby aliens model, you realize that we must be synchronized not only within our galaxy, but also between galaxies. If there is such a thing as a galaxy-transforming civilization, [the light from its distant now-transformed galaxy would have reached us by now]{.lc-param data-param="lead"}.
 
 ::: {.lc-figure}
 [Figure 2 · The head-start cap]{.lc-figure-title}
@@ -165,7 +167,7 @@ In this example, the typical lineage is still [about a billion years from emergi
 
 The number of emerging lineages in this result is of the order of N, the total number of lineages in our model. These are the aliens we are racing against. The fact that the sky is empty means we can't have been sitting around-- we can't be in the middle of the pack, or we would see the evidence of the leaders all around us. If you picture us as a random lineage, the chance of being this far ahead is about [one in a hundred billion]{.lc-param data-param="rank"} — roughly one over the number of lineages.
 
-I'll talk about luck more below, but it's worth thinking about the rest of the players in the race. To make the model simple, I have chosen to assume that there is one evolutionary lineage per habitable planet. But that wraps a lot of assumptions up into one. First, we don't really know what that means, and we are changing our model of it all the time. Some people are stricter about what constitutes a goldilocks zone, some say a planet needs a moon and a nice stable star. And perhaps the seeds, perhaps LUCA, is not so common that every planet gets seeded at exactly the right moment, or other planets are more prone to destabilizing catastrophes than ours. [The number of other lineages N]{.lc-param data-param="N"}, that is, the number of our contemporaries, the number of our competitors in the race for the front, varies a lot model to model.
+I'll talk about luck more below, but it's worth thinking about the rest of the players in the race. To make the model simple, I have chosen to assume that there is one evolutionary lineage per habitable planet. But that wraps a lot of assumptions up into one. First, we don't really know what that means, and we are changing our model of it all the time. Some people are stricter about what constitutes a goldilocks zone, some say a planet needs a moon and a nice stable star. And perhaps the seeds, perhaps LUCA, is not so common that every planet gets seeded at exactly the right moment, or other planets are more prone to destabilizing catastrophes than ours. The number of other lineages N, that is, the number of our contemporaries, the number of our competitors in the race for the front, varies a lot model to model.
 
 Changing the number of competitors changes our luckiness and the number of contemporaries we would expect to meet in our galaxy, but several other parts of the models are insensitive to it, such as [the number of lineages ahead of us in our galaxy]{.lc-param data-param="ahead"} and the spread in time. The empty sky still needs an explanation, even if there are only a hundred or less surviving lineages per galaxy.
 
@@ -345,6 +347,7 @@ See you, space cowboy.
 - **Trajectories, not planets.** *N* counts effective retained-progress trajectories per galaxy in Earth-equivalent units: 10¹¹ stars × 0.1. It grows linearly from cosmic age 0.2 Gyr to today, 13.8 Gyr. Trajectories are never destroyed.
 - **Turning loud.** A lineage that crosses the threshold turns loud with probability *q*. It then spreads through its galaxy (30 kpc) and keeps spreading at speed *v*. The results mostly depend on Λ = *qN*.
 - **Seeing it, or meeting it.** A galaxy is visible once its front has crossed it and the light has reached us. Arrival means the front itself reaching us. Each galaxy is independent, so P(empty) = e^−μ^.
+- **The sky.** Loud fronts spread at 0.5*c*. Galaxies sit at 0.01 per cubic megaparsec. The sky counts as empty while it has at least a 5% chance of showing no loud galaxy, which means about three expected. All three can be changed under *The sky* in the sidebar.
 - **Geometry.** Space is flat with a fixed galaxy density. That is fair for the few megaparsecs behind the 14 Myr cap. Over the gigaparsecs the planet clock integrates, treat it as a scaling statement.
 - **What it does not do.** It does not derive the shared clock from chemistry, model survey completeness, or turn percentiles into odds for our own existence.
 
@@ -374,11 +377,12 @@ W = Generators.input(views.W)
 sigma = Generators.input(views.sigma)
 nSteps = Generators.input(views.n)
 p = ({N, q, v, ng, pEmpty, T, W, sigma})
-panel = paramPanel(views, numbers)
+panel = paramPanel(views, numbers, ["v", "ng", "pEmpty"])
 numbers = resultRows([
-  ["first", "First emergences, before us"], ["lambda", "Loud lineages per galaxy, at most"],
-  ["lead", "Largest head start"], ["typical", "Typical lineage emerges in"], ["rank", "Our rank among lineages"],
-  ["ahead", "Loud lineages ahead at home"], ["fnc", "Process clock over hard steps"], ["doom", "Doom tax"]
+  {title: "If every planet starts its own clock", items: [["first", "First emergences, before ours"], ["lambda", "Loud lineages per galaxy (qN), at most"], ["qn", "Your qN"]]},
+  {title: "If all lineages share one start", items: [["lead", "Largest head start over us"]]},
+  {title: "If durations vary between lineages", items: [["typical", "Typical lineage emerges in"], ["rank", "Our rank among lineages"], ["ahead", "Loud lineages ahead of us at home"]]},
+  {title: "Shared start against hard steps", items: [["fnc", "Observers like us, shared start over hard steps"], ["doom", "Doom tax: how much likelier a late filter makes us"]]}
 ])
 {
   const lead = LC.T0 - LC.S - p.T, ceil = LC.planetCeiling(p, p.T), shared = LC.sharedLead(p, "visibility", p.W);
@@ -386,8 +390,9 @@ numbers = resultRows([
   const tax = R.process.filter.map(f => f.obs / R.process.loud.obs);
   numbers.set({
     first: lead > 0.0005 ? dur(lead) : "none",
-    lambda: isFinite(ceil) ? `Λ ≤ ${sci(ceil)}` : "no limit",
-    lead: shared.capped ? `${dur(shared.delta)}` : "unbounded",
+    lambda: isFinite(ceil) ? `≤ ${sci(ceil)}` : "no limit",
+    qn: {text: sci(p.q * p.N), ok: !(p.q * p.N > ceil)},
+    lead: shared.capped ? `≤ ${dur(shared.delta)}` : "unbounded",
     typical: r ? dur(r.meanAfter) : "–",
     rank: r ? oneIn(r.F) : "–",
     ahead: r ? sci(r.home) : "–",
@@ -398,7 +403,7 @@ numbers = resultRows([
 }
 // A line chart in the old site's style: log axes optional, an excluded region, markers, hover tip.
 chart = (o) => Plot.plot({
-  width: 460, height: 260, marginLeft: 58, marginBottom: 40, style: {background: "transparent"},
+  width: o.width || 460, height: 260, marginLeft: 58, marginBottom: 40, style: {background: "transparent"},
   x: {type: o.xlog ? "log" : "linear", domain: o.xdom, ticks: o.xticks, tickFormat: o.xfmt, label: o.xtitle, labelAnchor: "center", labelArrow: "none"},
   y: {type: o.ylog ? "log" : "linear", domain: o.ydom, ticks: o.yticks, tickFormat: o.yfmt, label: o.ytitle, labelArrow: "none", clamp: true, grid: true},
   marks: [

@@ -13,6 +13,9 @@ export function sci(x, digits) {
   if (+mm >= 10) { mm = (1).toFixed((digits || 2) - 1); return mm === "1" ? `10${sup(e + 1)}` : `${mm} × 10${sup(e + 1)}`; }
   return +mm === 1 ? `10${sup(e)}` : `${mm} × 10${sup(e)}`;
 }
+const UNSUP = Object.fromEntries(Object.entries(SUP).map(([k, v]) => [v, k === "-" ? "−" : k]));
+// For HTML outputs: runs of unicode superscripts become <sup>, which mono fonts set properly.
+export const supHTML = str => String(str).replace(/[⁻⁰¹²³⁴⁵⁶⁷⁸⁹]+/g, m => `<sup>${[...m].map(c => UNSUP[c]).join("")}</sup>`);
 export const pow10 = l => Math.abs(l - Math.round(l)) < 1e-9 ? ({ 0: "1", 1: "10" }[Math.round(l)] || `10${sup(Math.round(l))}`) : sci(10 ** l);
 export function dur(g) {
   if (!isFinite(g)) return "∞";
@@ -42,7 +45,7 @@ export function slider(spec) {
     <div class="lc-ticks">${(spec.ticks || []).map(t => `<span>${t}</span>`).join("")}</div>${spec.help ? `<p>${spec.help}</p>` : ""}`;
   const input = wrap.querySelector("input"), out = wrap.querySelector("output");
   let value = spec.value;
-  const show = () => { input.value = from(value); out.textContent = spec.fmt(value); };
+  const show = () => { input.value = from(value); out.innerHTML = supHTML(spec.fmt(value)); };
   Object.defineProperty(wrap, "value", { get: () => value, set: v => { value = v; show(); } });
   input.addEventListener("input", ev => { ev.stopPropagation(); value = to(+input.value); show(); wrap.dispatchEvent(new Event("input", { bubbles: true })); });
   show();
@@ -78,22 +81,37 @@ export const SLIDERS = {
 
 export const makeSlider = (key, value) => slider({ ...SLIDERS[key], value });
 
-/* Live numbers for the sidebar: rows of [key, label]; .set({key: text}) updates them. */
-export function resultRows(defs) {
-  const rows = {};
-  for (const [key, label] of defs) {
-    const r = h("div", "lc-stat lc-item", `<span>${label}</span><output>–</output>`);
-    r.dataset.key = key;
-    rows[key] = r;
+/* Live numbers for the sidebar, grouped by the account that produces them, since each
+ * group answers a different question.  groups: [{title, items: [[key, label]]}].
+ * .set({key: text | {text, ok}}) updates them; ok colours the value good/bad. */
+export function resultRows(groups) {
+  const rows = {}, els = [];
+  for (const g of groups) {
+    const box = h("div", "lc-group", `<div class="lc-group-title">${g.title}</div>`);
+    box.hidden = true;
+    for (const [key, label] of g.items) {
+      const r = h("div", "lc-result lc-item", `<span>${label}</span><output>–</output>`);
+      r.dataset.key = key;
+      rows[key] = r;
+      box.appendChild(r);
+    }
+    els.push(box);
   }
-  return { rows, set: values => { for (const k in values) if (rows[k]) rows[k].querySelector("output").textContent = values[k]; } };
+  return { rows, groups: els, set: values => {
+    for (const k in values) {
+      if (!rows[k]) continue;
+      const v = values[k], out = rows[k].querySelector("output");
+      out.innerHTML = supHTML(typeof v === "object" ? v.text : v);
+      out.className = typeof v === "object" ? (v.ok ? "ok" : "no") : "";
+    }
+  } };
 }
 
 /* The left sidebar: sliders and live numbers, each hidden until the text introduces it.
  * A span [phrase]{.lc-param data-param="T first"} reveals items T and first once it
  * scrolls into view; clicking it flashes them.  Docked in quarto's left sidebar on wide
  * screens, a collapsible bottom sheet otherwise. */
-export function paramPanel(views, numbers) {
+export function paramPanel(views, numbers, advanced = []) {
   const panel = h("aside", "lc-panel");
   panel.innerHTML = `<button class="lc-panel-toggle" type="button" aria-expanded="false">Parameters<small></small></button>
     <div class="lc-panel-body">
@@ -101,16 +119,19 @@ export function paramPanel(views, numbers) {
         <p class="lc-panel-empty">Sliders appear here as the text introduces them.</p></div>
       <div class="lc-panel-card" hidden><div class="lc-label">The numbers</div><div class="lc-panel-list" data-list="numbers"></div></div>
       <button class="lc-panel-all" type="button">Show everything</button>
+      <details class="lc-panel-card lc-advanced"><summary class="lc-label">The sky</summary><div class="lc-panel-list" data-list="advanced"></div></details>
     </div>`;
   const items = {};
-  for (const k in views) { views[k].dataset.key = k; views[k].classList.add("lc-item"); items[k] = views[k]; }
+  for (const k of advanced) panel.querySelector('[data-list="advanced"]').appendChild(views[k]);
+  for (const k in views) { if (advanced.includes(k)) continue; views[k].dataset.key = k; views[k].classList.add("lc-item"); items[k] = views[k]; }
+  for (const g of numbers.groups) panel.querySelector('[data-list="numbers"]').appendChild(g);
   for (const k in numbers.rows) items[k] = numbers.rows[k];
   const markers = [...document.querySelectorAll(".lc-param[data-param]")];
   const keysOf = m => m.dataset.param.split(/\s+/).filter(k => items[k]);
   const order = [...new Set(markers.flatMap(keysOf))];
   for (const k of order) {
     items[k].hidden = true;
-    panel.querySelector(`[data-list="${k in views ? "params" : "numbers"}"]`).appendChild(items[k]);
+    if (k in views) panel.querySelector('[data-list="params"]').appendChild(items[k]);
   }
   const shown = new Set(), count = panel.querySelector(".lc-panel-toggle small");
   function flash(k) {
@@ -121,6 +142,8 @@ export function paramPanel(views, numbers) {
     shown.add(k);
     items[k].hidden = false;
     items[k].closest(".lc-panel-card").hidden = false;
+    const group = items[k].closest(".lc-group");
+    if (group) group.hidden = false;
     if (animate) flash(k);
     panel.querySelector(".lc-panel-empty").hidden = [...shown].some(x => x in views) || false;
     panel.querySelector(".lc-panel-all").hidden = shown.size === order.length;
@@ -159,10 +182,10 @@ export function paramPanel(views, numbers) {
 export function card(o) {
   const c = h("div", `lc-card ${o.cls || ""}`);
   if (o.title) c.appendChild(h("div", "lc-card-head", `<div class="lc-indicator"></div><div><h4>${o.title}</h4>${o.sub ? `<p>${o.sub}</p>` : ""}</div>`));
-  if (o.big != null) c.appendChild(h("div", "lc-big", `<output>${o.big}</output><span>${o.bigSub || ""}</span>`));
+  if (o.big != null) c.appendChild(h("div", "lc-big", `<output>${supHTML(o.big)}</output><span>${o.bigSub || ""}</span>`));
   if (o.verdict) c.appendChild(h("div", `lc-verdict ${o.verdict.ok ? "ok" : "no"}`, o.verdict.text));
   if (o.stats && o.stats.length)
-    c.appendChild(h("div", "lc-stats", o.stats.map(([k, v]) => `<div class="lc-stat"><span>${k}</span><output>${v}</output></div>`).join("")));
+    c.appendChild(h("div", "lc-stats", o.stats.map(([k, v]) => `<div class="lc-stat"><span>${k}</span><output>${supHTML(v)}</output></div>`).join("")));
   if (o.chart) c.appendChild(o.chart);
   return c;
 }
