@@ -52,6 +52,32 @@ export function slider(spec) {
   return wrap;
 }
 
+/* A two-or-more-way switch with the slider's .value / "input" contract.  options: [[label, value]]. */
+export function toggle(spec) {
+  const wrap = h("div", "lc-slider lc-toggle");
+  wrap.innerHTML = `<div class="lc-slider-head"><label title="${spec.help || ""}">${spec.label}</label></div><div class="lc-seg" role="group"></div>`;
+  const seg = wrap.querySelector(".lc-seg");
+  let value = spec.value;
+  const buttons = spec.options.map(([label, v]) => {
+    const b = h("button", "", label);
+    b.type = "button";
+    b.addEventListener("click", () => { value = v; show(); wrap.dispatchEvent(new Event("input", { bubbles: true })); });
+    seg.appendChild(b);
+    return [b, v];
+  });
+  const show = () => buttons.forEach(([b, v]) => b.setAttribute("aria-pressed", v === value));
+  Object.defineProperty(wrap, "value", { get: () => value, set: v => { value = v; show(); } });
+  show();
+  return wrap;
+}
+
+// A figure caption from an HTML string, exponents set as <sup>.
+export function caption(str) {
+  const p = h("p", "lc-note");
+  p.innerHTML = supHTML(str);
+  return p;
+}
+
 const log = { to: l => 10 ** l, from: v => Math.log10(v) };
 
 // The old site's sliders, keyed by model parameter.

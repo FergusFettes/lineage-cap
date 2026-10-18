@@ -154,3 +154,9 @@ output sup { font-size: .65em; vertical-align: .38em; position: static; line-hei
 .lc-result output.no { color: var(--bad); }
 details.lc-advanced summary { cursor: pointer; }
 details.lc-advanced[open] summary { margin-bottom: .8rem; }
+.lc-note sup { font-size: .7em; vertical-align: .45em; line-height: 1; }
+/* segmented toggle */
+.lc-seg { display: flex; gap: 0; border: 1px solid var(--rule); border-radius: 3px; overflow: hidden; }
+.lc-seg button { flex: 1; font: 500 .74rem/1.2 var(--sans); color: var(--ink-2); background: var(--card); border: 0; padding: .45rem .5rem; cursor: pointer; }
+.lc-seg button + button { border-left: 1px solid var(--rule); }
+.lc-seg button[aria-pressed="true"] { background: var(--ink); color: var(--paper); }
