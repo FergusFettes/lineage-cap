@@ -1,4 +1,4 @@
-/* Widgets for blog.qmd: formatting, sliders, scenario chips and stat cards.
+/* Widgets for blog.qmd: formatting, sliders, the parameter sidebar and stat cards.
  * The model itself is site/model.js (window.LineageCap); charts are drawn with Plot in the qmd. */
 
 const SUP = { "-": "⁻", "0": "⁰", "1": "¹", "2": "²", "3": "³", "4": "⁴", "5": "⁵", "6": "⁶", "7": "⁷", "8": "⁸", "9": "⁹" };
@@ -37,7 +37,7 @@ export function slider(spec) {
   const to = spec.to || (x => x), from = spec.from || (x => x);
   const wrap = h("div", "lc-slider " + (spec.cls || ""));
   const id = "lc-" + Math.random().toString(36).slice(2, 9);
-  wrap.innerHTML = `<div class="lc-slider-head"><label for="${id}">${spec.label}</label><output></output></div>
+  wrap.innerHTML = `<div class="lc-slider-head"><label for="${id}" title="${(spec.help || "").replace(/"/g, "&quot;")}">${spec.label}</label><output></output></div>
     <input type="range" id="${id}" min="${spec.min}" max="${spec.max}" step="${spec.step}">
     <div class="lc-ticks">${(spec.ticks || []).map(t => `<span>${t}</span>`).join("")}</div>${spec.help ? `<p>${spec.help}</p>` : ""}`;
   const input = wrap.querySelector("input"), out = wrap.querySelector("output");
@@ -78,46 +78,81 @@ export const SLIDERS = {
 
 export const makeSlider = (key, value) => slider({ ...SLIDERS[key], value });
 
-export const SCENARIOS = [
-  { name: "The baseline", sub: "Λ = 10¹⁰, one start date", set: {} },
-  { name: "Rare loud lineages", sub: "q = 10⁻¹², Λ = 0.01", set: { q: 1e-12 } },
-  { name: "First-star window", sub: "starts spread over 150 Myr", set: { W: 0.15 } },
-  { name: "Wide start window", sub: "starts spread over 5 Gyr", set: { W: 5 } },
-  { name: "Slow fronts", sub: "v = 0.05c", set: { v: 0.05 } },
-  { name: "Stricter sky", sub: "μ = 1, P(empty) 37%", set: { pEmpty: Math.exp(-1) } },
-  { name: "Few lineages", sub: "N = 100 per galaxy", set: { N: 100 } },
-];
-
-/* Scenario chips driving the given slider views ({key: element}).  Clicking resets every
- * view to the baseline, applies the scenario, and fires "input" so OJS recomputes. */
-export function chips(views, baseline, scenarios = SCENARIOS) {
-  const row = h("div", "lc-scenarios");
-  row.setAttribute("role", "group");
-  const same = (a, b) => a === b || Math.abs(Math.log((a || 1e-300) / (b || 1e-300))) < 1e-6;
-  const buttons = scenarios.map(sc => {
-    const b = h("button", "lc-chip", `${sc.name}<small>${sc.sub}</small>`);
-    b.type = "button";
-    b.addEventListener("click", () => {
-      const want = { ...baseline, ...sc.set };
-      for (const k in views) {
-        if (!(k in want) || views[k].value === want[k]) continue;
-        views[k].value = want[k];
-        views[k].dispatchEvent(new Event("input", { bubbles: true }));
-      }
-      sync();
-    });
-    row.appendChild(b);
-    return { b, sc };
-  });
-  function sync() {
-    for (const { b, sc } of buttons) {
-      const want = { ...baseline, ...sc.set };
-      b.setAttribute("aria-pressed", Object.keys(views).every(k => !(k in want) || same(views[k].value, want[k])));
-    }
+/* Live numbers for the sidebar: rows of [key, label]; .set({key: text}) updates them. */
+export function resultRows(defs) {
+  const rows = {};
+  for (const [key, label] of defs) {
+    const r = h("div", "lc-stat lc-item", `<span>${label}</span><output>–</output>`);
+    r.dataset.key = key;
+    rows[key] = r;
   }
-  for (const k in views) views[k].addEventListener("input", sync);
-  sync();
-  return row;
+  return { rows, set: values => { for (const k in values) if (rows[k]) rows[k].querySelector("output").textContent = values[k]; } };
+}
+
+/* The left sidebar: sliders and live numbers, each hidden until the text introduces it.
+ * A span [phrase]{.lc-param data-param="T first"} reveals items T and first once it
+ * scrolls into view; clicking it flashes them.  Docked in quarto's left sidebar on wide
+ * screens, a collapsible bottom sheet otherwise. */
+export function paramPanel(views, numbers) {
+  const panel = h("aside", "lc-panel");
+  panel.innerHTML = `<button class="lc-panel-toggle" type="button" aria-expanded="false">Parameters<small></small></button>
+    <div class="lc-panel-body">
+      <div class="lc-panel-card"><div class="lc-label">Parameters</div><div class="lc-panel-list" data-list="params"></div>
+        <p class="lc-panel-empty">Sliders appear here as the text introduces them.</p></div>
+      <div class="lc-panel-card" hidden><div class="lc-label">The numbers</div><div class="lc-panel-list" data-list="numbers"></div></div>
+      <button class="lc-panel-all" type="button">Show everything</button>
+    </div>`;
+  const items = {};
+  for (const k in views) { views[k].dataset.key = k; views[k].classList.add("lc-item"); items[k] = views[k]; }
+  for (const k in numbers.rows) items[k] = numbers.rows[k];
+  const markers = [...document.querySelectorAll(".lc-param[data-param]")];
+  const keysOf = m => m.dataset.param.split(/\s+/).filter(k => items[k]);
+  const order = [...new Set(markers.flatMap(keysOf))];
+  for (const k of order) {
+    items[k].hidden = true;
+    panel.querySelector(`[data-list="${k in views ? "params" : "numbers"}"]`).appendChild(items[k]);
+  }
+  const shown = new Set(), count = panel.querySelector(".lc-panel-toggle small");
+  function flash(k) {
+    items[k].classList.remove("lc-new"); void items[k].offsetWidth; items[k].classList.add("lc-new");
+  }
+  function reveal(k, animate) {
+    if (shown.has(k)) return;
+    shown.add(k);
+    items[k].hidden = false;
+    items[k].closest(".lc-panel-card").hidden = false;
+    if (animate) flash(k);
+    panel.querySelector(".lc-panel-empty").hidden = [...shown].some(x => x in views) || false;
+    panel.querySelector(".lc-panel-all").hidden = shown.size === order.length;
+    count.textContent = ` · ${shown.size}/${order.length}`;
+  }
+  // Reveal everything whose marker has come within the lower part of the viewport.
+  let first = true;
+  function scan() {
+    for (const m of markers) if (m.getBoundingClientRect().top < innerHeight * 0.85) keysOf(m).forEach(k => reveal(k, !first));
+    first = false;
+  }
+  let queued = false;
+  addEventListener("scroll", () => { if (!queued) { queued = true; requestAnimationFrame(() => { queued = false; scan(); }); } }, { passive: true });
+  for (const m of markers) m.addEventListener("click", () => {
+    keysOf(m).forEach(k => { reveal(k, false); flash(k); });
+    panel.classList.add("open");
+  });
+  panel.querySelector(".lc-panel-all").addEventListener("click", () => order.forEach(k => reveal(k, false)));
+  const toggle = panel.querySelector(".lc-panel-toggle");
+  toggle.addEventListener("click", () => toggle.setAttribute("aria-expanded", panel.classList.toggle("open")));
+  const wide = matchMedia("(min-width: 992px)");
+  function place() {
+    const host = document.getElementById("quarto-sidebar-toc-left");
+    const dock = wide.matches && host;
+    (dock ? host : document.body).appendChild(panel);
+    panel.classList.toggle("docked", !!dock);
+    panel.classList.toggle("sheet", !dock);
+  }
+  wide.addEventListener("change", place);
+  place();
+  scan();
+  return panel;
 }
 
 /* A result card: { cls, title, sub, big, bigSub, verdict: {ok, text} | null, stats: [[label, value]] , chart } */
