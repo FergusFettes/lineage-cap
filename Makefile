@@ -16,7 +16,7 @@ reproduce:
 	$(MAKE) note-figures
 	$(MAKE) note
 clean:
-	rm -rf blog.html blog_files first-flush-likelihood.html first-flush-likelihood_files paper.pdf paper.html paper_files note.pdf note.html note_files .quarto .pytest_cache .mplconfig lineage_cap/__pycache__ tests/__pycache__
+	rm -rf site/index.html site/index_files first-flush-likelihood.html first-flush-likelihood_files paper.pdf paper.html paper_files note.pdf note.html note_files .quarto .pytest_cache .mplconfig lineage_cap/__pycache__ tests/__pycache__
 baseline: ; MPLCONFIGDIR=.mplconfig uv run python -m lineage_cap.baseline
 inference: ; MPLCONFIGDIR=.mplconfig uv run python -u -m lineage_cap.sweep
 figures: ; MPLCONFIGDIR=.mplconfig uv run python figures/make.py
@@ -28,7 +28,7 @@ check: ; uv run python -m pytest -q
 # The public site's JS port must keep matching the note's numbers.
 site-check: ; node site/check_model.js
 # The interactive blog: live-reloading preview, and the static build Pages deploys.
-blog-preview: ; quarto preview blog.qmd
-blog: ; quarto render blog.qmd --to html
+blog-preview: ; quarto preview site/index.qmd
+blog: ; quarto render site/index.qmd --to html
 # Existence-check the bibliography (network; slow because arXiv is rate-limited).
 check-refs: ; uv run python -m lineage_cap.check_refs references.bib first-flush-likelihood.qmd paper.qmd

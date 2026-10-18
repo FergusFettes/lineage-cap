@@ -1,4 +1,4 @@
-/* blog.qmd: the old site's paper look, and its widget styles under an lc- prefix. */
+/* site/index.qmd: the old site's paper look, and its widget styles under an lc- prefix. */
 :root {
   --planet: #8b4513;      /* every planet starts its own clock */
   --shared: #1e3a5f;      /* shared starting gun */

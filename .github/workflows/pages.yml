@@ -2,7 +2,7 @@ name: Site
 on:
   push:
     branches: [main]
-    paths: ['blog.qmd', 'references.bib', 'site/**', 'first-flush-likelihood.pdf', '.github/workflows/pages.yml']
+    paths: ['references.bib', 'site/**', 'first-flush-likelihood.pdf', '.github/workflows/pages.yml']
   workflow_dispatch:
 permissions:
   contents: read
@@ -26,13 +26,11 @@ jobs:
       - uses: quarto-dev/quarto-actions/setup@v2
         with:
           version: 1.6.40
-      # The interactive blog is the front page; its widgets load site/*.js and site/blog.css.
-      - run: quarto render blog.qmd --to html
+      # The interactive blog is the front page.
+      - run: quarto render site/index.qmd --to html
       - run: |
-          mkdir -p _site/site
-          cp blog.html _site/index.html
-          cp -r blog_files _site/
-          cp site/model.js site/widgets.js site/blog.css _site/site/
+          mkdir _site
+          cp -r site/index.html site/index_files site/model.js site/widgets.js site/blog.css _site/
           cp first-flush-likelihood.pdf _site/
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3

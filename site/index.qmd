@@ -2,11 +2,11 @@
 title: "The Long Lineage"
 author: "Fergus Fettes"
 date: 2026-10-18
-bibliography: references.bib
+bibliography: ../references.bib
 format:
   html:
     theme: cosmo
-    css: site/blog.css
+    css: blog.css
     toc: true
     toc-location: left
     reference-location: margin
@@ -17,10 +17,10 @@ format:
           <link rel="preconnect" href="https://fonts.googleapis.com">
           <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
           <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,600;0,6..72,700;1,6..72,400&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap">
-          <script src="site/model.js"></script>
+          <script src="model.js"></script>
 resources:
-  - site/model.js
-  - site/widgets.js
+  - model.js
+  - widgets.js
 execute:
   echo: false
 ---
@@ -353,14 +353,14 @@ See you, space cowboy.
 - **Geometry.** Space is flat with a fixed galaxy density. That is fair for the few megaparsecs behind the 14 Myr cap. Over the gigaparsecs the planet clock integrates, treat it as a scaling statement.
 - **What it does not do.** It does not derive the shared clock from chemistry, model survey completeness, or turn percentiles into odds for our own existence.
 
-The numbers on this page are recomputed in your browser by a port of the repository's Python model and match the note's tables. Full write-up: *First-flush likelihood under a common-start, continuous evolutionary process* ([PDF](first-flush-likelihood.pdf), [code and data](https://github.com/FergusFettes/lineage-cap), [doi:10.5281/zenodo.23406424](https://doi.org/10.5281/zenodo.23406424)). Text CC BY 4.0, code MIT.
+The numbers on this page are recomputed in your browser by a port of the repository's Python model and match the note's tables. Full write-up: *First-flush likelihood under a common-start, continuous evolutionary process* ([PDF](https://github.com/FergusFettes/lineage-cap/blob/main/first-flush-likelihood.pdf), [code and data](https://github.com/FergusFettes/lineage-cap), [doi:10.5281/zenodo.23406424](https://doi.org/10.5281/zenodo.23406424)). Text CC BY 4.0, code MIT.
 :::
 
 ```{ojs}
 //| output: false
 // Shared state for every figure.  Each slider lives once in its home figure; copies elsewhere
 // are bound to it, so moving any copy moves them all.  The model is site/model.js.
-import {makeSlider, toggle, caption, paramPanel, resultRows, card, verdict, row, sci, pow10, dur, pct, oneIn, niceTicks, decTicks} from "./site/widgets.js"
+import {makeSlider, toggle, caption, paramPanel, resultRows, card, verdict, row, sci, pow10, dur, pct, oneIn, niceTicks, decTicks} from "./widgets.js"
 Plot = import("https://cdn.jsdelivr.net/npm/@observablehq/plot@0.6.16/+esm")
 LC = window.LineageCap
 B = LC.BASELINE

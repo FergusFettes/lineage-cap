@@ -1,4 +1,4 @@
-/* Widgets for blog.qmd: formatting, sliders, the parameter sidebar and stat cards.
+/* Widgets for site/index.qmd: formatting, sliders, the parameter sidebar and stat cards.
  * The model itself is site/model.js (window.LineageCap); charts are drawn with Plot in the qmd. */
 
 const SUP = { "-": "⁻", "0": "⁰", "1": "¹", "2": "²", "3": "³", "4": "⁴", "5": "⁵", "6": "⁶", "7": "⁷", "8": "⁸", "9": "⁹" };
