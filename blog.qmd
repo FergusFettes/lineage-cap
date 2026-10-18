@@ -1,3 +1,28 @@
+---
+title: "The Long Lineage"
+subtitle: "A less appreciated answer to the Fermi paradox, with the model running on the page"
+author: "Fergus Fettes"
+date: 2026-10-18
+bibliography: references.bib
+format:
+  html:
+    theme: cosmo
+    css: site/blog.css
+    toc: true
+    html-math-method: katex
+    include-in-header:
+      - text: |
+          <link rel="preconnect" href="https://fonts.googleapis.com">
+          <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+          <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,600;0,6..72,700;1,6..72,400&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap">
+          <script src="site/model.js"></script>
+resources:
+  - site/model.js
+  - site/widgets.js
+execute:
+  echo: false
+---
+
 I've been playing around recently with a less appreciated explanation of the Fermi Paradox. It comes up every now and then as a throwaway line in a paper or blog post, but you rarely see anyone give it much airtime. I have some ideas about why that might be, and why the epistemic ground is shifting.
 
 The Fermi Paradox (FP), also known as the Great Silence, asks why, given the fact that life can evolve and apparently alters its environment in highly conspicuous ways, do we see no evidence of it elsewhere in the galaxy.
@@ -26,6 +51,81 @@ By contrast, if it simply takes life much longer than the lifetime of the planet
 
 Here the other bound comes in, the lifetime of the universe. If you work through the geometric calculation, as Hanson does in the grabby aliens model, you realize that we must be synchronized not only within our galaxy, but also between galaxies. If there is such a thing as a galaxy-transforming civilization, the light from its distant now-transformed galaxy would have reached us by now.
 
+::: {.lc-figure}
+[Figure 1 · Two clocks, one empty sky]{.lc-figure-title}
+
+```{ojs}
+chips(views, B)
+```
+
+```{ojs}
+{
+  const lam = p.q * p.N;
+  // planet clock
+  const ceil = LC.planetCeiling(p, p.T);
+  const muP = LC.expected(p, LC.T0 - LC.S - p.T, "planet", "visibility");
+  const Ts = d3.range(0.5, 13.55, 0.25).map(t => { const c = LC.planetCeiling(p, t); return {x: t, y: isFinite(c) ? Math.min(c, 1e12) : NaN}; });
+  const finite = Ts.map(d => d.y).filter(isFinite);
+  const yMin = 10 ** Math.floor(Math.log10(Math.min(...finite, lam, 1e-12))), yMax = 1e12;
+  const planet = card({
+    cls: "planet", title: "Every planet starts its own clock",
+    sub: "A lineage crosses the loud threshold a fixed time <i>T</i> after its planet forms.",
+    big: isFinite(ceil) ? `Λ ≤ ${sci(ceil)}` : "No limit",
+    bigSub: isFinite(ceil)
+      ? (ceil < 1 ? `loud lineages per galaxy, at most: about one galaxy in ${sci(1 / ceil)} may ever produce one` : "loud lineages per galaxy, at most")
+      : "even q = 1 leaves the sky empty at this T",
+    verdict: verdict(muP, p.pEmpty),
+    stats: [["First emergences", `${dur(LC.T0 - LC.S - p.T)} before us`],
+            ["Share of trajectories crossed by today", pct((LC.T0 - LC.S - p.T) / (LC.T0 - LC.S))],
+            ["Your loud yield Λ = qN", sci(lam)],
+            ["Loud galaxies we should see", muP < 1e-3 ? "≈ 0" : sci(muP)]],
+    chart: chart({
+      data: Ts, ylog: true, xdom: [0.5, 13.5], ydom: [yMin, yMax],
+      xticks: [1, 4.6, 8, 12], yticks: decTicks(yMin, yMax, Math.log10(yMax / yMin) > 16 ? 6 : 4),
+      yfmt: t => pow10(Math.log10(t)), xtitle: "time to emerge T (Gyr)", ytitle: "largest Λ",
+      color: "var(--planet)", forbid: "above", markers: [{x: p.T, y: lam, label: "you"}],
+      tip: d => `T ${d.x.toFixed(2)} Gyr · Λ ≤ ${sci(d.y)}`
+    })
+  });
+  // shared start
+  const lead = LC.sharedLead(p, "visibility", p.W), arr = LC.sharedLead(p, "arrival", p.W);
+  const rad = LC.C * Math.max(lead.delta - LC.HOST_MPC / (p.v * LC.C), 0);
+  const leads = d3.range(-4, 8.01, 0.4).map(l => ({x: 10 ** l, y: 1000 * LC.sharedLead({...p, q: Math.min(10 ** l / p.N, 1)}, "visibility", p.W).delta}));
+  const lo = Math.max(1, 10 ** Math.floor(Math.log10(Math.min(...leads.map(d => d.y))))), hi = Math.max(1e4, ...leads.map(d => d.y));
+  const windowOpen = p.W > 0 && !lead.capped;
+  const shared = card({
+    cls: "shared", title: "A shared starting gun",
+    sub: "Progress carries between planets from one cosmic start. What matters is how far the first emergence sits ahead of ours.",
+    big: windowOpen ? "Any position" : `δ ≤ ${dur(lead.delta)}`,
+    bigSub: windowOpen ? "the whole window is allowed: the sky never binds"
+      : lead.capped ? "largest lead of the first emergence over ours" : "no lead within the 13.6 Gyr history is excluded",
+    // A single date puts us at the frontier; a window lets us test a start mid-window.
+    verdict: p.W > 0 ? verdict(LC.expected(p, Math.min(p.W / 2, LC.T0 - LC.S), "inherited", "visibility", p.W), p.pEmpty, "Starting mid-window: ") : null,
+    stats: [[p.W > 0 ? "Our start must lie within the window's" : "Start window", p.W > 0 ? (lead.capped ? `first ${pct(lead.delta / p.W)}` : "anywhere") : "one shared date"],
+            ["Lead allowed by fronts arriving here", arr.capped ? dur(arr.delta) : "unbounded"],
+            ["Radius of the exposed sphere", `${rad < 100 ? rad.toFixed(1) : sci(rad)} Mpc`],
+            ["Galaxies inside it", sci(4 / 3 * Math.PI * p.ng * rad ** 3)]],
+    chart: chart({
+      data: leads, xlog: true, ylog: true, xdom: [1e-4, 1e8], ydom: [lo, hi],
+      xticks: [1e-4, 1e-2, 1, 1e2, 1e4, 1e6, 1e8], yticks: decTicks(lo, hi),
+      xfmt: t => pow10(Math.log10(t)), yfmt: t => t >= 1000 ? `${t / 1000} Gyr` : `${t} Myr`,
+      xtitle: "loud yield Λ = qN", ytitle: "largest lead δ", color: "var(--shared)", forbid: "above",
+      markers: [{x: Math.min(Math.max(lam, 1e-4), 1e8), y: 1000 * lead.delta, label: "you"}],
+      tip: d => `Λ ${sci(d.x)} · δ ≤ ${dur(d.y / 1000)}`
+    })
+  });
+  return row(planet, shared);
+}
+```
+
+```{ojs}
+html`<div class="lc-params">${views.N}${views.q}${views.T}${views.W}</div>
+<details class="lc-more"><summary>The sky</summary><div class="lc-params">${views.v}${views.ng}${views.pEmpty}</div></details>`
+```
+
+[Flat space, galaxies scattered at random, perfect detection of any galaxy a loud lineage has crossed. Every number is an edge for these inputs, not a probability about the real world.]{.lc-note}
+:::
+
 What could synchronize the start of different lineages across such enormous scales? It has to be something very early. There are a few candidates, such as the habitable epoch in the early universe, the so-called goldilocks epoch around 17 million years after the Big Bang. However there was nothing at that time capable of retaining information, no carbon to form structure. The first carbon showed up between 100 and 200 million years in, and that is the time that I have chosen to start my clock. That is the time when structure started to form, when the first rocky bodies started to form (the first stars went supernova in only a few million years, so there would have been rocky bodies forming throughout that era).
 
 Another thing that draws me there is the remarkable coincidence between the age of Earth and the age of the universe. We could plausibly have woken up on a planet orbiting a red dwarf a trillion years from now. Then we would have good reason to be surprised by the empty sky! But our planet is about 1/3 the age of the entire universe. Jumping from 4 billion years of evolution to 13 billion years of evolution is, from a certain perspective, quite a small step.
@@ -36,11 +136,77 @@ Extending the history of our evolutionary lineage to the start of the universe i
 
 In this example, the typical lineage is still about a billion years from emerging. We belong to a thin first wave, arriving around now in galaxy after galaxy.
 
+::: {.lc-figure}
+[Figure 2 · Durations that vary: the first flush]{.lc-figure-title}
+
+```{ojs}
+html`<div class="lc-params">${views.sigma}${copy("N")}</div>`
+```
+
+```{ojs}
+{
+  const r = LC.durationSpread(p, p.sigma);
+  if (!r) return html`<p class="lc-note">With these inputs the sky stays empty even with the mean emergence today, so there is nothing to fit.</p>`;
+  const span = r.meanAfter + 2 * p.sigma, back = Math.min(3 * p.sigma, LC.T0 - LC.S);
+  const fLo = 10 ** (Math.floor(Math.log10(r.F)) - 3);
+  const data = d3.range(121).map(i => { const x = -back + (span + back) * i / 120, F = LC.phi(x / p.sigma - r.z0); return {x, y: F < fLo ? NaN : F}; });
+  return row(
+    card({cls: "shared plain", big: sci(r.F), bigSub: "share of zones emerged by today", stats: [
+      ["Typical zone emerges in", dur(r.meanAfter)],
+      ["Loud lineages ahead of us in the Milky Way", sci(r.home)],
+      ["Chance we are first loud at home", pct(r.pFirst)],
+      ["Median wait for the first front to reach us, given an empty sky today", isFinite(r.wait) ? dur(r.wait) : "–"]]}),
+    html`<div class="lc-chart">${chart({
+      data, ylog: true, xdom: [-back, span], ydom: [fLo, 1],
+      xticks: niceTicks(-back, span), yticks: decTicks(fLo, 1, 3),
+      xfmt: t => t === 0 ? "today" : (t > 0 ? "+" : "−") + dur(Math.abs(t)), yfmt: t => pow10(Math.log10(t)),
+      xtitle: "time from today", ytitle: "share emerged F", color: "var(--shared)",
+      refs: [{y: 1 / p.N, label: "one zone in a galaxy"}, {y: 0.5, label: "half emerged"}],
+      markers: [{x: 0, y: r.F, label: "today"}, {x: r.meanAfter, y: 0.5}],
+      tip: d => `${d.x >= 0 ? "+" : "−"}${dur(Math.abs(d.x))} · F ${sci(d.y)}`
+    })}</div>`);
+}
+```
+
+[These figures depend on the far left tail of the duration law, near the 10⁻¹² percentile, where nothing physical pins the shape. A normal tail always allows a few much faster lineages; a hard minimum duration would allow none. Read this as arithmetic for one tail shape.]{.lc-note}
+:::
+
 The number of emerging lineages in this result is of the order of N, the total number of lineages in our model. These are the aliens we are racing against. The fact that the sky is empty means we can't have been sitting around-- we can't be in the middle of the pack, or we would see the evidence of the leaders all around us. If you picture us as a random lineage, the chance of being this far ahead is about one in a hundred billion — roughly one over the number of lineages.
 
 I'll talk about luck more below, but it's worth thinking about the rest of the players in the race. To make the model simple, I have chosen to assume that there is one evolutionary lineage per habitable planet. But that wraps a lot of assumptions up into one. First, we don't really know what that means, and we are changing our model of it all the time. Some people are stricter about what constitutes a goldilocks zone, some say a planet needs a moon and a nice stable star. And perhaps the seeds, perhaps LUCA, is not so common that every planet gets seeded at exactly the right moment, or other planets are more prone to destabilizing catastrophes than ours. The number of other lineages N, that is, the number of our contemporaries, the number of our competitors in the race for the front, varies a lot model to model.
 
 Changing the number of competitors changes our luckiness and the number of contemporaries we would expect to meet in our galaxy, but several other parts of the models are insensitive to it, such as the number of lineages ahead of us in our galaxy and the spread in time. The empty sky still needs an explanation, even if there are only a hundred or less surviving lineages per galaxy.
+
+::: {.lc-figure}
+[Figure 3 · The sky fixes the count, not the share]{.lc-figure-title}
+
+```{ojs}
+{
+  const sky = ({...p, q: 1});
+  const data = d3.range(2, 11.01, 0.25).map(l => {
+    const z0 = LC.solveZ({...sky, N: 10 ** l}, p.sigma), F = LC.phi(-z0);
+    return {x: 10 ** l, F, NF: 10 ** l * F};
+  });
+  const z0 = LC.solveZ({...sky}, p.sigma), F = LC.phi(-z0);
+  const xticks = [1e2, 1e4, 1e6, 1e8, 1e10];
+  const share = chart({
+    data: data.map(d => ({x: d.x, y: d.F})), xlog: true, ylog: true, xdom: [1e2, 1e11], ydom: [1e-13, 1e-2],
+    xticks, yticks: decTicks(1e-13, 1e-2, 2), xfmt: t => pow10(Math.log10(t)), yfmt: t => pow10(Math.log10(t)),
+    xtitle: "lineages per galaxy N", ytitle: "share emerged by today", color: "var(--shared)",
+    markers: [{x: p.N, y: F, label: "you"}], tip: d => `N ${sci(d.x)} · we are 1 in ${sci(1 / d.y)}`
+  });
+  const count = chart({
+    data: data.map(d => ({x: d.x, y: d.NF})), xlog: true, ylog: true, xdom: [1e2, 1e11], ydom: [1e-3, 10],
+    xticks, yticks: [1e-3, 1e-2, 1e-1, 1, 10], xfmt: t => pow10(Math.log10(t)), yfmt: t => sci(t),
+    xtitle: "lineages per galaxy N", ytitle: "loud lineages ahead at home", color: "var(--shared)",
+    markers: [{x: p.N, y: p.N * F, label: "you"}], tip: d => `N ${sci(d.x)} · ${sci(d.y)} ahead of us`
+  });
+  return row(html`<div class="lc-chart">${share}</div>`, html`<div class="lc-chart">${count}</div>`);
+}
+```
+
+[At the spread set in Figure 2, with q = 1. Over nine decades of N our rank moves almost as 1/N, while the number of loud lineages ahead of us at home barely moves.]{.lc-note}
+:::
 
 # 4. Luckiness
 
@@ -57,6 +223,53 @@ And the luck backs it up. The frame I use for the calculation is called Full Non
 There are two ways to count luck here. The first is personal: what are the odds that our lineage, out of all of them, ended up this far ahead? That depends heavily on how many lineages there are. With a million lineages in our galaxy, the process clock needs us to be about one in 30 million. The hard-steps lottery needs us to be about one in ten trillion. Change the number of lineages and both numbers move, but the hard-steps one is always about a million times worse.
 
 The second is the one that matters for choosing between theories: how often does a universe like this produce anyone in our position, emerging now under an empty sky? That one barely cares how many lineages there are, and here the process clock beats hard steps by a factor of ten million to a billion. The reason is timing. The process clock bunches its arrivals into a wave a few tens of millions of years wide, so it only has to keep the sky quiet for that long. The lottery spreads them over billions of years, so it has to keep them rare the whole time.
+
+::: {.lc-figure}
+[Figure 4 · Two ways to count luck]{.lc-figure-title}
+
+```{ojs}
+viewof lotteryWindow = Inputs.radio(new Map([["no habitable window", Infinity], ["5 Gyr habitable window", 5]]), {value: Infinity, label: "Lottery planets stay habitable with"})
+```
+
+```{ojs}
+html`<div class="lc-params">${copy("N")}${copy("sigma")}${views.n}</div>`
+```
+
+```{ojs}
+R = LC.observerRates(p, p.sigma, {n: nSteps, W: lotteryWindow, T: 4.6})
+```
+
+```{ojs}
+{
+  const bars = [
+    {name: "Process clock", value: R.process.loud.obs, color: "var(--shared)"},
+    {name: "Planet clock, T = 4.6 Gyr", value: R.planet.loud.obs, color: "var(--planet)"},
+    {name: `Hard-steps lottery, n = ${nSteps}`, value: R.lottery.loud.obs, color: "var(--lottery)"}
+  ];
+  const lo = 10 ** Math.floor(Math.log10(Math.min(...bars.map(b => b.value)) / 10)), hi = 10 ** Math.ceil(Math.log10(Math.max(...bars.map(b => b.value)) * 10));
+  const plot = Plot.plot({
+    width: 460, height: 150, marginLeft: 170, style: {background: "transparent"},
+    x: {type: "log", domain: [lo, hi], ticks: decTicks(lo, hi, Math.log10(hi / lo) > 10 ? 3 : 2), tickFormat: t => pow10(Math.log10(t)), label: "observers like us, per galaxy per Gyr", labelAnchor: "center", labelArrow: "none", grid: true},
+    y: {label: null, domain: bars.map(b => b.name)},
+    marks: [
+      Plot.barX(bars, {x1: lo, x2: "value", y: "name", fill: "color", fillOpacity: 0.85}),
+      Plot.tip(bars, Plot.pointerY({x: "value", y: "name", title: d => `${d.name}: ${sci(d.value)}`}))
+    ]
+  });
+  return row(
+    card({cls: "lottery", title: "Personal luck: how far ahead are we?",
+      sub: "The share of lineages in a galaxy that have emerged by today, under each account. Depends heavily on N.",
+      stats: [["Process clock: we are", oneIn(R.process.loud.share)],
+              [`Hard-steps lottery: we are`, oneIn(R.lottery.loud.share)],
+              ["Lottery needs us luckier by", `× ${sci(R.process.loud.share / R.lottery.loud.share)}`]]}),
+    card({cls: "shared", title: "Observers like us",
+      sub: "How often each account produces someone emerging now under an empty sky in a quiet galaxy (full non-indexical conditioning, every expander loud).",
+      big: `× ${sci(R.process.loud.obs / R.lottery.loud.obs)}`, bigSub: "process clock over the hard-steps lottery",
+      chart: plot})
+  );
+}
+```
+:::
 
 With regard to the process clock, you might be tempted to make our situation less unlikely by changing the number N. Indeed, you could imagine a synthesis of the hard-steps and process models, along the lines of 'life is very unlikely, takes a great deal of environmental fortune, and so there are only a handful of surviving lineages per galaxy'. In this scenario we are not particularly lucky at all, it is simply the case that life takes 13 billion years to evolve, and there are only a handful of habitable zones in the galaxy that have happened to be seeded by the right stuff at the right time. There is something quite pleasant and parsimonious about this. And it feels like it takes on the important conceptual lessons from the hard-steps model-- let's not throw out the baby with the bathwater.
 
@@ -76,6 +289,55 @@ This was the biggest surprise that fell out of the model, for me. The fact that 
 
 But one more thing is worth mentioning. I said earlier that our luck really tracks the number of other lineages in our galaxy. If we are the only one, we don't have to be so lucky. Well, the doom tax, the idea that our situation is likelier if there is a great filter coming up, also tracks N. And it therefore gives us an easy way out of it-- just suppose we are alone in the galaxy, and the doom shrinks from a billion to a factor of 20.
 
+::: {.lc-figure}
+[Figure 5 · The doom tax]{.lc-figure-title}
+
+```{ojs}
+html`<div class="lc-params">${copy("N")}</div>`
+```
+
+```{ojs}
+doomSweep = {
+  const sky = {N: 1, q: 1, v, ng, pEmpty, T, W, sigma};
+  return d3.range(1, 11.01, 0.5).map(l => {
+    const r = LC.observerRates({...sky, N: 10 ** l}, sigma, {n: nSteps, W: lotteryWindow, z0s: [3, 0]});
+    return {x: 10 ** l, lo: r.process.filter[0].obs / r.process.loud.obs, hi: r.process.filter[1].obs / r.process.loud.obs,
+            lottery: r.lottery.filter.obs / r.lottery.loud.obs};
+  });
+}
+```
+
+```{ojs}
+{
+  const tax = R.process.filter.map(f => f.obs / R.process.loud.obs);
+  const lot = R.lottery.filter.obs / R.lottery.loud.obs;
+  const plot = Plot.plot({
+    width: 460, height: 260, marginLeft: 58, marginBottom: 40, style: {background: "transparent"},
+    x: {type: "log", domain: [10, 1e11], ticks: [10, 1e3, 1e5, 1e7, 1e9, 1e11], tickFormat: t => pow10(Math.log10(t)), label: "lineages per galaxy N", labelAnchor: "center", labelArrow: "none"},
+    y: {type: "log", domain: [1, 1e20], ticks: [1, 1e5, 1e10, 1e15, 1e20], tickFormat: t => pow10(Math.log10(t)), label: "doom tax", labelArrow: "none", grid: true},
+    marks: [
+      Plot.areaY(doomSweep, {x: "x", y1: "lo", y2: "hi", fill: "var(--shared)", fillOpacity: 0.25}),
+      Plot.lineY(doomSweep, {x: "x", y: "lottery", stroke: "var(--lottery)", strokeWidth: 2.2}),
+      Plot.dot([{x: p.N, y: Math.sqrt(tax[0] * tax[2])}], {x: "x", y: "y", r: 5.5, fill: "var(--shared)", stroke: "var(--card)", strokeWidth: 2}),
+      Plot.dot([{x: p.N, y: lot}], {x: "x", y: "y", r: 5.5, fill: "var(--lottery)", stroke: "var(--card)", strokeWidth: 2}),
+      Plot.text([{x: 1e9, y: doomSweep.at(-3).lottery}], {x: "x", y: "y", text: ["hard-steps lottery"], dy: -12, textAnchor: "end", fill: "var(--lottery)"}),
+      Plot.text([{x: 1e9, y: doomSweep.at(-3).lo}], {x: "x", y: "y", text: ["process clock"], dy: 14, textAnchor: "end", fill: "var(--shared)"}),
+      Plot.tip(doomSweep, Plot.pointerX({x: "x", y: "lottery", title: d => `N ${sci(d.x)}\nprocess clock × ${sci(d.lo)}–${sci(d.hi)}\nlottery × ${sci(d.lottery)}`}))
+    ]
+  });
+  return row(
+    card({cls: "shared", title: "How much likelier a late filter makes us",
+      sub: "Observers like us with expansion filtered (q at its sky ceiling), over observers with every expander loud.",
+      big: `× ${sci(Math.min(tax[0], tax[2]), 1)} – ${sci(Math.max(tax[0], tax[2]), 1)}`, bigSub: "process clock, mean emergence from 3σ ahead to today",
+      stats: [[`Hard-steps lottery, n = ${nSteps} (a bound)`, `× ${sci(lot)}`],
+              ["Prior odds on loud expansion needed to break even", `${sci(Math.sqrt(tax[0] * tax[2]))} vs ${sci(lot)}`]]}),
+    html`<div class="lc-chart">${plot}</div>`);
+}
+```
+
+[Band: the process clock's late filter as the mean emergence moves from 3σ after today to today, with q free the sky cannot pick between them. Lottery line: an upper bound, since no planet emerges more than once.]{.lc-note}
+:::
+
 This is convenient, but to me it is unsatisfying. I would rather attack the doom tax with better priors. If we take it as a measure of our uncertainty that we will build a Dyson sphere we can point at Starlink and say, look, we are already launching solar-powered infrastructure into space in significant quantities. We only need to keep to the exponential for a century and we're there. In this framing, I might excuse myself for watching the Starship launches so avidly, as each one constitutes a Bayesian update against great filter doom.
 
 # Conclusion
@@ -91,3 +353,59 @@ Indeed, research into evolutionary history, molecular biology, sociology on Eart
 *Per Ardua, ad Astra*.
 
 See you, space cowboy.
+
+
+::: {.callout-note collapse="true" appearance="minimal"}
+## What the calculation assumes
+
+- **Trajectories, not planets.** *N* counts effective retained-progress trajectories per galaxy in Earth-equivalent units: 10¹¹ stars × 0.1. It grows linearly from cosmic age 0.2 Gyr to today, 13.8 Gyr. Trajectories are never destroyed.
+- **Turning loud.** A lineage that crosses the threshold turns loud with probability *q*. It then spreads through its galaxy (30 kpc) and keeps spreading at speed *v*. The results mostly depend on Λ = *qN*.
+- **Seeing it, or meeting it.** A galaxy is visible once its front has crossed it and the light has reached us. Arrival means the front itself reaching us. Each galaxy is independent, so P(empty) = e^−μ^.
+- **Geometry.** Space is flat with a fixed galaxy density. That is fair for the few megaparsecs behind the 14 Myr cap. Over the gigaparsecs the planet clock integrates, treat it as a scaling statement.
+- **What it does not do.** It does not derive the shared clock from chemistry, model survey completeness, or turn percentiles into odds for our own existence.
+
+The numbers on this page are recomputed in your browser by a port of the repository's Python model and match the note's tables. Full write-up: *First-flush likelihood under a common-start, continuous evolutionary process* ([PDF](first-flush-likelihood.pdf), [code and data](https://github.com/FergusFettes/lineage-cap), [doi:10.5281/zenodo.23406424](https://doi.org/10.5281/zenodo.23406424)). Text CC BY 4.0, code MIT.
+:::
+
+```{ojs}
+//| output: false
+// Shared state for every figure.  Each slider lives once in its home figure; copies elsewhere
+// are bound to it, so moving any copy moves them all.  The model is site/model.js.
+import {makeSlider, chips, card, verdict, row, sci, pow10, dur, pct, oneIn, niceTicks, decTicks} from "./site/widgets.js"
+Plot = import("https://cdn.jsdelivr.net/npm/@observablehq/plot@0.6.16/+esm")
+LC = window.LineageCap
+B = LC.BASELINE
+views = ({
+  N: makeSlider("N", B.N), q: makeSlider("q", B.q), v: makeSlider("v", B.v), ng: makeSlider("ng", B.ng),
+  pEmpty: makeSlider("pEmpty", B.pEmpty), T: makeSlider("T", B.T), W: makeSlider("W", B.W),
+  sigma: makeSlider("sigma", B.sigma), n: makeSlider("n", 6)
+})
+copy = key => Inputs.bind(makeSlider(key, views[key].value), views[key])
+N = Generators.input(views.N)
+q = Generators.input(views.q)
+v = Generators.input(views.v)
+ng = Generators.input(views.ng)
+pEmpty = Generators.input(views.pEmpty)
+T = Generators.input(views.T)
+W = Generators.input(views.W)
+sigma = Generators.input(views.sigma)
+nSteps = Generators.input(views.n)
+p = ({N, q, v, ng, pEmpty, T, W, sigma})
+// A line chart in the old site's style: log axes optional, an excluded region, markers, hover tip.
+chart = (o) => Plot.plot({
+  width: 460, height: 260, marginLeft: 58, marginBottom: 40, style: {background: "transparent"},
+  x: {type: o.xlog ? "log" : "linear", domain: o.xdom, ticks: o.xticks, tickFormat: o.xfmt, label: o.xtitle, labelAnchor: "center", labelArrow: "none"},
+  y: {type: o.ylog ? "log" : "linear", domain: o.ydom, ticks: o.yticks, tickFormat: o.yfmt, label: o.ytitle, labelArrow: "none", clamp: true, grid: true},
+  marks: [
+    o.forbid ? Plot.areaY(o.data.filter(d => isFinite(d.y)), {x: "x", y1: "y", y2: o.forbid === "above" ? o.ydom[1] : o.ydom[0], fill: "currentColor", fillOpacity: 0.07}) : null,
+    o.forbid ? Plot.text(["excluded"], {frameAnchor: o.forbid === "above" ? "top-left" : "bottom-right", dx: 8, dy: 8, fill: "currentColor", fillOpacity: 0.6}) : null,
+    ...(o.refs || []).map(r => [Plot.ruleY([r.y], {stroke: "currentColor", strokeOpacity: 0.4, strokeDasharray: "3,3"}),
+      Plot.text([r.label], {x: o.xdom[0], y: r.y, dx: 6, dy: -7, textAnchor: "start", fill: "currentColor", fillOpacity: 0.7})]),
+    Plot.lineY(o.data.filter(d => isFinite(d.y)), {x: "x", y: "y", stroke: o.color, strokeWidth: 2.2}),
+    Plot.dot((o.markers || []).filter(m => isFinite(m.y)), {x: "x", y: "y", r: 5.5, fill: o.color, stroke: "var(--card)", strokeWidth: 2}),
+    Plot.text((o.markers || []).filter(m => isFinite(m.y) && m.label), {x: "x", y: "y", text: "label", dx: 9, dy: -9, textAnchor: "start", fontWeight: 600, fill: "currentColor"}),
+    Plot.ruleX(o.data.filter(d => isFinite(d.y)), Plot.pointerX({x: "x", stroke: "currentColor", strokeOpacity: 0.3})),
+    Plot.tip(o.data.filter(d => isFinite(d.y)), Plot.pointerX({x: "x", y: "y", title: o.tip}))
+  ]
+})
+```

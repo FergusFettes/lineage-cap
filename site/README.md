@@ -11,3 +11,10 @@ quoted in `first-flush-likelihood.qmd`. `.github/workflows/pages.yml` runs that 
 deploys `index.html`, `model.js` and the PDF to GitHub Pages on pushes to `main`.
 
 Preview locally by opening `site/index.html` in a browser.
+
+## Blog
+
+`blog.qmd` (repo root) is the human-readable version with the same widgets inline, as OJS
+cells over `model.js`, plus the FNC observer-rate comparison (`observerRates`, ported from
+`lineage_cap/observer_rates.py`). Helpers and sliders live in `widgets.js`, styles in
+`blog.css`. `make blog-preview` serves it with live reload; `make blog` builds `blog.html`.
